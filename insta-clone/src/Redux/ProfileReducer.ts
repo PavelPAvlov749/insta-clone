@@ -61,7 +61,7 @@ export const getAccountByID = (userID: string) => {
                 let user = {
                     fullName: response?.fullName,
                     avatar: response?.avatar,
-                    userID: response?.userID
+                    userID: response?.userID,
                 }
                 dispatch(AccountActions.set_current_user_profile(user))
                 dispatch(app_actions.init(true))

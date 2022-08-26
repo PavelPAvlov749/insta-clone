@@ -1,23 +1,26 @@
 import React, { useState } from "react";
 import { Link, NavLink, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Global_state_type } from "../Redux/Store";
+import { Global_state_type } from "../../Redux/Store";
 
 //IMPORTING INTERFACE ICONS
-import style from "../Styles/Navbar.module.css";
-import chat_img from "../Media/Chat.png";
-import profile from "../Media/Profile.png";
-import home from "../Media/Home.png"
-import upload from "../Media/Upload.png";
-import logout_img from "../Media/Logout.png";
-import logo from '../Media/logo2.jpg'
-import search from "../Media/search.png";
+import style from "../../Styles/Navbar.module.css";
+import chat_img from "../../Media/Chat.png";
+import profile from "../../Media/Profile.png";
+import home from "../../Media/Home.png"
+import upload from "../../Media/Upload.png";
+import logout_img from "../../Media/Logout.png";
+import logo from '../../Media/logo2.jpg'
+import search from "../../Media/search.png";
+import { postActions } from "../../Redux/PostReducer";
 
 
 
 
 
 export const Navbar: React.FC = React.memo((props) => {
+    const dispatch = useDispatch()
+
     let isAuth = useSelector((state:Global_state_type) => {
         return state.auth.is_auth
     })
@@ -26,6 +29,9 @@ export const Navbar: React.FC = React.memo((props) => {
     })
     const logOut = () => {
 
+    }
+    const newPostHandler = () => {
+        dispatch(postActions.setIsOnnewPost(true))
     }
     return (
         <section className={style.navbar_container}>
@@ -58,9 +64,7 @@ export const Navbar: React.FC = React.memo((props) => {
                             </NavLink>
                         </li>
                         <li>
-                            <img src={upload} alt="" onClick={() => {
-                                //NAVIGATE FUNCTION
-                            }} />
+                            <img src={upload} alt="#" onClick={newPostHandler}/>
                         </li>
                         <li>
                             {isAuth ? <img src={logout_img} alt="" onClick={logOut} /> : null}

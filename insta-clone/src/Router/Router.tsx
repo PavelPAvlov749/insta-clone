@@ -1,5 +1,8 @@
 import { Route,Routes,Navigate } from "react-router-dom"
-import { UserPage,  } from "../Components/UserPage"
+import { Login_container } from "../Components/Login/Login"
+import { ShowedPost } from "../Components/Posts/OpenedPost"
+import { UserPage,  } from "../Components/UserPage/UserPage"
+import { UserSearch } from "../Components/UserSearch/UserSearch"
 import { UserType } from "../Redux/Types"
 
 const LOGIN = "/login"
@@ -8,7 +11,7 @@ const USERS = "/users"
 const USER_PROFILE = "/profile/:id"
 const no_match_route = "*"
 const NEW_POST = "/new_post"
-const POST = "/profile/:id/post/:id"
+const POST = "/p/:id"
 const Empty = "";
 const SEARCH = "/search"
 const REGISTRATION = "/registration"
@@ -26,6 +29,8 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                     <Route path={LOGIN} element={<Navigate to={USER_PROFILE + "=" + props.actualUser}/>}/>
                     <Route path={ROOT} element={null}/>
                     <Route path={USER_PROFILE} element={<UserPage/>}/>
+                    <Route path={POST} element={<ShowedPost/>}/>
+                    <Route path={SEARCH} element={<UserSearch/>}/>
                 </Routes>
             </div>
         )
@@ -33,7 +38,7 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
         return (
             <div className="Router">
                 <Routes>
-                    <Route path={LOGIN} element={null}/>
+                    <Route path={LOGIN} element={<Login_container/>}/>
                     <Route path={no_match_route} element={<Navigate to={LOGIN} replace/>}/>
                     <Route path={REGISTRATION} element={null}/>
                 </Routes>

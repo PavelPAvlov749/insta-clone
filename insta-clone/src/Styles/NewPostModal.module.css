@@ -1,0 +1,56 @@
+.newPostModal { 
+    border-radius: 10px;
+    position: absolute;
+    z-index: 2;
+    width: 700px;
+    height: 600px;
+    background-color: rgb(215, 215, 215);
+
+
+}
+.newPostModal img {
+    margin-left: 44%;
+    padding-bottom: 5vh;
+    display: block;
+    width: 100px;
+    height: 100px;
+}
+.newPostModal h1 {
+    font-size: large;
+    text-align: center;
+    font-weight: 500;
+}
+.newPostModal {
+    text-align: center;
+}
+.button {
+    background-color: rgb(31, 62, 147);
+    border-radius: 10px;
+    border-style: none;
+    font-weight: 400;
+    font-size: large;
+    margin-left: 39%;
+    color: white;
+    width: 150px;
+    height: 40px;
+    padding-top: 1vh;
+}
+
+/* OM PHOTO ON LOAD  */
+.imgContainer {
+    padding: 0%;
+    margin: 0px;
+    width: 700px;
+    height: 600px;
+}
+.imgContainer img {
+    margin: 0vh 1vh 1vh -1vh;
+    width: 700px;
+    height: 600px;
+}
+.textInput {
+    background-color: aqua;
+    width: 700px;
+    height: 200px;
+    background-color: whitesmoke;
+}

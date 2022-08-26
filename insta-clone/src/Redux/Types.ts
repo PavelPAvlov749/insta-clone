@@ -15,17 +15,18 @@ export type UserType = {
     followed? : boolean
 }
 export type ComentType = {
-    comentText : string,
+    coment_text : string,
     comentatorName : string,
     comentatorID : string,
     comentatorAvatar : string 
 }
 
 export type PostType = {
-    postText : string,
-    postIMG : string,
-    postID : string,
-    likesCount : Array<string>,
+    post_text : string,
+    post_img : string,
+    id : string,
+    likes_count : Array<string>,
+    creator : string,
     createdAt : typeof  Date,
     coments : Array<ComentType>,
 }

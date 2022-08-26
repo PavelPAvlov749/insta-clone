@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Field, Form } from "formik";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import styles from "../../Styles/Registration.module.css"
 
 
 
@@ -11,11 +10,11 @@ export const Registration: React.FC = React.memo((props) => {
     const navigate = useNavigate()
 
     const setSubmit = (values : {username : string,login : string,password : string}) => {
-        
+       
 
     }
     return (
-        <section className={styles.Registration}>
+        <section >
             <h1>Registration</h1>
             <Formik
                 enableReinitialize={true} //<= If true Form will reinitialize after reciving new initial value from state 
