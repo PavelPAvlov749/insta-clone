@@ -9,6 +9,9 @@ import { getAllUsers } from "../../Redux/UsersSerarchReducer";
 
 
 export const UserSearch : React.FC = React.memo((props) => {
+    const currentUSerID = useSelector((state:Global_state_type) => {
+        return state.app.currentUserID
+    })
     const navigate = useNavigate()
     const dispatch : any = useDispatch()
 
@@ -34,6 +37,12 @@ export const UserSearch : React.FC = React.memo((props) => {
         dispatch(getUserPageByID(userID))
         navigate("/profile/id=" + userID)
     }
+    const FollowHandler = () => {
+        alert("FOLLOW")
+    }
+    const UnfollowHandler = () => {
+        alert("UNFOLLOW")
+    }
     return (
         <section>
             <input type="text" placeholder="Search"></input>
@@ -46,6 +55,8 @@ export const UserSearch : React.FC = React.memo((props) => {
                         <img src={user.avatar} alt="" onClick={() => {
                             setCurrentUserPage(user.userID)
                         }} />
+                      {Object.values(user.followers as Array<string>).includes(currentUSerID) ? <button onClick={UnfollowHandler}>Unfollow</button> 
+                      : <button onClick={FollowHandler}>Follow</button>}
                     </div>
                 )
             }): <h1>No Results!</h1>}

@@ -5,7 +5,7 @@ import { InferActionType } from "./Store";
 import { UserType } from "./Types";
 
 const GET_USERS = "messenger/Users_reducer/get_users";
-
+const SET_STATUS = "instaClone/UsersReducer/setNewStatus"
 
 type ActionType = InferActionType<typeof userPageActions>
 type initStateType = UserType
@@ -27,6 +27,12 @@ export const UsersPageReducer = (state = initial_state, action: ActionType) => {
                 ...state,...action.payload
             }
         }
+        case SET_STATUS : {
+            return {
+                ...state,
+                status : action.payload
+            }
+        }
         default: return state
     }
 }
@@ -36,6 +42,10 @@ export const userPageActions = {
         type: "messenger/Users_reducer/get_users",
         payload: user
     } as const),
+    setStatus : (status : string) => ({
+        type : "instaClone/UsersReducer/setNewStatus",
+        payload : status
+    }as const)
 }
 
 export const getUserPageByID = (userID : string) => {

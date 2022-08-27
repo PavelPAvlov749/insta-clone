@@ -7,8 +7,8 @@ import { MainAccountType } from "./Types";
 
 
 
-const SET_CURRENT_USER_PROFILE = "messenger/profile_reducer/set_current_user+profile"
-
+const SET_CURRENT_USER_PROFILE = "instaClone/profile_reducer/set_current_user+profile"
+const UPDATE_AVATAR = "instaClone/profileReducer/updateAvatar"
 
 type ActionType = InferActionType<typeof AccountActions>;
 
@@ -35,6 +35,12 @@ export const AccountReducer = (state = initial_state, action: ActionType) => {
                     ...action.payload
                 }
             }
+        case UPDATE_AVATAR : {
+            return {
+                ...state,
+                avatar : action.payload
+            }
+        }
 
         default:
             return state
@@ -43,13 +49,17 @@ export const AccountReducer = (state = initial_state, action: ActionType) => {
 
 export const AccountActions = {
     set_current_user_profile: (_profile: MainAccountType) => ({
-        type: "messenger/profile_reducer/set_current_user+profile",
+        type: "instaClone/profile_reducer/set_current_user+profile",
         payload: _profile
     } as const),
     get_status: (status: string) => ({
         type: "messenger/profile_reducer/get_status",
         payload: status
     } as const),
+    updateAvatar : (newAvatar : any ) => ({
+        type : "instaClone/profileReducer/updateAvatar",
+        payload : newAvatar
+    })
 }
 
 export const getAccountByID = (userID: string) => {

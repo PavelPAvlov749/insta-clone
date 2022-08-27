@@ -18,6 +18,7 @@ let initial_state = {
     is_fetch: false,
     currentUserID: null as unknown as string
 }
+
 //Acrtion types
 type Action_Type = InferActionType<typeof app_actions>;
 

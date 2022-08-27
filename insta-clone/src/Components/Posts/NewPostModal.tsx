@@ -43,14 +43,20 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
             
         }
     }
+    const onCloseHandler = () => {
+        dispatch(postActions.setIsOnnewPost(false))
+        dispatch(postActions.setNewPostPhoto(null))
+    }
     return (
         <section className={styles.newPostModal}>
 
-            <h1>Creating a publication</h1>
+            <h1 style={{"display" : "inline"}}>Creating a publication</h1>
+            <span onClick={onCloseHandler}>Close</span>
             <hr />
             {newPostPhoto === null ?
                 <div className={styles.newPostImageWrapper}>
                     <h2>Select image</h2>
+                    
                     <br />
                     <img src={GaleryImg} alt="" />
                     <label htmlFor="file_input">
@@ -60,9 +66,12 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
                     </label>
                     <input type="file" placeholder="Put eout file" id="file_input" accept="image/*" style={{ "display": "none" }} onChange={inputOnChangeHandler}></input>
                 </div> :
-                <div>
-                    <div className={styles.imgContainer}>
+                <div className={styles.imgContainer}>
+                    <div >
+                        <label htmlFor="image_input">
                         <img src={newPostPhoto} alt="#" className={styles.newPostImg}></img>
+                        </label>
+                        <input type="file" placeholder="Put your files" id="image_input" style={{"display" : "none"}} onChange={inputOnChangeHandler}></input>
                     </div>
                     <section className={styles.textInputContainer}>
                         <div>

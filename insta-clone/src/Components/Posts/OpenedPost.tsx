@@ -4,6 +4,7 @@ import { Global_state_type } from "../../Redux/Store";
 import { PostComent } from "./Coments";
 import likeImg from "../../Media/like.png"
 import { postActions } from "../../Redux/PostReducer";
+import { ComentTextArea } from "./ComentTextArea";
 
 
 export const ShowedPost : React.FC = React.memo((props) => {
@@ -36,6 +37,7 @@ export const ShowedPost : React.FC = React.memo((props) => {
             <span>{likesCount.length + "\t likes"}</span>
             <img src={likeImg} alt="#" style={{"width" : "40px","height" : "40px"}} onClick={tapLikeHandler} />
             <PostComent/>
+            <ComentTextArea/>
         </section>
     )
 })
