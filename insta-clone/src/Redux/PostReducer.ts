@@ -75,6 +75,13 @@ export const PostsReducer = (state = initial_state, action: ActionType) => {
                 newPostPhoto : action.payload
             }
         }
+        case ADD_COMENT : {
+            return {
+                ...state,
+                currentPost : state.currentPost,coments : [state.currentPost.coments.push(action.payload.coment)]
+     
+            }
+        }
         default:
             return state
     }
@@ -101,9 +108,9 @@ export const postActions = {
         type: "messenger/posts_reducer/isPostFetch",
         payload: isFetch
     } as const),
-    addComent: (coment: ComentType) => ({
+    addComent: (postID : string, coment: ComentType) => ({
         type: "messenger/posts_reducer/addComent",
-        payload: coment
+        payload: {coment : coment,postID : postID}
     } as const),
     deleteComent: (comentID: string) => ({
         type: "messenger/psts_reducer/deleteComent",
@@ -141,4 +148,15 @@ export const getPostListByUserID = (userID:string) => {
         }
 
     }
+}
+export const leaveComentThunk = (userID : string,postID:string,coment : ComentType) => {
+    return async function (dispatch : any) {
+        try{
+            dispatch(app_actions.set_is_fetch_true())
+            dispatch(postActions.addComent(postID,coment))
+            dispatch(app_actions.set_is_fetch_fasle())
+        }catch(ex){
+            console.error(ex)
+        }
+    } 
 }

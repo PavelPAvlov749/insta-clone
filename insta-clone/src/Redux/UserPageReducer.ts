@@ -6,6 +6,8 @@ import { UserType } from "./Types";
 
 const GET_USERS = "messenger/Users_reducer/get_users";
 const SET_STATUS = "instaClone/UsersReducer/setNewStatus"
+const FOLLOW = "instaClone/UsersReducer/follow"
+const UNFOLLOW = "instaClone/UsersReducer/unfollow"
 
 type ActionType = InferActionType<typeof userPageActions>
 type initStateType = UserType
@@ -33,6 +35,22 @@ export const UsersPageReducer = (state = initial_state, action: ActionType) => {
                 status : action.payload
             }
         }
+        case FOLLOW : {
+            return {
+                ...state,
+                followers : state.followers?.push(action.payload)
+            }
+        }
+        case UNFOLLOW : {
+            return {
+                ...state,
+                followers :  state.followers?.map((user) => {
+                    if(user !== action.payload) {
+                        return user
+                    }
+                })
+            }
+        }
         default: return state
     }
 }
@@ -45,7 +63,15 @@ export const userPageActions = {
     setStatus : (status : string) => ({
         type : "instaClone/UsersReducer/setNewStatus",
         payload : status
-    }as const)
+    }as const),
+    follow : (userID : string) => ({
+        type : "instaClone/UsersReducer/follow",
+        payload : userID
+    } as const ),
+    unfollow : (userID : string) => ({
+        type : "instaClone/UsersReducer/unfollow",
+        payload : userID
+    } as const )
 }
 
 export const getUserPageByID = (userID : string) => {

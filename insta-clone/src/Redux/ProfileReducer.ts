@@ -59,7 +59,7 @@ export const AccountActions = {
     updateAvatar : (newAvatar : any ) => ({
         type : "instaClone/profileReducer/updateAvatar",
         payload : newAvatar
-    })
+    } as const)
 }
 
 export const getAccountByID = (userID: string) => {
@@ -84,4 +84,21 @@ export const getAccountByID = (userID: string) => {
         }
         }
 
+}
+
+export const updateAvatarThunk = (newAvatar : any,userID : string) => {
+    return async function (dispatch: any) {
+        try{
+            dispatch(app_actions.set_is_fetch_true())
+            let updatedAvatar = await profileAPI.updateAvatar(userID,newAvatar).catch((ex) => {
+                throw new Error(ex)
+            })
+            dispatch(AccountActions.updateAvatar(newAvatar))
+            dispatch(app_actions.set_is_fetch_fasle())
+        }
+        catch(ex) {
+            console.error(ex)
+        }
+
+    }
 }

@@ -4,6 +4,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { displayPartsToString } from "typescript";
 import { app_actions } from "../../Redux/AppReducer";
+import { updateAvatarThunk } from "../../Redux/ProfileReducer";
 import { Global_state_type } from "../../Redux/Store";
 import { UserType } from "../../Redux/Types";
 import { getUserPageByID, userPageActions } from "../../Redux/UserPageReducer";
@@ -38,7 +39,7 @@ export const UserPage : React.FC = React.memo((props) => {
     const setNewStatus = (userID : string,status : string) => {
         dispatch(userPageActions.setStatus(status))
     }
-    let imgURl = null
+    let imgURL = null
     const updateAvatar = (event : any) => {
         let target = event.target
         let fileReader = new FileReader()
@@ -50,24 +51,25 @@ export const UserPage : React.FC = React.memo((props) => {
             fileReader.readAsDataURL(target.files[0])
             fileReader.onload = function () {
                 imgURL = fileReader.result
-                dispatch(postActions.setNewPostPhoto(imgURL))
+                dispatch(updateAvatarThunk(imgURL,currentUserID))
                 console.log(imgURL)
             }
             
         }
     }
+    const followToogle = () => {
+
+    }
     return (
         <section>
             <h1>{fullName}</h1>
-            <label>
+            <label htmlFor="avatarInput">
             <img src={avatar ? avatar : "#"} alt="" onLoad={()=> {
                 dispatch(app_actions.set_is_fetch_true())
             }} style={{"width" : "200px","height" : "200px"}}/>
             </label>
-            <img src={avatar ? avatar : "#"} alt="" onLoad={()=> {
-                dispatch(app_actions.set_is_fetch_true())
-            }} style={{"width" : "200px","height" : "200px"}}/>
-            {userPageUrl !== currentUserID ? <button>{Object.values(followers as Array<string>).includes(currentUserID)? "Unfollow": "Follow" }</button> : null}
+            <input type="file" placeholder="Files" onChange={updateAvatar} id="avatarInput" style={{"display" : "none"}}></input>
+            {userPageUrl !== currentUserID ? <button onClick={followToogle}>{Object.values(followers as Array<string>).includes(currentUserID)? "Unfollow": "Follow" }</button> : null}
             <UserStatus status={status} userID={userPageUrl} setNewStatus={setNewStatus}/>
             <hr />
             <UserPostsList/>
