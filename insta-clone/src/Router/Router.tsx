@@ -1,9 +1,10 @@
 import { Route,Routes,Navigate } from "react-router-dom"
 import { Login_container } from "../Components/Login/Login"
+import { Registration } from "../Components/Login/Registartion"
 import { ShowedPost } from "../Components/Posts/OpenedPost"
 import { UserPage,  } from "../Components/UserPage/UserPage"
 import { UserSearch } from "../Components/UserSearch/UserSearch"
-import { UserType } from "../Redux/Types"
+
 
 const LOGIN = "/login"
 const CHAT = "/chat"
@@ -40,7 +41,7 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                 <Routes>
                     <Route path={LOGIN} element={<Login_container/>}/>
                     <Route path={no_match_route} element={<Navigate to={LOGIN} replace/>}/>
-                    <Route path={REGISTRATION} element={null}/>
+                    <Route path={REGISTRATION} element={<Registration/>}/>
                 </Routes>
             </div>
         )

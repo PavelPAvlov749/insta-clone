@@ -17,7 +17,8 @@ type AppPropsType = {
   init : () => void,
   currentUserID : string | null,
   isNewPost : boolean,
-  setIsOnNewPost : (isPost : boolean) => void
+  setIsOnNewPost : (isPost : boolean) => void,
+  isAuth : boolean
 }
 
 const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
@@ -25,8 +26,7 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
   useEffect(() => {
     props.init()
   },[])
-  console.log("RENDER")
-
+ 
   if(props.isInit){
     return (
       <div className={styles.app}>
@@ -34,7 +34,7 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
         <BrowserRouter>  
         {props.isNewPost ? <NewPostModalWindow/> : null}
         <Navbar/>
-        <Router actualUser={props.currentUserID as string} isAuth={true} />
+        <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
         </BrowserRouter>
       </div>
     )
@@ -57,7 +57,8 @@ let MapStateToProps = (state : Global_state_type) => {
       isFetch : state.app.is_fetch,
       currentUserID : state.app.currentUserID,
       userPage : state.userPage,
-      isNewPost : state.userPosts.isOnNewPost
+      isNewPost : state.userPosts.isOnNewPost,
+      isAuth : state.auth.is_auth
   }
 }
 let MapDispatchToProps = (dispatch : any) => {

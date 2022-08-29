@@ -4,7 +4,7 @@ import { appReducer, app_actions } from "./AppReducer";
 import { InferActionType } from "./Store";
 import { UserType } from "./Types";
 
-const GET_USERS = "messenger/Users_reducer/get_users";
+const GET_USER = "messenger/Users_reducer/get_users";
 const SET_STATUS = "instaClone/UsersReducer/setNewStatus"
 const FOLLOW = "instaClone/UsersReducer/follow"
 const UNFOLLOW = "instaClone/UsersReducer/unfollow"
@@ -24,7 +24,7 @@ const initial_state : UserType = {
 
 export const UsersPageReducer = (state = initial_state, action: ActionType) => {
     switch (action.type) {
-        case GET_USERS: {
+        case GET_USER: {
             return {
                 ...state,...action.payload
             }
@@ -38,25 +38,22 @@ export const UsersPageReducer = (state = initial_state, action: ActionType) => {
         case FOLLOW : {
             return {
                 ...state,
-                followers : state.followers?.push(action.payload)
+                followers : state.followers?.concat(action.payload)
             }
         }
         case UNFOLLOW : {
             return {
                 ...state,
-                followers :  state.followers?.map((user) => {
-                    if(user !== action.payload) {
-                        return user
-                    }
-                })
+                followers : state.followers?.filter(el => el !== action.payload)
             }
         }
+
         default: return state
     }
 }
 
 export const userPageActions = {
-    get_users: (user: UserType) => ({
+    get_user: (user: UserType) => ({
         type: "messenger/Users_reducer/get_users",
         payload: user
     } as const),
@@ -76,11 +73,20 @@ export const userPageActions = {
 
 export const getUserPageByID = (userID : string) => {
     return async function (dispatch : any) {
-
+        dispatch(app_actions.set_is_fetch_true())
         const user = await usersAPI.getUserPageById(userID)
         if(user) {
-            dispatch(userPageActions.get_users(user))
-           
+            let userPage = {
+                fullName: user.fullName,
+                avatar: user.avatar,
+                status: user.status,
+                userID: user.userID,
+                subscribes: Object.hasOwn(user,"subscribers") ? Object.values(user.subscribes as Array<string>) : [] as Array<string>,
+                followers: Object.hasOwn(user,"followers") ? Object.values(user.followers as Array<string>) : [] as Array<string>,
+                followed : false
+            }
+            dispatch(userPageActions.get_user(userPage))
+            dispatch(app_actions.set_is_fetch_fasle())
         }
         
     }

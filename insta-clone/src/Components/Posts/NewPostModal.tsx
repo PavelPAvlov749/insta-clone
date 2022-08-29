@@ -6,46 +6,59 @@ import { postActions } from "../../Redux/PostReducer";
 import styles from "../../Styles/NewPostModal.module.css"
 import GaleryImg from "../../Media/imageGallery.png"
 import { Global_state_type } from "../../Redux/Store";
+import { ComentType, PostType } from "../../Redux/Types";
+
 
 
 export const NewPostModalWindow: React.FC = React.memo((props) => {
     const dispatch = useDispatch()
-    const currentUserAvatar = useSelector((state:Global_state_type) => {
-        return state.account.avatar
-    })
-    const newPostPhoto = useSelector((state: Global_state_type) => {
+    //NEW POST SELECTORS
+    const newPostIMG = useSelector((state : Global_state_type) => {
         return state.userPosts.newPostPhoto
     })
-    const isOnNewPost = useSelector((state: Global_state_type) => {
-        return state.userPosts.isOnNewPost
+    const newPostText = useSelector((state: Global_state_type) => {
+        return state.userPosts.newPostText
     })
-    const photoOnLoad = (e: any) => {
-        dispatch(postActions.setIsOnnewPost(true))
-        dispatch(postActions.setNewPostPhoto(e.target.files[0]))
-        console.log(e.target.files[0])
+    const currendUser = useSelector((state:Global_state_type) => {
+        return state.account.fullName
+    })
+    //INITIAL VALUES FOR NEW POST FORM
+    let initialFormValues = {
+        newPostText : "",
+        newPostImg : ""
     }
-    let imgURL = null
 
+    //File upload handler.Conferts Blob file type to string with fileReader
     const inputOnChangeHandler = (event : any) => {
         let target = event.target
         let fileReader = new FileReader()
-        let img = document.getElementById("newPost")
-        
         if(!target.files.length){
+            //If file was uploaded with error log the error
             console.log("ERROR")
         }else{
             fileReader.readAsDataURL(target.files[0])
             fileReader.onload = function () {
-                imgURL = fileReader.result
-                dispatch(postActions.setNewPostPhoto(imgURL))
-                console.log(imgURL)
+                //Dispatch fileRader result in postReducer
+                dispatch(postActions.setNewPostPhoto(fileReader.result))
+                
             }
-            
         }
     }
+    //Handler for modal window closing button
     const onCloseHandler = () => {
         dispatch(postActions.setIsOnnewPost(false))
         dispatch(postActions.setNewPostPhoto(null))
+    }
+    const formSubmit = (values : typeof initialFormValues) => {
+        dispatch(postActions.setNewPosttext(values.newPostText))
+        const newPost : PostType = {
+            post_img : newPostIMG,
+            post_text : newPostText,
+            creator : currendUser as string,
+            likes_count : [] as Array<string>,
+            coments : [] as Array<ComentType>
+        }
+        dispatch(postActions.createPost(newPost))
     }
     return (
         <section className={styles.newPostModal}>
@@ -53,37 +66,17 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
             <h1 style={{"display" : "inline"}}>Creating a publication</h1>
             <span onClick={onCloseHandler}>Close</span>
             <hr />
-            {newPostPhoto === null ?
-                <div className={styles.newPostImageWrapper}>
-                    <h2>Select image</h2>
-                    
-                    <br />
-                    <img src={GaleryImg} alt="" />
-                    <label htmlFor="file_input">
-                    <div className={styles.button}>
-                        Load Files
-                    </div>
-                    </label>
-                    <input type="file" placeholder="Put eout file" id="file_input" accept="image/*" style={{ "display": "none" }} onChange={inputOnChangeHandler}></input>
-                </div> :
-                <div className={styles.imgContainer}>
-                    <div >
-                        <label htmlFor="image_input">
-                        <img src={newPostPhoto} alt="#" className={styles.newPostImg}></img>
-                        </label>
-                        <input type="file" placeholder="Put your files" id="image_input" style={{"display" : "none"}} onChange={inputOnChangeHandler}></input>
-                    </div>
-                    <section className={styles.textInputContainer}>
-                        <div>
-
-                            <div className={styles.textInput} contentEditable={true}>
-                        Type post text
-                    </div>
-                        </div>
-                    </section>
-
-                </div>}
-
+            <label htmlFor="file_input">
+            <img src={newPostIMG ? newPostIMG : GaleryImg} alt="#"></img>
+            </label>
+            <Formik enableReinitialize={true} initialValues={initialFormValues} onSubmit={formSubmit}>
+                <Form>
+                    <Field type="file" name="newPostImg" id="file_input" style={{"display" : "none"}} onChange={inputOnChangeHandler}></Field>
+                    <Field type="text" name="newPostText"></Field>
+                    <button type="submit">Publish</button>
+                </Form>
+            </Formik>
+           
         </section >
     )
 })

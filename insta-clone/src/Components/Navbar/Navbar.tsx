@@ -13,13 +13,14 @@ import logout_img from "../../Media/Logout.png";
 import logo from '../../Media/logo2.jpg'
 import search from "../../Media/search.png";
 import { postActions } from "../../Redux/PostReducer";
+import { logOutThunk } from "../../Redux/AuthReducer";
 
 
 
 
 
 export const Navbar: React.FC = React.memo((props) => {
-    const dispatch = useDispatch()
+    const dispatch : any = useDispatch()
 
     let isAuth = useSelector((state:Global_state_type) => {
         return state.auth.is_auth
@@ -28,7 +29,7 @@ export const Navbar: React.FC = React.memo((props) => {
         return state.account.userID
     })
     const logOut = () => {
-
+        dispatch(logOutThunk())
     }
     const newPostHandler = () => {
         dispatch(postActions.setIsOnnewPost(true))

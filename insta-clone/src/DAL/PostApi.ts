@@ -1,13 +1,12 @@
 import { dataBase, Firebase_auth } from "./FirebaseConfig";
 import { firebase } from "./FirebaseConfig";
 import { ref, get, child, push, update, remove, onValue } from "firebase/database";
-import { getStorage, ref as storage_ref, uploadBytes, getDownloadURL, StorageReference, connectStorageEmulator } from "firebase/storage";
+import { getStorage, ref as storage_ref, uploadBytes, getDownloadURL, StorageReference } from "firebase/storage";
 import { makeid } from "./Randomizer";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import { stringify } from "querystring";
 
 
-
+//Abstarct API class 
 export class abstractAPI {
     protected RealtimeDataBase = dataBase
     protected DatabaseRef = ref(dataBase)
@@ -112,7 +111,7 @@ class PostAPI extends abstractAPI {
         //This method will return all posts userID(Array<PostType>)
         
         const postsList = await (await (await get(child(this.DatabaseRef, "Users/" + userID + "/posts/"))))
-        console.log(postsList.val())
+ 
         return postsList
     }
 
@@ -149,6 +148,7 @@ class PostAPI extends abstractAPI {
         return result
     }
     async addComentToPost(userID: string, postID: string, comentText: string, creator: string, avatar: string) {
+        //create id by ID generator
         const comentID = makeid(9)
         try {
             if (comentText.length > 0) {

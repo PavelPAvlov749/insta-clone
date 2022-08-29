@@ -86,6 +86,7 @@ export const InitializeThunk = ()  => {
             dispatch(app_actions.init(false))
             if(user !== null){
                 dispatch(app_actions.setCurrentUserID(user?.uid as string))
+                dispatch(auth_actions.set_auth_true())
                 dispatch(getAccountByID(user.uid))
                 dispatch(app_actions.init(true))
             }else{

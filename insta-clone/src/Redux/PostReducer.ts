@@ -19,6 +19,8 @@ const DELETE_COMENT = "messenger/psts_reducer/deleteComent"
 const SET_NEW_COMENT = "messenger/posts_reducer/setNewComent"
 const SET_ON_NEW_POST = "insta-clone/postReducer/setIsOnNewPost"
 const SET_NEW_POST_PHOTO = "insta-clone/postReducer/setNewPostPhoto"
+const SET_NEW_POST_TEXT = "insta-clone/postReducer/setNewPostText"
+const CREATE_POST = "insta-clone/postReducer/createPost"
 
 type ActionType = InferActionType<typeof postActions>
 type initial_state_type = {
@@ -30,7 +32,8 @@ export let initial_state = {
     newPost : null as unknown as PostType,
     currentPost : null as unknown as PostType,
     isOnNewPost : false,
-    newPostPhoto : null as unknown as string
+    newPostPhoto : null as unknown as string,
+    newPostText : ""
 }
 
 
@@ -42,6 +45,12 @@ export const PostsReducer = (state = initial_state, action: ActionType) => {
                 posts : action.payload
             }
         }
+        case CREATE_POST : {
+            return {
+                ...state,
+                posts : {...state.posts.concat(action.payload)}
+            }
+        }
         case SET_SHOWED_POST  : {
             return {
                 ...state,
@@ -51,7 +60,7 @@ export const PostsReducer = (state = initial_state, action: ActionType) => {
         case LIKE : {
             return {
                 ...state,
-                currentPost : state.currentPost,likes_count : [state.currentPost.likes_count.push(action.payload)]
+                currentPost : {...state.currentPost,likes_count : state.currentPost.likes_count.concat(action.payload)}
                 
                 }
                     
@@ -60,7 +69,7 @@ export const PostsReducer = (state = initial_state, action: ActionType) => {
         case DISLIKE : {
             return {
                 ...state,
-                currentPost : state.currentPost,likes_count : [state.currentPost.likes_count.pop()]
+                currentPost : {...state.currentPost,likes_count : state.currentPost.likes_count.filter(el => el !== action.payload)}
             }
         }
         case SET_ON_NEW_POST : {
@@ -75,13 +84,26 @@ export const PostsReducer = (state = initial_state, action: ActionType) => {
                 newPostPhoto : action.payload
             }
         }
+        case SET_NEW_POST_TEXT : {
+            return {
+                ...state,
+                newPostText : action.payload
+            }
+        }
         case ADD_COMENT : {
             return {
                 ...state,
-                currentPost : state.currentPost,coments : [state.currentPost.coments.push(action.payload.coment)]
+                currentPost : {...state.currentPost,coments : state.currentPost.coments.concat(action.payload.coment)}
      
             }
         }
+        case DELETE_COMENT : {
+            return {
+                ...state,
+                currentPost : {...state.currentPost,coments : state.currentPost.coments.filter(el => el.coment_text !== action.payload)}
+            }
+        }
+        
         default:
             return state
     }
@@ -135,7 +157,15 @@ export const postActions = {
     setNewPostPhoto : (img : any) => ({
         type : "insta-clone/postReducer/setNewPostPhoto",
         payload : img
-    } as const  )
+    } as const  ),
+    setNewPosttext : (postText : string) => ({
+        type : "insta-clone/postReducer/setNewPostText",
+        payload : postText
+    } as const ),
+    createPost : (post : PostType) => ({
+        type : "insta-clone/postReducer/createPost",
+        payload : post
+    } as const )
 }
 
 export const getPostListByUserID = (userID:string) => {
@@ -159,4 +189,12 @@ export const leaveComentThunk = (userID : string,postID:string,coment : ComentTy
             console.error(ex)
         }
     } 
+}
+export const getSinglePostByID = (userID : string,postID : string) => {
+    return async function (dispatch: any) {
+        dispatch(app_actions.set_is_fetch_true())
+        let post = await postAPI.getPostByID(userID,postID)
+        dispatch(postActions.set_showed_post(post))
+        dispatch(app_actions.set_is_fetch_fasle())
+    }
 }

@@ -49,8 +49,9 @@
     height: 500px;
 }
 .textInput {
+    text-align: left;
     background-color: aqua;
     width: 700px;
-    height: 200px;
+    height: 100px;
     background-color: whitesmoke;
 }

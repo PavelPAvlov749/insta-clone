@@ -24,10 +24,10 @@ export type ComentType = {
 export type PostType = {
     post_text : string,
     post_img : string,
-    id : string,
+    id? : string,
     likes_count : Array<string>,
     creator : string,
-    createdAt : typeof  Date,
+    createdAt? : typeof  Date,
     coments : Array<ComentType>,
 }
 
