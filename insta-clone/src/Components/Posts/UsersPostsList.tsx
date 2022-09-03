@@ -14,8 +14,6 @@ export const UserPostsList : React.FC = React.memo((props) => {
     const userPageID = useLocation().pathname.split("=")[1]
 
 
-
-
     useEffect(()=>{
         dispatch(getPostListByUserID(userPageID))
     },[userPageID])

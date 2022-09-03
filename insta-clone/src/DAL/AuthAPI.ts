@@ -90,7 +90,9 @@ class AuthAPI extends abstractAPI {
                 const account = {
                     fullName : result.fullName,
                     avatar : result.avatar,
-                    userID : result.userID
+                    userID : result.userID,
+                    status : result.status,
+                    chats : Object.hasOwn(result,"chats") ? Object.values(result.chats) : [] as Array<any>
                 }
                 return account
             } else {

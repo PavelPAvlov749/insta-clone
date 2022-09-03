@@ -20,7 +20,7 @@ export const UserSearch : React.FC = React.memo((props) => {
     },[])
 
     const findedUsers = useSelector((state:Global_state_type) => {
-        return state.search.userPages
+        return state.search.usersPages
     })
     
     const userNameToSearch = ""

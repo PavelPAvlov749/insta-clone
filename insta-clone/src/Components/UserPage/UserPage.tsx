@@ -1,16 +1,27 @@
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {  useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { chatAPI } from "../../DAL/ChatAPI";
 import { app_actions } from "../../Redux/AppReducer";
+import { chat_actions } from "../../Redux/ChatReducer";
 import { updateAvatarThunk } from "../../Redux/ProfileReducer";
 import { Global_state_type } from "../../Redux/Store";
+import { ChatType } from "../../Redux/Types";
 import { getUserPageByID, userPageActions } from "../../Redux/UserPageReducer";
 import { UserPostsList } from "../Posts/UsersPostsList";
 import { UserStatus } from "../UserStatus/Status";
 
 
+
+
 export const UserPage : React.FC = React.memo(() => {
+    const navigate = useNavigate()
+    const account = useSelector((state : Global_state_type) => {
+        return state.account
+    })
+    //Local state If isNewMessage true render message window
+    let [isNewMessage,setIsNewMessage] = useState(false)
+
     //Get userPageID from query string
     const userPageUrl = useLocation().pathname.split("=")[1]
     //Count of user posts 
@@ -57,6 +68,11 @@ export const UserPage : React.FC = React.memo(() => {
             dispatch(userPageActions.follow(currentUserID))
         }
     }
+    //Send message Handler
+    const sendMessage = () => {
+        dispatch(chat_actions.setActiveChat(actualUserPage.userID as string))
+        navigate("/chat")
+    }
     return (
         <section>
             <h1>{actualUserPage.fullName}</h1>
@@ -74,7 +90,15 @@ export const UserPage : React.FC = React.memo(() => {
             <span>{actualUserPage.subscribes?.length + "\t subscribes"}</span>
             {userPageUrl !== currentUserID ? <button onClick={followToogle}>{Object.values(actualUserPage.followers as Array<string>).includes(currentUserID)? "Unfollow": "Follow" }</button> : null}
             {userPageUrl === currentUserID ? <UserStatus status={actualUserPage.status} userID={userPageUrl} setNewStatus={setNewStatus}/> : <span>{actualUserPage.status}</span>}
+            {userPageUrl !== currentUserID ? <button onClick={sendMessage}>Send message</button> : null}
             <hr />
+            <button onClick={() => {
+                //@ts-ignore
+                const result = chatAPI.isChatExist(account.chats[0].chatRef as Array<ChatType>).then((res) => {
+                    console.log(res)
+                })
+               
+            }}>Get</button>
             <UserPostsList/>
         </section>
     )

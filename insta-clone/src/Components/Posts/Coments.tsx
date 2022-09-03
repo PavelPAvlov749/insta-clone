@@ -10,11 +10,14 @@ const SilngleComent: React.FC<{coment : ComentType}> = React.memo((props) => {
     const onDeleteHandler = () => {
         dispatch(postActions.deleteComent(props.coment.coment_text as string))
     }
+    const currentUser = useSelector((state : Global_state_type) =>{
+        return state.account.userID
+    })
     return (
         <div>
             <img src={props.coment.comentatorAvatar as string} alt="#" style={{"display" : "inline"}}/>
             <h1 style={{"display" : "inline"}}>{props.coment.comentatorName}</h1>
-            <h5 style={{"color" : "red","display" : "inline"}} onClick={onDeleteHandler}>delete coment</h5>
+            {props.coment.comentatorID === currentUser ?  <h5 style={{"color" : "red","display" : "inline"}} onClick={onDeleteHandler}>delete coment</h5> : null}
             <br />
             <span>{props.coment.coment_text}</span>
             <br />

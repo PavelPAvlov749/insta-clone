@@ -10,7 +10,7 @@ type ActionType = InferActionType<typeof usersActions>
 
 const initial_state = {
     userNameToSearch : "",
-    userPages : [] as unknown as Array<UserType>,
+    usersPages : [] as unknown as Array<UserType>,
 
 }
 
@@ -19,7 +19,7 @@ export const SearchReducer = (state = initial_state, action: ActionType) => {
         case GET_USERS: {
             return {
                 ...state,
-                userPages : action.payload
+                usersPages : action.payload
             }
         }
         default: return state

@@ -35,6 +35,7 @@ export const ShowedPost : React.FC = React.memo((props) => {
         }
 
     }
+    console.log(actualPost)
     return (
         <section>
             <NavLink to={`/profile/id:=${actualUserPage.userID}`}>
@@ -44,6 +45,8 @@ export const ShowedPost : React.FC = React.memo((props) => {
             <br />
         
             <img src={actualPost.currentPost.post_img} alt="" style={{"width" : "400px","height" : "400px"}}/>
+            <br />
+            <h5>{actualPost.currentPost.post_text}</h5>
             <span>{likesCount.length + "\t likes"}</span>
             <img src={likeImg} alt="#" style={{"width" : "40px","height" : "40px"}} onClick={tapLikeHandler} />
             <PostComents/>

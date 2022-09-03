@@ -1,13 +1,14 @@
-import { displayPartsToString } from "typescript";
+import { profileAPI } from "../DAL/ProfileApi";
 import { usersAPI } from "../DAL/UsersAPI";
 import { appReducer, app_actions } from "./AppReducer";
 import { InferActionType } from "./Store";
-import { UserType } from "./Types";
+import { ChatType, UserType } from "./Types";
 
 const GET_USER = "messenger/Users_reducer/get_users";
 const SET_STATUS = "instaClone/UsersReducer/setNewStatus"
 const FOLLOW = "instaClone/UsersReducer/follow"
 const UNFOLLOW = "instaClone/UsersReducer/unfollow"
+const UPDATE_STATUS = "instaClone/profileReducer/updateStatus"
 
 type ActionType = InferActionType<typeof userPageActions>
 type initStateType = UserType
@@ -19,7 +20,8 @@ const initial_state : UserType = {
     userID: null as unknown as string,
     subscribes: [] as unknown as Array<string>,
     followers: [] as unknown as Array<string>,
-    followed : false
+    followed : false,
+    
 }
 
 export const UsersPageReducer = (state = initial_state, action: ActionType) => {
@@ -47,6 +49,12 @@ export const UsersPageReducer = (state = initial_state, action: ActionType) => {
                 followers : state.followers?.filter(el => el !== action.payload)
             }
         }
+        case UPDATE_STATUS : {
+            return {
+                ...state,
+                status : action.payload
+            }
+        }
 
         default: return state
     }
@@ -68,6 +76,10 @@ export const userPageActions = {
     unfollow : (userID : string) => ({
         type : "instaClone/UsersReducer/unfollow",
         payload : userID
+    } as const ),
+    updateStatus : (status : string) => ({
+        type : "instaClone/profileReducer/updateStatus",
+        payload : status
     } as const )
 }
 
@@ -81,13 +93,22 @@ export const getUserPageByID = (userID : string) => {
                 avatar: user.avatar,
                 status: user.status,
                 userID: user.userID,
-                subscribes: Object.hasOwn(user,"subscribers") ? Object.values(user.subscribes as Array<string>) : [] as Array<string>,
-                followers: Object.hasOwn(user,"followers") ? Object.values(user.followers as Array<string>) : [] as Array<string>,
-                followed : false
+                subscribes: user.subscribes,
+                followers: user.followers,
+                followed : false,
             }
             dispatch(userPageActions.get_user(userPage))
             dispatch(app_actions.set_is_fetch_fasle())
         }
         
+    }
+}
+
+export const updateStatusThunk = (userID : string,newStatusText : string) => {
+    return async function (dispatch : any) {
+        dispatch(app_actions.set_is_fetch_true())
+        const newStatus = await profileAPI.updateStatus(userID,newStatusText)
+        dispatch(userPageActions.updateStatus(newStatusText))
+        dispatch(app_actions.set_is_fetch_fasle())
     }
 }

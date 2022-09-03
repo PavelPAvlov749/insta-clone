@@ -1,9 +1,12 @@
+import { type } from "@testing-library/user-event/dist/type"
 
 
 export type MainAccountType = {
     userID : string | null,
     fullName : string | null,
     avatar : string | null,
+    status : string | null,
+    chats : Array<any> | null
 }
 export type UserType = {
     fullName : string,
@@ -12,7 +15,8 @@ export type UserType = {
     status : string,
     followers? : Array <string>,
     subscribes? : Array<string>,
-    followed? : boolean
+    followed? : boolean,
+    chats? : Array<ChatType>
 }
 export type ComentType = {
     coment_text : string | null,
@@ -30,11 +34,15 @@ export type PostType = {
     createdAt? : typeof  Date,
     coments : Array<ComentType>,
 }
-
+export type ChatType = {
+    fullName : string,
+    avatar : string,
+    chatRef : string
+}
 export type MessageType = {
+    fullName : string,
     userID : string,
     avatar : string,
     messageData : string,
-    messageID : string,
-    creadtedAd : typeof Date,
+    createdAt : any,
 }

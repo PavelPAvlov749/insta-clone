@@ -120,10 +120,10 @@ export const postActions = {
             post_text : _post.post_text,
             post_img : _post.post_img,
             id : _post.id,
-            likes_count : Object.values(_post.likes_count),
+            likes_count : Object.hasOwn(_post,"likes_count") ?  Object.values(_post.likes_count) : [] as Array<string>,
             creator : _post.creator,
             createdAt : _post.createdAt,
-            coments : Object.values(_post.coments),
+            coments : Object.hasOwn(_post,"coments") ? Object.values(_post.coments) : [] as Array<ComentType>,
         }
     } as const),
     setIsPostFetch: (isFetch: boolean) => ({
@@ -172,7 +172,7 @@ export const getPostListByUserID = (userID:string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         const posts = await (await postAPI.getListOfPosts(userID))
-        if(posts) {
+        if(posts.val()) {
             dispatch(postActions.getPosts(Object.values(posts.val())))
             dispatch(app_actions.set_is_fetch_fasle())
         }
@@ -195,6 +195,13 @@ export const getSinglePostByID = (userID : string,postID : string) => {
         dispatch(app_actions.set_is_fetch_true())
         let post = await postAPI.getPostByID(userID,postID)
         dispatch(postActions.set_showed_post(post))
+        dispatch(app_actions.set_is_fetch_fasle())
+    }
+}
+export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | ArrayBuffer,postText : string,postTags : string,userFullNAme : string) => {
+    return async function (dispatch : any) {
+        dispatch(app_actions.set_is_fetch_true())
+        await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme)
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }

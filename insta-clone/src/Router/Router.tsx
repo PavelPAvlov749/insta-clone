@@ -1,4 +1,5 @@
 import { Route,Routes,Navigate } from "react-router-dom"
+import { Chat } from "../Components/Chat/Chat"
 import { Login_container } from "../Components/Login/Login"
 import { Registration } from "../Components/Login/Registartion"
 import { ShowedPost } from "../Components/Posts/OpenedPost"
@@ -17,7 +18,7 @@ const Empty = "";
 const SEARCH = "/search"
 const REGISTRATION = "/registration"
 const ROOT = "/"
-
+const DIRECT = "chat/:id"
 
 
 
@@ -32,6 +33,8 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                     <Route path={USER_PROFILE} element={<UserPage/>}/>
                     <Route path={POST} element={<ShowedPost/>}/>
                     <Route path={SEARCH} element={<UserSearch/>}/>
+                    <Route path={CHAT} element={<Chat/>}/>
+                    <Route path={DIRECT} element={<Chat/>}/>
                 </Routes>
             </div>
         )
