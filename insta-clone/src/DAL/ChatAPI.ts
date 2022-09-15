@@ -1,16 +1,16 @@
 import { isEditable } from "@testing-library/user-event/dist/utils";
-import { child, equalTo, get, orderByChild, push, query, update } from "firebase/database";
+import { child, DatabaseReference, equalTo, get, orderByChild, push, query, update } from "firebase/database";
 import { ChatType, MessageType } from "../Redux/Types";
 import { abstractAPI } from "./PostApi";
+import { makeid } from "./Randomizer";
 
 class ChatAPI extends abstractAPI {
     constructor() {
         super()
     }
     async sendMessage(senderID: string, recepientID: string, messageText: string, senderName: string,
-        senderAvatar: string, recieverAvatar: string, recieverFullName: string, roomID: string) {
+        senderAvatar: string) {
 
-        //New message object
         let newMessage: MessageType = {
             messageData: messageText,
             createdAt: new Date(),
@@ -18,39 +18,34 @@ class ChatAPI extends abstractAPI {
             avatar: senderAvatar,
             fullName: senderName
         }
-        let isRoomExist = await this.isChatExist(roomID)
-        if (isRoomExist) {
-            const newMessageKey = push(child(this.ref(this.RealtimeDataBase), "Chats" + roomID)).key
-            const updates: any = {};
-            updates["Chats/" + roomID + "/" + newMessageKey] = newMessage;
-            update(this.ref(this.RealtimeDataBase), updates);
-            console.log(true)
+        const roomRef = await (await get(child(this.DatabaseRef, "Users/" + senderID + "/chats/" + recepientID))).val()
+        if (roomRef) {
+            const newMessageKey = push(child(this.ref(this.RealtimeDataBase), "Chats/" + roomRef.chatRef + "/")).key
+            const updates: any = {}
+            updates["Chats/" + roomRef.chatRef + "/" + newMessageKey] = newMessage
+            update(this.ref(this.RealtimeDataBase), updates)
         } else {
-            console.log(false)
-            const newRoomKey = push(child(this.ref(this.RealtimeDataBase), "Chats" + roomID)).key
-            const newMessageKey = push(child(this.ref(this.RealtimeDataBase), "Chats" + roomID)).key
-            const updates: any = {};
-            let recepientChatRoomRef = { chatRef: newRoomKey, fullName: senderName, avatar: senderAvatar }
-            let senderChatRoomRef = { chatRef: newRoomKey, fullName: recieverFullName, avatar: recieverAvatar }
+            const newRoomID = makeid(15)
+            const newMessageKey =  push(child(this.ref(this.RealtimeDataBase), "Chats/" + newRoomID)).key
+            let recepientChatRoomRef = { chatRef: newRoomID}
+            let senderChatRoomRef = { chatRef: newRoomID}
+            const updates : any = {}
+
             updates["Users/" + recepientID + "/chats/" + senderID] = recepientChatRoomRef
             updates["Users/" + senderID + "/chats/" + recepientID] = senderChatRoomRef
-            update(this.ref(this.RealtimeDataBase),updates)
-            updates["Chats/" + roomID + "/" + newMessageKey] = newMessage;
-            update(this.ref(this.RealtimeDataBase), updates);
+            updates["Chats/" + newRoomID + "/" + newMessageKey] = newMessage;
+            update(this.ref(this.RealtimeDataBase), updates)
 
         }
-        // let recepientChatRoomRef = { chatRef : roomID,fullName : senderName,avatar : senderAvatar}
-        // let senderChatRoomRef = {chatRef : roomID,fullName : senderName,avatar : recieverAvatar}
-        // let data = newMessage
-        // updates["Users/" + recepientID + "/chats/" + senderID] = recepientChatRoomRef
-        // updates["Users/" + senderID + "/chats/" + recepientID] = senderChatRoomRef
-        // update(this.ref(this.RealtimeDataBase), updates);
+
     }
     async getRoom(currentUserID: string, userID: string) {
         const room = await (await get(child(this.DatabaseRef, "Users/" + currentUserID + "/chats/" + userID))).val()
         if (room) {
-            console.log(room)
-            return room
+            console.log(room.chatRef)
+            return room.chatRef
+        } else {
+            return null
         }
     }
     async getMessages(roomID: string) {
@@ -65,14 +60,30 @@ class ChatAPI extends abstractAPI {
         const chatList = Object.values(result)
         return chatList
     }
-    async isChatExist(roomID: string) {
-        const room = await (await (get(child(this.DatabaseRef, "Chats/" + roomID)))).exists()
+    async isChatExist(senderID: string, roomID: string) {
+        const room = await (await (get(child(this.DatabaseRef, "Users/" + senderID + "/chats/" + roomID)))).exists()
         if (room) {
             this.getMessages(roomID)
             return true
         } else {
             return false
         }
+    }
+    async getMessagesRealtime(currentUserID: string, roomID: string) {
+        const ref = await (await get(child(this.DatabaseRef, "Users/" + currentUserID + '/chats/' + roomID))).val()
+        
+        let messages: Array<any> = []
+        if(ref){
+            const roomRef = this.ref(this.RealtimeDataBase, "Chats/" + ref.chatRef)
+            this.onValue(roomRef, (roomSnapSchot) => {
+                messages = Object.values(roomSnapSchot.val())
+
+            })
+        }else{
+            return messages
+        }
+
+        return messages
     }
 }
 

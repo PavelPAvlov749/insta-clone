@@ -3,8 +3,10 @@ import { InferActionType } from "./Store";
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
 import { Global_state_type } from "../Redux/Store";
-import { getAuth, GoogleAuthProvider ,signInWithEmailAndPassword} from "firebase/auth";
+import { getAuth, GoogleAuthProvider ,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth";
 import { authAPI } from "../DAL/AuthAPI";
+import { app_actions } from "./AppReducer";
+import { AccountActions } from "./ProfileReducer";
 
 
 
@@ -127,17 +129,40 @@ export const signInWithGooglePopUp = () => {
 export const loginInWithEmailAndPassword = (email: string,password : string) => {
     return async function (dispatch : any) {
         try{
+            dispatch(app_actions.set_is_fetch_true())
             const user = await (await signInWithEmailAndPassword(authAPI.getAuthInstatnce(),email,password).catch((error) => {
                 throw new Error(error)
             }).then((user) => { 
                 console.log(user)
                 dispatch(auth_actions.create_user(user.user.uid))
+                dispatch(app_actions.set_is_fetch_fasle())
             }))
 
         }catch(ex){
             dispatch(auth_actions.setError(true))
+            dispatch(app_actions.set_is_fetch_fasle())
             console.log(ex)
         }
 
+    }
+}
+
+export const createUserByEmailAndPassword = (email:string,password : string,userName : string) => {
+    return async function (dispatch: any) {
+        try{
+            if(email.length === 0 || password.length === 0 || userName.length === 0){
+                throw new Error("Please fill all fields.\nEmail,password and username cant be an empty string")
+            }else{
+                const newUser = await authAPI.createUserWithEmailAndPassword(email,password,userName)
+                dispatch(app_actions.setCurrentUserID(newUser?.val().userID))
+                dispatch(AccountActions.set_current_user_profile(newUser?.val()))
+                dispatch(auth_actions.set_auth_true())
+            }
+            
+
+            
+        }catch(ex){
+            console.error(ex)
+        }
     }
 }

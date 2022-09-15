@@ -7,8 +7,8 @@ import { authReducer } from "./AuthReducer";
 import { AccountReducer } from "./ProfileReducer";
 import { UsersPageReducer } from "./UserPageReducer";
 import { PostsReducer } from "./PostReducer";
-import { SearchReducer } from "./UsersSerarchReducer";
 import { chatReducer } from "./ChatReducer";
+import { usersSearchReducer } from "./UserSearchReducer";
 
 
 
@@ -19,8 +19,8 @@ let reducers = combineReducers({
     account : AccountReducer,
     userPage : UsersPageReducer,
     userPosts : PostsReducer,
-    search : SearchReducer,
-    chat : chatReducer
+    chat : chatReducer,
+    search : usersSearchReducer
 })
 
 type PropertieTypes<T> = T extends {[key:string]:infer U} ? U : never;

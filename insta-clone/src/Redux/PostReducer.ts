@@ -100,7 +100,7 @@ export const PostsReducer = (state = initial_state, action: ActionType) => {
         case DELETE_COMENT : {
             return {
                 ...state,
-                currentPost : {...state.currentPost,coments : state.currentPost.coments.filter(el => el.coment_text !== action.payload)}
+                currentPost : {...state.currentPost,coments : state.currentPost.coments.filter(el => el.comentID !== action.payload)}
             }
         }
         
@@ -124,6 +124,8 @@ export const postActions = {
             creator : _post.creator,
             createdAt : _post.createdAt,
             coments : Object.hasOwn(_post,"coments") ? Object.values(_post.coments) : [] as Array<ComentType>,
+            creatorID : _post.creatorID,
+            creatorAvatar : _post.creatorAvatar
         }
     } as const),
     setIsPostFetch: (isFetch: boolean) => ({
@@ -175,6 +177,9 @@ export const getPostListByUserID = (userID:string) => {
         if(posts.val()) {
             dispatch(postActions.getPosts(Object.values(posts.val())))
             dispatch(app_actions.set_is_fetch_fasle())
+        }else{
+            dispatch(postActions.getPosts([] as Array<PostType>))
+            dispatch(app_actions.set_is_fetch_fasle())
         }
 
     }
@@ -183,25 +188,51 @@ export const leaveComentThunk = (userID : string,postID:string,coment : ComentTy
     return async function (dispatch : any) {
         try{
             dispatch(app_actions.set_is_fetch_true())
-            dispatch(postActions.addComent(postID,coment))
-            dispatch(app_actions.set_is_fetch_fasle())
+            const newComent = await postAPI.addComentToPost(userID,postID,coment.coment_text as string,coment.comentatorName as string,coment.avatar as string)
+            if(newComent){
+                dispatch(postActions.addComent(postID,newComent))
+                dispatch(app_actions.set_is_fetch_fasle())
+            }
+
         }catch(ex){
             console.error(ex)
         }
     } 
 }
-export const getSinglePostByID = (userID : string,postID : string) => {
+export const getSinglePostByID = (postID : string) => {
     return async function (dispatch: any) {
         dispatch(app_actions.set_is_fetch_true())
-        let post = await postAPI.getPostByID(userID,postID)
+        let post = await postAPI.getPostByID(postID)
         dispatch(postActions.set_showed_post(post))
+     
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }
-export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | ArrayBuffer,postText : string,postTags : string,userFullNAme : string) => {
+export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | ArrayBuffer,postText : string,postTags : string,userFullNAme : string,
+    creatorID : string,creatorAvatar:string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
-        await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme)
+        await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorAvatar,creatorID)
         dispatch(app_actions.set_is_fetch_fasle())
+    }
+}
+export const deleteComentThunk = (postID:string,comentID:string) =>{
+    return async function (dispatch : any) {
+        dispatch(app_actions.set_is_fetch_true)
+        await postAPI.deleteComent(postID,comentID)
+        dispatch(postActions.deleteComent(comentID))
+        dispatch(app_actions.set_is_fetch_fasle())
+    }
+}
+export const likeToogleThunk = (postID:string,currentUserID : string) => {
+    return async function (dispatch : any) {
+        dispatch(app_actions.set_is_fetch_true())
+        try{
+            await postAPI.addLikeToPost(currentUserID,postID)
+            dispatch(app_actions.set_is_fetch_fasle())
+        }catch(ex){
+            console.error(ex)
+        }
+      
     }
 }

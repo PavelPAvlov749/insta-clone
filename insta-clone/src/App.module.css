@@ -1,3 +1,7 @@
 .app{
-    position: relative;
+    display: grid;
+    max-width: 1000px;
+    width:950px;
+    
+    
 }

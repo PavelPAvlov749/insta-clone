@@ -106,10 +106,9 @@ export const updateAvatarThunk = (newAvatar : any,userID : string) => {
     return async function (dispatch: any) {
         try{
             dispatch(app_actions.set_is_fetch_true())
-            let updatedAvatar = await profileAPI.updateAvatar(userID,newAvatar).catch((ex) => {
-                throw new Error(ex)
-            })
-            dispatch(AccountActions.updateAvatar(newAvatar))
+            let updatedAvatar = await profileAPI.updateAvatar(userID,newAvatar)
+            dispatch(AccountActions.updateAvatar(updatedAvatar))
+           
             dispatch(app_actions.set_is_fetch_fasle())
         }
         catch(ex) {

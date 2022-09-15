@@ -6,14 +6,14 @@ import { makeid } from "./Randomizer";
 import { abstractAPI } from "./PostApi";
 
 class ProfileAPI extends abstractAPI {
-    constructor () {
-        super ()
+    constructor() {
+        super()
     }
-    async getCurrentUserStatus ( userId:string) {
-        const status = await get(ref(this.RealtimeDataBase,"Users/" + userId + "/status/"))
+    async getCurrentUserStatus(userId: string) {
+        const status = await get(ref(this.RealtimeDataBase, "Users/" + userId + "/status/"))
         return status.val()
     }
-    async updateStatus (userID:string,statusText : string) {
+    async updateStatus(userID: string, statusText: string) {
         try {
             if (statusText.length > 0) {
                 const status_data = statusText
@@ -30,14 +30,36 @@ class ProfileAPI extends abstractAPI {
         }
 
     }
-    async updateAvatar (userID:string,avagtarIMG : Blob | Uint8Array | ArrayBuffer) {
+    async updateAvatar(userID: string, avatarIMG: Blob | Uint8Array | ArrayBuffer) {
+        //Create random image name with makeid function (exposts from Randomizer.ts)
+        const avatarID: string = makeid(12);
+        //Image avatar ref
+        const avatarRef: StorageReference = storage_ref(this.storageRefrence, avatarID)
+        //If _img from arguments !== null dowload the file in storage with image_name
+
+        if (avatarIMG !== null) {
+            //Uploading the image
+            uploadBytes(avatarRef, avatarIMG).then(() => {
+                //After upload get the dowload url of the image to put them in database
+                getDownloadURL(avatarRef).then((url) => {
+
+                    //Put avatar storage url into "Data"
+                    const Data = url
+                    const updates: any = {};
+                    //Update this path with new avatar from "Data"
+                    updates["Users/" + userID + "/avatar/"] = Data
+                    update(ref(this.RealtimeDataBase), updates);
+                  
+                })
+            })
+          
+        }
+    }
+    async getFollowers(currentUserID: string) {
 
     }
-    async getFollowers (currentUserID : string){
+    async getSubscribes(currentUserID: string) {
 
-    }
-    async getSubscribes (currentUserID : string) {
-        
     }
 
 }

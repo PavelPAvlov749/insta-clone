@@ -1,52 +1,75 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { appReducer, app_actions } from "../../Redux/AppReducer";
-import { chat_actions, getChatsByUserID, getMessagesByChatID } from "../../Redux/ChatReducer";
+import { useLocation, useNavigate } from "react-router-dom";
+import { chat_actions, getChatsByUserID, getMessagesByChatID, getRoomByUserID } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
-import { ChatType } from "../../Redux/Types";
+import { UserType } from "../../Redux/Types";
+// import styles from "../../Styles/Chat.module.css"
+import styles from "../../Styles/ChatList.module.css"
 import { MiniProfile } from "../MiniProfile/MiniProfile";
-import { Chat } from "./Chat";
 
-
+const defaultAvatar = "http://www.faadooengineers.com/fests/wp-content/uploads/Tesseract-2017-Gurunanak-Institute-of-Technology.jpg"
 export const ChatList: React.FC = React.memo((props) => {
+    const activeChat = useSelector((state: Global_state_type) => {
+        return state.chat.activeChat
+    })
+ 
     const navigate = useNavigate()
-    const dispatch : any= useDispatch()
+    const dispatch: any = useDispatch()
+    const bubleSort = (array: Array<UserType>) => {
+        for (let i = 0; i < array.length - 1; i++) {
+            for (let j = 0; j < array.length; j++) {
+
+            }
+        }
+    }
+    const users = useSelector((state: Global_state_type) => {
+        return state.search.users
+    })
     //Current userId Selector.Fetch chat list by this userID then dispatch them into state
     //And get them with useEffect
-    const currentUserID = useSelector((state:Global_state_type) => {
+    const currentUserID = useSelector((state: Global_state_type) => {
         return state.account
     })
     //Get chats from state
-    const Chats = useSelector((state:Global_state_type) => {
-        return state.chat.chats
+    const Chats = useSelector((state: Global_state_type) => {
+        return state.userPage.chats
     })
-    const currentChat = useSelector((state:Global_state_type) => {
-        return state.chat.activeChat
-    })
-    useEffect(() => {
-        dispatch(getChatsByUserID(currentUserID.userID as string))
-    }, [Chats])
 
-    const onClickHandler = (chatID: string) => {
+    const onClickHandler = (userID: string, avatar: string, fullName: string) => {
         //On chatlist click handler function
-        //Dispatch set active chat list
-        navigate("/chat/id:=" + currentChat)
-        dispatch(chat_actions.setActiveChat(chatID))
+        dispatch(getRoomByUserID(currentUserID.userID as string, userID))
+        dispatch(chat_actions.setActiveChat(userID, avatar, fullName))
+        navigate("/chat/id:=" + userID)
+
     }
-    return (
-        <section style={{"display" : "inline"}}>
-            <h1>Chat list</h1>
-            {Chats?.map((user : ChatType) => {
-                return (
-                    <div onClick={() =>{
-                        onClickHandler(user.chatRef)
-                    }}>
-                        <img src={user.avatar} alt="#"></img>
-                        <span>{user.fullName}</span>
-                    </div>
-                )
-            })}
-        </section>
-    )
+
+    if (Chats !== null) {
+        return (
+            <section className={styles.chatListWrapper}>
+                {users?.map((user) => {
+                 
+                    return (
+                        <div className={styles.userMiniPage} key={user.userID} onClick={() => {
+                            onClickHandler(user.userID, user.avatar, user.fullName)
+                        }}>
+                            
+                                <img src={user.avatar ? user.avatar : defaultAvatar} alt="#" ></img>
+                                <span>{user.fullName}</span>
+
+  
+
+                        </div>
+                    )
+                })}
+            </section>
+        )
+    } else {
+        return (
+            <>
+                <h1>Fetch data...</h1>
+            </>
+        )
+    }
+
 })

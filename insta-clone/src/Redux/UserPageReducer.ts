@@ -87,17 +87,9 @@ export const getUserPageByID = (userID : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         const user = await usersAPI.getUserPageById(userID)
+
         if(user) {
-            let userPage = {
-                fullName: user.fullName,
-                avatar: user.avatar,
-                status: user.status,
-                userID: user.userID,
-                subscribes: user.subscribes,
-                followers: user.followers,
-                followed : false,
-            }
-            dispatch(userPageActions.get_user(userPage))
+            dispatch(userPageActions.get_user(user))
             dispatch(app_actions.set_is_fetch_fasle())
         }
         
@@ -109,6 +101,14 @@ export const updateStatusThunk = (userID : string,newStatusText : string) => {
         dispatch(app_actions.set_is_fetch_true())
         const newStatus = await profileAPI.updateStatus(userID,newStatusText)
         dispatch(userPageActions.updateStatus(newStatusText))
+        dispatch(app_actions.set_is_fetch_fasle())
+    }
+}
+
+export const followTooglethunk = (currentUserID: string,userID : string) => {
+    return async function (dispatch: any) {
+        dispatch(app_actions.set_is_fetch_true())
+        const result = await usersAPI.followUser(currentUserID,userID)
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }

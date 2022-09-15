@@ -37,6 +37,7 @@ class AuthAPI extends abstractAPI {
     }
     async signInByEmailAndPassword(email: string, password: string) {
         try {
+            
             const userID = await (await signInWithEmailAndPassword(this.firebaseAuth, email, password)).user.uid
             return userID
         } catch (ex) {
@@ -48,7 +49,7 @@ class AuthAPI extends abstractAPI {
 
     }
 
-    async createUserWithEmailAndPassword(email: string, password: string, userName?: string) {
+    async createUserWithEmailAndPassword(email: string, password: string, userName: string) {
         try {
             const newUser = (await createUserWithEmailAndPassword(this.firebaseAuth, email, password)).user
             const newUserRef = push(child(ref(this.RealtimeDataBase), "Users/")).key
@@ -56,9 +57,7 @@ class AuthAPI extends abstractAPI {
                 fullName: userName,
                 userID: newUser.uid,
                 avatar: null,
-                posts: {
-
-                },
+                posts: {},
                 likesCount: null,
                 status: null,
                 followers: {},
@@ -70,8 +69,9 @@ class AuthAPI extends abstractAPI {
             updates[`Users/` + newUser.uid] = RealtimeDatabaseUser;
             //Update Database with new element
             update(ref(this.RealtimeDataBase), updates);
-
-            return newUser
+            const user = get(child(this.ref(this.RealtimeDataBase),"Users/" + newUser.uid))
+            console.log(user)
+            return user
         } catch (ex) {
             console.log(ex)
         }

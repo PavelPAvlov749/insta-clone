@@ -22,22 +22,27 @@ export type ComentType = {
     coment_text : string | null,
     comentatorName : string | null,
     comentatorID : string | null,
-    comentatorAvatar : string | null 
+    avatar : string | null,
+    comentID? : string ,
+    createdAt? : string 
 }
 
 export type PostType = {
     post_text : string,
     post_img : string,
+    file? : Blob | Uint8Array | ArrayBuffer,
     id? : string,
     likes_count : Array<string>,
     creator : string,
     createdAt? : typeof  Date,
     coments : Array<ComentType>,
+    creatorID : string,
+    creatorAvatar : string
 }
 export type ChatType = {
     fullName : string,
     avatar : string,
-    chatRef : string
+    userID : string
 }
 export type MessageType = {
     fullName : string,

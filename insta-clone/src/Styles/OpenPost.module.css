@@ -1,0 +1,72 @@
+.postWrapper{
+    margin-left: 15%;
+    display: grid;
+    grid-template-columns: 650px auto;
+    gap: 5px;
+    grid-template-areas: 
+    "IMG Avatar "
+    "IMG INFO"
+    "IMG COM"
+    "IMG COM"
+    "IMG INPUT";
+}
+
+.autorName{
+    display: inline;
+    font-size: large;
+    grid-area: Name;
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+}
+
+.hr{
+    height: 1px;
+    background-color: lightgrey;
+    width: 350px;
+}
+.postIMG{
+    grid-area: IMG;
+
+}
+.postIMG{
+    width: 100%;
+    height: 100%;
+    max-width: 650px;
+    max-height: 650px;
+    object-fit: cover;
+}
+.comentsWrapper{
+    margin-left: 1vh;
+    grid-area: COM;
+    height: 400px;
+}
+.comentsWrapper img{
+    width: 40px;
+    height: 40px;
+    border-radius: 180px;
+}
+
+.postInfo h5{
+    display: inline;
+}
+.postInfo{
+    margin-left: 1vh;
+    margin-top: 0%;
+    grid-area: INFO;
+}
+.buttons{
+    margin-left: 1vh;
+    grid-area: BTN;
+    
+}
+.buttons span{
+    margin-top: -2vh;
+}
+.buttons img{
+    display: inline;
+}
+.ComentInput{
+    margin-left: 1vh;
+    grid-area: INPUT;
+}

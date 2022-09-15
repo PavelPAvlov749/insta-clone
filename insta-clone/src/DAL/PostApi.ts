@@ -4,6 +4,7 @@ import { ref, get, child, push, update, remove, onValue } from "firebase/databas
 import { getStorage, ref as storage_ref, uploadBytes, getDownloadURL, StorageReference } from "firebase/storage";
 import { makeid } from "./Randomizer";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
+import { ComentType } from "../Redux/Types";
 
 
 //Abstarct API class 
@@ -38,7 +39,7 @@ class PostAPI extends abstractAPI {
         super()
     }
     async getPostListRealtime(userID: string) {
-        const postRef = ref(this.RealtimeDataBase,"Users/" + userID + "/posts/")
+        const postRef = ref(this.RealtimeDataBase,"Posts/" + userID)
         let postList : Array<any> = []
         onValue(postRef,(postSnapSchot) => {
             postSnapSchot.forEach((post) => {
@@ -48,7 +49,7 @@ class PostAPI extends abstractAPI {
         return postList
     }
 
-    async createPost(userID: string, postIMG: Blob | Uint8Array | ArrayBuffer, postText: string, postTag: string, creator: string) {
+    async createPost(userID: string, postIMG: Blob | Uint8Array | ArrayBuffer, postText: string, postTag: string, creator: string,creatorAvatar : string,creatorID:string) {
         //Create random image name with makeid function (exposts from Randomizer.ts)
         const imageID: string = makeid(12);
         //Image ref
@@ -59,7 +60,7 @@ class PostAPI extends abstractAPI {
             uploadBytes(imageRef, postIMG).then(() => {
                 //After upload get the dowload url of the image to put them in database
                 getDownloadURL(imageRef).then((url) => {
-                    const newPostKey = push(child(ref(this.RealtimeDataBase), "Users" + userID + "/posts/")).key;
+                    const newPostKey = push(child(ref(this.RealtimeDataBase), "Posts")).key;
                     //Creating the post JSON object for database
                     const postData = {
                         post_text: postText,
@@ -69,13 +70,20 @@ class PostAPI extends abstractAPI {
                         likes_count: [],
                         createdAt: new Date().getDate(),
                         id: newPostKey,
+                        creatorID : creatorID,
+                        creatorAvatar : creatorAvatar
 
                     }
-                    console.log("CREATED : " + url)
+                    const postRef = {
+                        post_img : url,
+                        id: newPostKey
+                    }
                     const updates: any = {};
-                    updates[`Users/` + userID + "/posts/" + newPostKey] = postData;
+                    updates["Posts/" + newPostKey] = postData;
+                    update(ref(this.RealtimeDataBase), updates);
+                    updates["Users/" + userID + "/posts/" + newPostKey] = postRef
                     //Update Database with new element
-                    return update(ref(this.RealtimeDataBase), updates);
+                    update(ref(this.RealtimeDataBase), updates);
                 })
             })
         }
@@ -100,12 +108,13 @@ class PostAPI extends abstractAPI {
         console.log(result)
         return result
     }
-    async getPostByID(userID: string, postID: string) {
+    async getPostByID( postID: string) {
         //The function takes as arguments the userID(string) and the postID(string) as an argument.
         //Returns the object of the post containing the following fields (picture, text, number of likes, creator of the post
         //And an array of comments(Array<string>)
 
-        const post = await (await get(child(this.DatabaseRef, "Users/" + userID + "/posts/" + postID))).val()
+        const post = await (await get(child(this.DatabaseRef, "Posts/" + "/" + postID))).val()
+        
         return post
     }
     async getListOfPosts(userID: string) {
@@ -116,10 +125,10 @@ class PostAPI extends abstractAPI {
         return postsList
     }
 
-    async addLikeToPost(currentUserID: string, userID: string, postID: string) {
+    async addLikeToPost(currentUserID: string, postID: string) {
         //Get post refrence
         // Each single like in the database is a unique identifier for the user who put the like.
-        const post = await (await get(child(this.DatabaseRef, "Users/" + userID + "/posts/" + postID))).val()
+        const post = await (await get(child(this.DatabaseRef, "Posts/" + postID))).val()
 
         //if post object contains key likes_count and this key contains cyrrentUserID remove like anotherwise add like
         if (Object.hasOwn(post, "likes_count") && Object.values(post.likes_count).includes(currentUserID)) {
@@ -128,16 +137,16 @@ class PostAPI extends abstractAPI {
             let data = null
             const updates: any = {}
             const likeKey = Object.keys(post.likes_count).find(key => post.likes_count[key] === currentUserID)
-            updates["Users/" + userID + "/posts/" + postID + "/likes_count/" + likeKey] = data
+            updates["Posts/" + postID + "/likes_count/" + likeKey] = data
             return update(ref(this.RealtimeDataBase), updates)
 
         } else {
             //Like
             //To add the like push currentUserID (witch click the like button) in Posts/likes_couunt in Database
-            const newLike = await push(child(this.DatabaseRef, "Users/" + userID + "/posts/" + postID + "/likes_count/")).key
+            const newLike = await push(child(this.DatabaseRef,"Posts/" + postID + "/likes_count/")).key
             const data = currentUserID
             const updates: any = {}
-            updates["Users/" + userID + "/posts/" + postID + "/likes_count/" + newLike] = data
+            updates["Posts/" + postID + "/likes_count/" + newLike] = data
             return update(ref(this.RealtimeDataBase), updates)
 
         }
@@ -153,16 +162,18 @@ class PostAPI extends abstractAPI {
         const comentID = makeid(9)
         try {
             if (comentText.length > 0) {
-                const comentData = {
+                const comentData : ComentType= {
                     coment_text: comentText,
-                    coment_owner_name: creator,
+                    comentatorName: creator,
                     avatar: avatar,
-                    date: new Date().getUTCDate(),
-                    comentID: comentID
+                    createdAt: new Date().toString(),
+                    comentID: comentID,
+                    comentatorID : userID
                 };
                 const updates: any = {}
-                updates["Users/" + userID + "/posts/" + postID + "/coments/" + comentID] = comentData
-                return update(ref(this.RealtimeDataBase), updates)
+                updates["Posts/" + postID + "/coments/" + comentID] = comentData
+                update(ref(this.RealtimeDataBase), updates)
+                return comentData
             } else {
                 throw new Error("Error : Coment canot be an ampty string!")
             }
@@ -170,11 +181,11 @@ class PostAPI extends abstractAPI {
             console.log(ex)
         }
     }
-    async deleteComent(userID: string, postID: string, comentID: string) {
+    async deleteComent( postID: string, comentID: string) {
        
         let data = null
         const updates: any = {}
-        updates["Users/" + userID + "/posts/" + postID + "/coments/" + comentID] = data
+        updates["Posts/" + postID + "/coments/" + comentID] = data
         return update(ref(this.RealtimeDataBase), updates)
 
     }

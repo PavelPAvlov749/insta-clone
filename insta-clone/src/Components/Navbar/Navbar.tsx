@@ -35,10 +35,11 @@ export const Navbar: React.FC = React.memo((props) => {
         dispatch(postActions.setIsOnnewPost(true))
     }
     return (
-        <section className={style.navbar_container}>
+        <section className={style.navbarContainer}>
             <div className={style.navbar}>
-                <img src={logo} alt="" className={style.logo} />
+            
                 <section className={style.navigation}>
+               
                     <ul className={style.navigation_list}>
                     <li>
                             <NavLink to={`/search`}>
@@ -48,9 +49,7 @@ export const Navbar: React.FC = React.memo((props) => {
                         <li>
                             <NavLink to="/chat">
                                 <img src={chat_img} alt="#"
-                                    style={{
-
-                                    }} onClick={() => {
+                                onClick={() => {
                                     }} />
                             </NavLink>
                         </li>
@@ -75,7 +74,7 @@ export const Navbar: React.FC = React.memo((props) => {
                 </section>
               
             </div>
-            <hr style={{ "width": "930px", "marginTop": "0px","color" : "green" }} />
+            <hr className={style.hr} />
         </section>
 
     )

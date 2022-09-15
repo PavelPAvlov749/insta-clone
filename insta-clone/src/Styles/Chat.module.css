@@ -1,2 +1,54 @@
-.wrap {
+.chatWrapper{
+    display: grid;
+    /* width: 900px; */
+    height:850px;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    grid-template-columns: 1.5fr auto;
+    grid-template-areas: 
+    "chatList Messages"
+    
+    
+}
+.chatWindowWrapper{
+    grid-area: Messages;
+    padding-top: 1rem;
+    display: grid;
+    grid-template-rows:auto 8vh;
+    border-style: solid ;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 5px;
+    grid-template-areas: 
+    "messageArea"
+    "input";
+    width: 100%;
+}
+
+
+.isAciveChat{
+    background-color: grey;
+}
+
+
+
+
+@media(max-width:530px){
+    .chatListWrapper{
+
+    }
+    .chatWrapper{
+        grid-template-columns: 50vh;
+        grid-template-areas: 
+        "Messages";
+    }
+}
+@media(max-width:350){
+    .chatWrapper{
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "Messages"
+    }
 }

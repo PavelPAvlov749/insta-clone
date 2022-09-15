@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { leaveComentThunk } from "../../Redux/PostReducer";
 import { Global_state_type } from "../../Redux/Store";
-
+import styles from "../../Styles/OpenPost.module.css"
 
 export const ComentTextArea : React.FC = React.memo((props) => {
     const currentUserID = useSelector((state:Global_state_type) => {
@@ -29,16 +29,15 @@ export const ComentTextArea : React.FC = React.memo((props) => {
     const onSubmitHandler = ( values : {coment : string}) => {
         dispatch(leaveComentThunk(currentUser.userID as string,postURL,
             {comentatorName : currentUser.fullName,
-            comentatorAvatar : currentUser.avatar,
+            avatar : currentUser.avatar,
             comentatorID : currentUser.userID,
             coment_text : values.coment
         }))
-        console.log(values.coment)
+        
     }
 
         return (
-        <section className="ComentInputContainer">
-            <h3>Leave the coment : </h3>
+        <section className={styles.ComentInput}>
             <Formik enableReinitialize={true} initialValues={initialFormValues} onSubmit={onSubmitHandler}>
                 <Form>
                     <Field name="coment"  type="text"></Field>

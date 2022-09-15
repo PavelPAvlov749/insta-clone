@@ -1,65 +1,63 @@
-import { Formik ,Form,Field} from "formik";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Global_state_type } from "../../Redux/Store";
-import { UserType } from "../../Redux/Types";
-import { getUserPageByID } from "../../Redux/UserPageReducer";
-import { getAllUsers } from "../../Redux/UsersSerarchReducer";
+import { getAllUsersThunk, searchUserPageByName } from "../../Redux/UserSearchReducer";
+import styles from "../../Styles/Search.module.css"
 
 
-export const UserSearch : React.FC = React.memo((props) => {
-    const currentUSerID = useSelector((state:Global_state_type) => {
-        return state.app.currentUserID
-    })
+export const UserSearch: React.FC = React.memo((props) => {
     const navigate = useNavigate()
-    const dispatch : any = useDispatch()
+    const dispatch: any = useDispatch()
 
-    useEffect(()=>{
-        dispatch(getAllUsers())
-    },[])
-
-    const findedUsers = useSelector((state:Global_state_type) => {
-        return state.search.usersPages
+    //Get finded users or just all users(if the user has not searched for anything yet) from redux
+    const users = useSelector((state: Global_state_type) => {
+        return state.search.users
     })
-    
-    const userNameToSearch = ""
+    //Fist get all users
+    useEffect(() => {
+        dispatch(getAllUsersThunk())
+    }, [])
+    //Is fetch === true show load indicator
+    const onSearch = useSelector((state: Global_state_type) => {
+        return state.search.onSearch
+    })
 
-    //Submit Foem handler function 
-    const onSubmit = () => {
-        
-    }
-    //Form Error Handler
-    const onErrorHandler = () => {
+    //onChange
+    const onChangeHandler = (e: any) => {
+        if (e.currentTarget.value.length > 0) {
+            dispatch(searchUserPageByName(e.currentTarget.value))
+        } else {
+            dispatch(getAllUsersThunk())
+        }
 
     }
-    const setCurrentUserPage = (userID : string) => {
-        dispatch(getUserPageByID(userID))
+    //Redirrect to the specific user
+    const setCurrentUserPage = (userID: string) => {
         navigate("/profile/id=" + userID)
     }
-    const FollowHandler = () => {
-        alert("FOLLOW")
-    }
-    const UnfollowHandler = () => {
-        alert("UNFOLLOW")
-    }
+
+
     return (
-        <section>
-            <input type="text" placeholder="Search"></input>
-            <div className="indicator" ></div>
-            {/*................. Bellow should map function in findedUsers variable .... */}
-            {findedUsers.length > 0 ? findedUsers.map((user : UserType) => {
-                return (
-                    <div key={user.userID}>
-                        <h3>{user.fullName}</h3>
-                        <img src={user.avatar} alt="" onClick={() => {
+        <section className={styles.searchWrapper}>
+            <input type="text" placeholder="find users" onChange={onChangeHandler}></input>
+            <section className={styles.searchResults}>
+                {!onSearch ? users?.map((user) => {
+                    return (
+                        <div className={styles.userMiniPage} key={user.userID} onClick={() => {
                             setCurrentUserPage(user.userID)
-                        }} />
-                      {Object.values(user.followers as Array<string>).includes(currentUSerID) ? <button onClick={UnfollowHandler}>Unfollow</button> 
-                      : <button onClick={FollowHandler}>Follow</button>}
-                    </div>
-                )
-            }): <h1>No Results!</h1>}
-        </section>
+                        }}>
+                            <img className={styles.avatar} src={user.avatar ? user.avatar : "#"} alt="#"></img>
+                            <span>{user.fullName}</span>
+                            <div className={styles.hr}></div>
+                        </div>
+                    )
+
+                }) : <h1>No Results!</h1>}
+     
+            </section>
+
+        </section >
     )
+
 })

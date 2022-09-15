@@ -1,0 +1,60 @@
+.userPageWrapper {
+    margin-bottom: 0%;
+    display: grid;
+    grid-template-columns: 0.5fr auto;
+    grid-template-rows: 210px 1px;
+    grid-template-areas: 
+    "A I "
+    "HR HR" ;
+}
+@media(max-width:1140px){
+    .userPageWrapper{
+        max-width: 900px;
+        grid-template-columns: 0.3fr 1fr;
+    }
+
+}
+@media(max-width:720px){
+    .userPageWrapper{
+        max-width: 650px;
+    }
+ 
+}
+@media(max-width:670px){
+    .userPageWrapper{
+        max-width: 550px;
+    }
+}
+@media(max-width:520px){
+    .avatar{
+        width: 90px;
+        height: 90px;
+    }
+}
+.fullName{
+    grid-area: F;
+}
+.info{
+    grid-area: I;
+    width: 100%;
+}
+.avatar{
+    grid-area: A;
+    border-radius: 180px;
+    height: 200px;
+    width: 200px;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+
+}
+.avatar:hover{
+    box-shadow: 0px 0px 20px 2px rgb(243, 79, 106);
+}
+.hr{
+    width: 100%;
+    height: 1px;
+    background-color: grey;
+    grid-area: HR;
+    margin-bottom: 0%;
+}

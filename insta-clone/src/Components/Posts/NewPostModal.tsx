@@ -70,9 +70,11 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
             creator: currendUser.fullName as string,
             likes_count: [] as Array<string>,
             coments: [] as Array<ComentType>,
+            creatorID : currendUser.userID  as string,
+            creatorAvatar : currendUser.avatar as string
         }
         console.log(values.post_img)
-        postAPI.createPost(currendUser.userID as string, values.file, values.post_text, values.post_tag, currendUser.fullName as string)
+        postAPI.createPost(currendUser.userID as string, values.file, values.post_text, values.post_tag, currendUser.fullName as string,currendUser.avatar as string,currendUser.userID as string)
         //dispatch(createNewPostThunk(currendUser.userID as string, values.file, values.post_text, values.post_tag, currendUser.fullName as string))
         dispatch(postActions.setIsOnnewPost(false))
     }

@@ -1,0 +1,28 @@
+.chatWindowWrapper{
+    
+    grid-template-columns: 1fr;
+    grid-template-rows: 8fr 2fr;
+    grid-template-areas: 
+    "Messages"
+    "input";
+}
+.messageArea{
+    margin-top: 2rem;
+    height: 720px;
+    grid-area: Messages;
+    overflow-y: scroll;
+
+}
+.noMessage {
+    height: 750px;
+    grid-area: Messages;
+    font-size: larger;
+    text-align: center;
+}
+.noMessage img{
+    padding-top: 40%;
+    margin-left: 42%;
+    display: block;
+    width: 100px;
+    height: 100px;
+}

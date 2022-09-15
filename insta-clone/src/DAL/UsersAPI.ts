@@ -1,4 +1,4 @@
-import { ref, get, child, push, update, query, DatabaseReference, orderByChild, equalTo, remove } from "firebase/database";
+import { ref, get, child, push, update, query, DatabaseReference, orderByChild, equalTo, remove, startAt, startAfter, endBefore } from "firebase/database";
 import { connectStorageEmulator } from "firebase/storage";
 import { stringify } from "querystring";
 import { IndexKind, isObjectLiteralElement } from "typescript";
@@ -14,9 +14,10 @@ class UsersAPI extends abstractAPI {
         super()
     }
     async getAllUsers() {
+        const usersList = await (await get(child(this.DatabaseRef,"Users/"))).val()
         let usersRef: DatabaseReference = ref(this.RealtimeDataBase, "Users/")
         let result = await get(query(usersRef))
-        return result.val()
+        return usersList
     }
     async getUserPageById(userID: string) {
         let usersRef: DatabaseReference = ref(this.RealtimeDataBase, "Users/" + userID)
@@ -30,28 +31,30 @@ class UsersAPI extends abstractAPI {
                 subscribes: Object.hasOwn(result,"subscribers" ) ? Object.values(result.subscribers as Array<string>) : [] as Array<string>,
                 status: result.status,
             }
-            console.log(Object.values(result.followers))
             return user
         }
 
     }
     async getUserPageByName(userName: string) {
-        let users_ref: DatabaseReference = ref(this.RealtimeDataBase, "Users/");
-        let result = await get(query(users_ref, orderByChild("fullName/"), equalTo(userName)));
-        return result.val();
+    
+            let users_ref: DatabaseReference = ref(this.RealtimeDataBase, "Users/");
+            let result  = await get(query(users_ref, orderByChild("fullName/"), equalTo(userName)))
+            if(result.exists()){
+                return Object.values(result.val())
+            }else{
+                return null
+            }
+            
     }
     async sendMessage(currentUserID: string, userID: string, messagetext: string) {
 
     }
     async followUser(currentUserID: string, userToFollowID: string) {
         const followerList = await (await get(child(this.DatabaseRef, "Users/" + userToFollowID)))
-        console.log(Object.hasOwn(followerList.val(), "/followers/"))
-        console.log(followerList.val())
+
         if (Object.hasOwn(followerList.val(), "followers") && Object.values(followerList.val().followers).includes(currentUserID)) {
             const updates: any = {}
             const likeKey = Object.keys(followerList.val().followers).find(key => followerList.val().followers[key] === currentUserID)
-            console.log(likeKey)
-
             updates["Users/" + userToFollowID + "/followers/" + likeKey] = null
             updates["Users/" + currentUserID + "/subscribers/" + userToFollowID] = null
             return update(ref(this.RealtimeDataBase), updates)
@@ -64,6 +67,16 @@ class UsersAPI extends abstractAPI {
             updates["Users/" + currentUserID + "/subscribers/" + userToFollowID] = followedUser.val()
             updates["Users/" + userToFollowID + "/followers/" + newFollower] = currentUserID
             return update(ref(this.RealtimeDataBase), updates)
+        }
+
+    }
+    async getAvatar (userID:string) {
+        const avatarRef : DatabaseReference = ref(this.RealtimeDataBase, "Users/" + userID + "/avatar/")
+        const avatar = await (await get(query(avatarRef))).val()
+        if(avatar) {
+            return avatar
+        }else{
+            return null as unknown as string
         }
 
     }

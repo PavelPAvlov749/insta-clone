@@ -11,14 +11,19 @@ const root = ReactDOM.createRoot(
 );
 
 
+try {
+  root.render(
 
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <AppContainer/>
-    </Provider>
-  </React.StrictMode>
-);
+    <React.StrictMode>
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    </React.StrictMode>
+  );
+}catch(ex){
+  console.log(ex)
+}
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

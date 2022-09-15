@@ -11,14 +11,16 @@ const SEND_MESSAGE = "instaClone/chat_reducer/send_message"
 const GET_MESSAGES = "instaClone/chatReducer/get_messages"
 const GET_CHATS = "instaClone/chatReducer/getChats"
 const SET_ACTIVE_CHATS = "instaClone/chatReducer/setActiveChat"
+const SET_NEW_MESSAGE = "instaClone/chatReducer/setNewMessage"
 
 type ActionType = InferActionType<typeof chat_actions>
 type Thunk_type = ThunkAction<void,Global_state_type,unknown,ActionType>
 
 let initialState = {
-    activeChat : null as unknown as string,
+    activeChat : null as unknown as ChatType,
     chats : [] as Array<UserType>,
-    messages : [] as Array<MessageType>
+    messages : [] as Array<MessageType>,
+    newMessage : ""
 
 }
 
@@ -33,7 +35,7 @@ export const chatReducer = (state = initialState,action:ActionType) => {
         case SET_ACTIVE_CHATS : {
             return {
                 ...state,
-                activeChat : action.payload
+                activeChat : {...action.payload}
             }
         }
         case GET_MESSAGES : {
@@ -48,6 +50,12 @@ export const chatReducer = (state = initialState,action:ActionType) => {
                 messages : state.messages.concat(action.payload)
             }
         }
+        case SET_NEW_MESSAGE : {
+            return {
+                ...state,
+                newMessage : action.payload
+            }
+        }
         default : 
             return state
     }
@@ -58,9 +66,13 @@ export const chat_actions = {
         type : "instaClone/chatReducer/getChats",
         payload : chats
     } as const),
-    setActiveChat : (chatID : string) => ({
+    setActiveChat : (userID : string,avatar : string,fullName:string) => ({
         type : "instaClone/chatReducer/setActiveChat",
-        payload : chatID
+        payload : {
+            userID : userID,
+            avatar : avatar,
+            fullName : fullName
+        }
     } as const),
     getMessages : (messages : Array<MessageType>) => ({
         type : "instaClone/chatReducer/get_messages",
@@ -69,6 +81,10 @@ export const chat_actions = {
     sendMEssage : (message : MessageType) => ({
         type : "instaClone/chat_reducer/send_message",
         payload : message
+    } as const ),
+    setNewMessage : (newMessage : string) => ({
+        type : "instaClone/chatReducer/setNewMessage",
+        payload : newMessage
     } as const )
 }
 
@@ -83,23 +99,34 @@ export const getChatsByUserID = (userID:string) => {
         }
     }
 }
-
-export const getMessagesByChatID = (chatID : string) => {
+export const getRoomByUserID = (currentUserID : string,userID:string) => {
+    return async function (dispatch : any) {
+        const room = await chatAPI.getRoom(currentUserID,userID)
+       console.log(room)
+        // if(room){
+        //     dispatch(chat_actions.setActiveChat(room))
+        // }else{
+        //     dispatch(chat_actions.setActiveChat(room))
+        // }
+        
+    }
+}
+export const getMessagesByChatID = (currentUserID:string,chatID : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
-        let messages = await chatAPI.getMessages(chatID)
-        if(messages) {
-            dispatch(chat_actions.getMessages(messages as Array<MessageType>))
-            dispatch(app_actions.set_is_fetch_fasle())
-        }
+        let messages = await chatAPI.getMessagesRealtime(currentUserID as string,chatID)
+        
+        dispatch(chat_actions.getMessages(messages as Array<MessageType>))
+        dispatch(app_actions.set_is_fetch_fasle())
+
+
     }
 }
 
-export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string,avatar : string,reciverAvatar : string,
-    reciverFullName:string,roomID : string) => {
+export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string,avatar : string) => {
     return async function (dispatch : any){
         dispatch(app_actions.set_is_fetch_true())
-        let newMessage = await chatAPI.sendMessage(sender,recepient,messageText,senderName,avatar,reciverAvatar,reciverFullName,roomID)
+        let newMessage = await chatAPI.sendMessage(sender,recepient,messageText,senderName,avatar)
         dispatch(chat_actions.sendMEssage({
             messageData : messageText,
             avatar : avatar,

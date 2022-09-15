@@ -1,0 +1,51 @@
+.inputWrapper{
+    grid-area: input;
+    margin: 1vh 2vh 0vh 2vh;
+
+    width: 600px;
+    height: 100%;
+    max-height: 50px;
+    display: flex;
+    border-radius: 180px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+}
+.textAreaWrapper{
+    display: flex;
+    vertical-align:middle;
+}
+.emoji{
+
+    margin: 0.7rem 0rem 0rem 1rem;
+    width: 25px;
+    height: 25px;
+    display: inline;
+    vertical-align: middle;
+}
+.inputWrapper button{
+    margin-top: 1.5vh;
+    display: inline;
+    vertical-align: middle;
+    border : none;
+    font-size: 17px;
+    font-weight: 500;
+    color: #0095F6;
+    background-color:transparent;
+}
+
+.messageInput{
+    padding-left: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: 1.5rem;
+    margin-top:1vh;
+    border: none;
+    width: 27rem;
+    vertical-align: middle;
+    display: inline-block;
+   
+}
+.messageInput:active{
+    border: none;
+}
