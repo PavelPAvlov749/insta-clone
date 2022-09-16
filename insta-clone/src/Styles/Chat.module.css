@@ -1,16 +1,15 @@
 .chatWrapper{
     display: grid;
-    /* width: 900px; */
-    height:850px;
+    height:100%;
+    max-height:800px ;
     border-radius: 5px;
     border-style: solid;
     border-width: 1px;
     border-color: lightgray;
-    grid-template-columns: 1.5fr auto;
+    grid-template-columns: 1.7fr 3fr;
     grid-template-areas: 
     "chatList Messages"
-    
-    
+
 }
 .chatWindowWrapper{
     grid-area: Messages;
@@ -24,7 +23,7 @@
     grid-template-areas: 
     "messageArea"
     "input";
-    width: 100%;
+    width: 50%;
 }
 
 
@@ -32,23 +31,26 @@
     background-color: grey;
 }
 
-
-
-
-@media(max-width:530px){
-    .chatListWrapper{
-
-    }
+@media(max-height:836px){
     .chatWrapper{
-        grid-template-columns: 50vh;
-        grid-template-areas: 
-        "Messages";
+        max-height: 700px;
     }
 }
-@media(max-width:350){
+@media(max-height:765px){
     .chatWrapper{
-        grid-template-columns: 1fr;
-        grid-template-areas: 
-        "Messages"
+        max-height: 600px;
     }
 }
+@media(max-height:667px){
+    .chatWrapper{
+        max-height: 550px;
+    }
+}
+
+@media(max-width:607px){
+    .chatWrapper{
+    grid-template-columns: 1fr;
+    width: 100%;
+    }
+}
+

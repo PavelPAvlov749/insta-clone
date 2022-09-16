@@ -1,11 +1,10 @@
 .inputWrapper{
     grid-area: input;
     margin: 1vh 2vh 0vh 2vh;
-
     width: 600px;
     height: 100%;
     max-height: 50px;
-    display: flex;
+    display: grid;
     border-radius: 180px;
     border-style: solid;
     border-width: 1px;

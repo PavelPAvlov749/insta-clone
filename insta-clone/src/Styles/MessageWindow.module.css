@@ -1,28 +1,54 @@
 .chatWindowWrapper{
-    
+    height: 100%;
     grid-template-columns: 1fr;
-    grid-template-rows: 8fr 2fr;
+    grid-template-rows: 1fr 1fr;
     grid-template-areas: 
     "Messages"
     "input";
+   
 }
 .messageArea{
     margin-top: 2rem;
-    height: 720px;
+    height: 85%;
     grid-area: Messages;
     overflow-y: scroll;
 
 }
+.noMessage h1{
+    font-weight: 300;
+    display: inline ;
+}
 .noMessage {
-    height: 750px;
+    
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
     grid-area: Messages;
     font-size: larger;
     text-align: center;
 }
 .noMessage img{
-    padding-top: 40%;
+    padding-top: 30%;
     margin-left: 42%;
     display: block;
     width: 100px;
     height: 100px;
+}
+.noMessage button {
+    margin-top: 1rem;
+     background-color: rgb(77, 90, 190);
+     width: 50%;
+     height: 2rem;
+     border-style: none;
+     border-radius: 5px;
+    font-size: medium;
+     color: white;
+     font-weight: 500;
+}
+
+@media(max-width:607px){
+    .noMessage{
+        display: none;
+    }
 }

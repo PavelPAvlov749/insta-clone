@@ -14,13 +14,16 @@
     margin-left: 50%;
     border-radius: 15px;
     padding: 2px 1rem 2px 1rem;
+    max-width: 10rem;
 }
 .message span{
+
     margin-bottom: 2rem;
+    
     justify-content: left;
     margin-left: 1rem;
     width: 50%;
-
+    max-width: 5rem;
     background-color:  #82CA9C;
     border-radius: 15px;
     padding: 2px 1rem 4px 1rem;

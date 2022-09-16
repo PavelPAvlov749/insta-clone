@@ -6,6 +6,8 @@
     border-width: 1px;
     border-color: lightgray;
     border-radius: 5px;
+    display: grid;
+    overflow-y: scroll;
     
 }
 

@@ -3,6 +3,8 @@
     margin-top: 0%;
     padding-top: 0%;
     width: 100%;
+    max-width: 1300px;
+    text-align: center;
 }
 .navigation ul{
     margin: 0%;

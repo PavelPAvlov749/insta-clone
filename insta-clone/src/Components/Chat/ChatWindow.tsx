@@ -9,8 +9,8 @@ import { TextInput } from "./TextInput";
 import messageIMG from "../../Media/message.png"
 
 
-export const ChatWindow: React.FC = React.memo((props) => {
-
+export const Dirrect : React.FC = React.memo((props) => {
+    
     //Chat page last message anchor 
     const chat_anchor_ref = useRef<HTMLDivElement>(null);
 
@@ -28,27 +28,38 @@ export const ChatWindow: React.FC = React.memo((props) => {
 
     return (
         <section className={styles.chatWindowWrapper}>
-            <div className={styles.messageArea} >
-                {messages.length > 0 ? messages.map((message) => {
-
-                    return (
-                        <>
-                            <Message userName={message.fullName} avatar={message.avatar} userID={message.userID}
-                                messageText={message.messageData} currentUserID={currentUser.userID as string} />
-                        </>
-                    )
-                }) : 
-                <div className={styles.noMessage}>
-
-                    <img src={messageIMG} alt="#" />
-                    <br />
-
-                    <span>No messages</span>
-                </div>
-                }
-                <div ref={chat_anchor_ref}></div>
-            </div>
-            <TextInput />
+        <div className={styles.messageArea} >
+            {messages.length > 0 ? messages.map((message) => {
+                return (
+                    <>
+                        <Message userName={message.fullName} avatar={message.avatar} userID={message.userID}
+                            messageText={message.messageData} currentUserID={currentUser.userID as string} />
+                    </>
+                )
+            }) : 
+                <span>No messages</span>
+            }
+            <div ref={chat_anchor_ref}></div>
+        </div>
+        <TextInput />
         </section>
+    )
+})
+
+
+export const ChatWindow: React.FC = React.memo((props) => {
+
+    return (
+        <div className={styles.noMessage}>
+
+        <img src={messageIMG} alt="#" />
+        <br />
+        <h1>Your messages</h1>
+        <br />
+        <span>Send personal photos and messages to a friend or group.</span>
+        <br />
+        <button type="button" className={styles.startChating}>Start chating</button>
+    </div>
+     
     )
 })

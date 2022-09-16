@@ -1,6 +1,7 @@
 import { Route,Routes,Navigate } from "react-router-dom"
-import { Chat } from "../Components/Chat/Chat"
+import { Chat, ChatDirrect } from "../Components/Chat/Chat"
 import { ChatList } from "../Components/Chat/ChatList"
+import { Dirrect } from "../Components/Chat/ChatWindow"
 import { Login_container } from "../Components/Login/Login"
 import { Registration } from "../Components/Login/Registartion"
 import { ShowedPost } from "../Components/Posts/OpenedPost"
@@ -34,8 +35,8 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                     <Route path={USER_PROFILE} element={<UserPage/>}/>
                     <Route path={POST} element={<ShowedPost/>}/>
                     <Route path={SEARCH} element={<UserSearch/>}/>
-                    <Route path={CHAT} element={<Chat/>}/>
-                    <Route path={DIRECT} element={<Chat/>}/>
+                    <Route path={CHAT} element={<ChatList/>}/>
+                    <Route path={DIRECT} element={<Dirrect/>}/>
                 </Routes>
             </div>
         )

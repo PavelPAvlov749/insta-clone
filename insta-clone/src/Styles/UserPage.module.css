@@ -2,33 +2,22 @@
     margin-bottom: 0%;
     display: grid;
     grid-template-columns: 0.5fr auto;
-    grid-template-rows: 210px 1px;
+    grid-template-rows: 1fr 1px;
     grid-template-areas: 
     "A I "
     "HR HR" ;
 }
-@media(max-width:1140px){
-    .userPageWrapper{
-        max-width: 900px;
-        grid-template-columns: 0.3fr 1fr;
-    }
 
-}
-@media(max-width:720px){
-    .userPageWrapper{
-        max-width: 650px;
-    }
- 
-}
-@media(max-width:670px){
-    .userPageWrapper{
-        max-width: 550px;
-    }
-}
 @media(max-width:520px){
-    .avatar{
-        width: 90px;
-        height: 90px;
+    .userPageWrapper{
+        font-size:x-small;
+
+    }
+    .userPageWrapper h1{
+        font-size: small;
+    }
+    .status{
+        font-size: x-small;
     }
 }
 .fullName{
@@ -39,13 +28,15 @@
     width: 100%;
 }
 .avatar{
+
     grid-area: A;
     border-radius: 180px;
-    height: 200px;
-    width: 200px;
+    height: auto;
+    width: 100%;
+    overflow: hidden ;
     max-width: 200px;
     max-height: 200px;
-    object-fit: cover;
+    /* object-fit: cover; */
 
 }
 .avatar:hover{

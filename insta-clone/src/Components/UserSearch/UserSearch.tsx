@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Global_state_type } from "../../Redux/Store";
 import { getAllUsersThunk, searchUserPageByName } from "../../Redux/UserSearchReducer";
 import styles from "../../Styles/Search.module.css"
+import { LineLoader } from "./LoaderLine";
 
 
 export const UserSearch: React.FC = React.memo((props) => {
@@ -49,11 +50,11 @@ export const UserSearch: React.FC = React.memo((props) => {
                         }}>
                             <img className={styles.avatar} src={user.avatar ? user.avatar : "#"} alt="#"></img>
                             <span>{user.fullName}</span>
-                            <div className={styles.hr}></div>
+                           
                         </div>
                     )
 
-                }) : <h1>No Results!</h1>}
+                }) : <LineLoader/>}
      
             </section>
 

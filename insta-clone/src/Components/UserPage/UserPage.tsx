@@ -17,7 +17,9 @@ import { userPageSelector } from "../../Selectors/Selectors";
 
 
 export const UserPage: React.FC = React.memo(() => {
-    
+    let isFetch = useSelector((state:Global_state_type) => {
+        return state.app.is_fetch
+    })
     const navigate = useNavigate()
     const account = useSelector((state: Global_state_type) => {
         return state.account
@@ -107,6 +109,7 @@ export const UserPage: React.FC = React.memo(() => {
                     <div className={styles.hr}></div>
                     
                 </section>
+                
             <UserPostsList />
         </div>
 

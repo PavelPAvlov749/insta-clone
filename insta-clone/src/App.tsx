@@ -9,6 +9,7 @@ import { Router } from './Router/Router';
 import { Navbar } from './Components/Navbar/Navbar';
 import { NewPostModalWindow } from './Components/Posts/NewPostModal';
 import { postActions } from './Redux/PostReducer';
+import { Preloader } from './Components/Preloader/Preloader';
 
 
 type AppPropsType = {
@@ -26,7 +27,8 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
   useEffect(() => {
     props.init()
   },[])
- 
+ console.log(props.isFetch)
+
   if(props.isInit){
     return (
       <div className={styles.app}>
@@ -43,7 +45,7 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
       <div> 
         <BrowserRouter>
         <Navbar/>
-        <h1>NOT INIT</h1>
+        <Preloader/>
         </BrowserRouter>
       </div>
     )
