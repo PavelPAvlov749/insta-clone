@@ -13,17 +13,14 @@ export const Dirrect : React.FC = React.memo((props) => {
     
     //Chat page last message anchor 
     const chat_anchor_ref = useRef<HTMLDivElement>(null);
-
     const dispatch: any = useDispatch()
-    let currentUser = useSelector((state: Global_state_type) => { return state.account })
+    let currentUser = useSelector((state: Global_state_type) => { return state.app.currentUserID })
     const messages = useSelector((state: Global_state_type) => { return state.chat.messages })
-
     let location = useLocation().pathname.split("=")[1]
 
 
     useEffect(() => {
-        dispatch(getMessagesByChatID(currentUser.userID as string, location))
-
+        dispatch(getMessagesByChatID(currentUser as string, location))
     }, [location])
 
     return (
@@ -33,7 +30,7 @@ export const Dirrect : React.FC = React.memo((props) => {
                 return (
                     <>
                         <Message userName={message.fullName} avatar={message.avatar} userID={message.userID}
-                            messageText={message.messageData} currentUserID={currentUser.userID as string} />
+                            messageText={message.messageData} currentUserID={currentUser as string} />
                     </>
                 )
             }) : 

@@ -40,6 +40,7 @@ export const ChatList: React.FC = React.memo((props) => {
         //On chatlist click handler function
         dispatch(getRoomByUserID(currentUserID.userID as string, userID))
         dispatch(chat_actions.setActiveChat(userID, avatar, fullName))
+        dispatch(chat_actions.getMessages([]))
         navigate("/chat/id:=" + userID)
 
     }

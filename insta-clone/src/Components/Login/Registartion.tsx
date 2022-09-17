@@ -26,14 +26,14 @@ export const Registration: React.FC = React.memo((props) => {
                     
                 <Form className={styles.loginForms}>
                     <div className={styles.loginFormsDIV}>
-                    <span>Type your name : </span>
-                    <Field type="text" name="username"></Field>
+
+                    <Field type="text" name="username" placeholder={"Username"}></Field>
                     <br />
-                    <span>Login : </span>
-                    <Field type="text" name="login"></Field>
+
+                    <Field type="text" name="login" placeholder={"Login"}></Field>
                     <br />
-                    <span>Password : </span>
-                    <Field type="text" name="password"></Field>
+      
+                    <Field type="text" name="password" placeholder={"Password"}></Field>
                     <br />
                     </div>
                     <div className={styles.hrReg}></div>

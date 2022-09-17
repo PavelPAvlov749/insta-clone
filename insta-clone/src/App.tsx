@@ -4,7 +4,7 @@ import styles from "../src/App.module.css"
 import { connect } from 'react-redux';
 import { Global_state_type } from './Redux/Store';
 import { InitializeThunk } from './Redux/AppReducer';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { Router } from './Router/Router';
 import { Navbar } from './Components/Navbar/Navbar';
 import { NewPostModalWindow } from './Components/Posts/NewPostModal';
@@ -33,11 +33,11 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
     return (
       <div className={styles.app}>
   
-        <BrowserRouter>  
+        <HashRouter>  
         {props.isNewPost ? <NewPostModalWindow/> : null}
         <Navbar/>
         <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
-        </BrowserRouter>
+        </HashRouter>
       </div>
     )
   }else{

@@ -21,7 +21,7 @@
     border-color: lightgray;
     border-radius: 5px;
     grid-template-areas: 
-    "messageArea"
+    "Messages"
     "input";
     width: 50%;
 }

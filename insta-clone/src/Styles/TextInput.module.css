@@ -1,7 +1,7 @@
 .inputWrapper{
     grid-area: input;
-    margin: 1vh 2vh 0vh 2vh;
-    width: 600px;
+    margin: 5vh 2vh 0rem 2vh;
+
     height: 100%;
     max-height: 50px;
     display: grid;
@@ -17,8 +17,10 @@
 .emoji{
 
     margin: 0.7rem 0rem 0rem 1rem;
-    width: 25px;
-    height: 25px;
+    width: 100%;
+    height: auto;
+    max-width: 25px;
+    max-height: 25px;
     display: inline;
     vertical-align: middle;
 }
@@ -40,11 +42,24 @@
     height: 1.5rem;
     margin-top:1vh;
     border: none;
-    width: 27rem;
+    width: 50%;
     vertical-align: middle;
     display: inline-block;
    
 }
 .messageInput:active{
     border: none;
+}
+@media(max-height:667px){
+    .messageInput{
+        height: 1rem;
+    }
+    .emoji{
+        margin: 0.5rem 0rem 0rem 0.7rem;
+        max-height: 17px;
+        max-width: 17px;
+    }
+    .inputWrapper{
+        max-height: 30px;
+    }
 }

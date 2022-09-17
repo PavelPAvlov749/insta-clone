@@ -102,7 +102,7 @@ export const getChatsByUserID = (userID:string) => {
 export const getRoomByUserID = (currentUserID : string,userID:string) => {
     return async function (dispatch : any) {
         const room = await chatAPI.getRoom(currentUserID,userID)
-       console.log(room)
+       
         // if(room){
         //     dispatch(chat_actions.setActiveChat(room))
         // }else{
@@ -114,10 +114,15 @@ export const getRoomByUserID = (currentUserID : string,userID:string) => {
 export const getMessagesByChatID = (currentUserID:string,chatID : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
+
         let messages = await chatAPI.getMessagesRealtime(currentUserID as string,chatID)
+            if(messages.length){
+                dispatch(chat_actions.getMessages(messages as Array<MessageType>))
+                dispatch(app_actions.set_is_fetch_fasle())
         
-        dispatch(chat_actions.getMessages(messages as Array<MessageType>))
-        dispatch(app_actions.set_is_fetch_fasle())
+            }
+
+       
 
 
     }

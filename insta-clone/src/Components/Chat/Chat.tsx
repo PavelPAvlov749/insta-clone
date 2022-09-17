@@ -30,8 +30,8 @@ export const ChatDirrect : React.FC = React.memo((props) => {
  
     return (
         <section className={styles.chatWrapper}>
-            <ChatList/>
-            {/* <Dirrect/> */}
+            {/* <ChatList/> */}
+            <Dirrect/>
         </section>
     )
 })

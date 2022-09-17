@@ -2,7 +2,7 @@
 .currentUserMessage{
     text-align: right;
     margin-right: 1rem;
-
+    margin-bottom: 1rem;
     
 }
 .currentUserMessage span{
@@ -17,8 +17,6 @@
     max-width: 10rem;
 }
 .message span{
-
-    margin-bottom: 2rem;
     
     justify-content: left;
     margin-left: 1rem;
@@ -31,6 +29,8 @@
 .message{
     text-align: left;
     margin-left: 1rem;
+
+    margin-bottom: 1rem;
 
 }
 .message img{

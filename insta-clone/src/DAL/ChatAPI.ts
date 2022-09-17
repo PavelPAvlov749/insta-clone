@@ -79,10 +79,7 @@ class ChatAPI extends abstractAPI {
                 messages = Object.values(roomSnapSchot.val())
 
             })
-        }else{
-            return messages
         }
-
         return messages
     }
 }
