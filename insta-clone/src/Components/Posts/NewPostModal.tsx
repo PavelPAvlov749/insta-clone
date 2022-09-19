@@ -97,11 +97,11 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
             <Form>
                 <input type="file" id="file_input" style={{ "display": "none" }} accept="image/*" onChange={inputOnChangeHandler}></input>
                 <h4>Type text to your post : </h4>
-                <Field type="text" name="post_text"></Field>
+                <Field type="text" name="post_text" className={styles.textInput}></Field>
                 <h4>Thype tags : </h4>
-                <Field type="text" name="post_tag" />
+                <Field type="text" name="post_tag" className={styles.textInput}/>
                 <br />
-                <button type="submit">Publish</button>
+                <button type="submit" className={styles.publish}>Publish</button>
             </Form>
         </Formik>
            

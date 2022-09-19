@@ -28,21 +28,21 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
 
     if(props.isAuth){
         return (
-            <div className="Router">
+            <div >
                 <Routes>
                     <Route path={LOGIN} element={<Navigate to={USER_PROFILE + "=" + props.actualUser}/>}/>
                     <Route path={ROOT} element={null}/>
                     <Route path={USER_PROFILE} element={<UserPage/>}/>
                     <Route path={POST} element={<ShowedPost/>}/>
                     <Route path={SEARCH} element={<UserSearch/>}/>
-                    <Route path={CHAT} element={<ChatList/>}/>
+                    <Route path={CHAT} element={<Chat/>}/>
                     <Route path={DIRECT} element={<Dirrect/>}/>
                 </Routes>
             </div>
         )
     }else{
         return (
-            <div className="Router">
+            <div >
                 <Routes>
                     <Route path={LOGIN} element={<Login_container/>}/>
                     <Route path={no_match_route} element={<Navigate to={LOGIN} replace/>}/>

@@ -1,11 +1,13 @@
 import { ThunkAction } from "redux-thunk";
 import { Global_state_type, InferActionType } from "./Store";
 import { Firestore_instance } from "../DAL/Firestore_config";
-import {get} from "firebase/database"
+import {child, get, onValue, ref} from "firebase/database"
 import { ChatType, MessageType, UserType } from "./Types";
 import { app_actions } from "./AppReducer";
 import { chatAPI } from "../DAL/ChatAPI";
 import { send } from "process";
+import { dataBase } from "../DAL/FirebaseConfig";
+import { disableNetwork } from "firebase/firestore";
 
 const SEND_MESSAGE = "instaClone/chat_reducer/send_message"
 const GET_MESSAGES = "instaClone/chatReducer/get_messages"
@@ -115,7 +117,7 @@ export const getMessagesByChatID = (currentUserID:string,chatID : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
 
-        let messages = await chatAPI.getMessagesRealtime(currentUserID as string,chatID)
+        let messages = await chatAPI.getMessages(chatID)
             if(messages.length){
                 dispatch(chat_actions.getMessages(messages as Array<MessageType>))
                 dispatch(app_actions.set_is_fetch_fasle())
@@ -128,6 +130,31 @@ export const getMessagesByChatID = (currentUserID:string,chatID : string) => {
     }
 }
 
+export const getRealtimeMessages = (currentUserID:string,userID:string) => {
+    return async function (dispatch : any) {
+        dispatch(app_actions.set_is_fetch_true())
+        let Ref = await (await get(child(ref(dataBase), "Users/" + currentUserID + '/chats/' + userID))).val()
+        console.log(Ref)
+        let messages: Array<any> = []
+            console.log(currentUserID)
+            console.log(userID)
+            if(Ref.chatRef){
+                const roomRef = ref(dataBase, "Chats/" + Ref.chatRef)
+                onValue(roomRef, (roomSnapSchot) => {
+                    messages = Object.values(roomSnapSchot.val())
+                    dispatch(chat_actions.getMessages(messages))
+                    dispatch(app_actions.set_is_fetch_fasle())
+                    console.log(messages)
+                })
+            
+            }else{
+                dispatch(chat_actions.getMessages([]))
+                dispatch(app_actions.set_is_fetch_fasle())
+                console.log("sdfsdf")
+            }
+
+    }
+}
 export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string,avatar : string) => {
     return async function (dispatch : any){
         dispatch(app_actions.set_is_fetch_true())

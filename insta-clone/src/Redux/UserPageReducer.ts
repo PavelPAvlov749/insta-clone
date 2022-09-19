@@ -91,6 +91,8 @@ export const getUserPageByID = (userID : string) => {
         if(user) {
             dispatch(userPageActions.get_user(user))
             dispatch(app_actions.set_is_fetch_fasle())
+        }else{
+            dispatch(app_actions.set_is_fetch_fasle())
         }
         
     }

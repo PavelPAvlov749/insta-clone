@@ -1,8 +1,10 @@
 .userPageWrapper {
     margin-bottom: 0%;
+    
     display: grid;
-    grid-template-columns: 0.5fr auto;
+    grid-template-columns: 0.8fr auto;
     grid-template-rows: 1fr 1px;
+    grid-gap: 0.5rem;
     grid-template-areas: 
     "A I "
     "HR HR" ;
@@ -10,14 +12,14 @@
 
 @media(max-width:520px){
     .userPageWrapper{
-        font-size:x-small;
+        font-size:small;
 
     }
     .userPageWrapper h1{
-        font-size: small;
+        font-size: medium;
     }
     .status{
-        font-size: x-small;
+        font-size: small;
     }
 }
 .fullName{
@@ -28,7 +30,7 @@
     width: 100%;
 }
 .avatar{
-
+    margin-top:0.5rem;
     grid-area: A;
     border-radius: 180px;
     height: auto;
@@ -36,7 +38,7 @@
     overflow: hidden ;
     max-width: 200px;
     max-height: 200px;
-    /* object-fit: cover; */
+    object-fit: cover;
 
 }
 .avatar:hover{
@@ -48,4 +50,21 @@
     background-color: grey;
     grid-area: HR;
     margin-bottom: 0%;
+}
+@media(max-width:635px){
+    .avatar{
+        max-height: 150px;
+    }
+}
+@media(max-width:473px){
+    .avatar{
+        max-height: 130px;
+        max-width: 130px;
+    }
+}
+@media(max-width:443px){
+    .avatar{
+        max-height: 100px;
+        max-width: 100px;
+    }
 }

@@ -31,7 +31,7 @@ export const TextInput: React.FC = React.memo((props) => {
     return (
         <>
             <div className={styles.inputWrapper}>
-                <div className={styles.textAreaWrapper}>
+              
                     <img src={emojiPNG} alt="#" className={styles.emoji}></img>
                     <Formik onSubmit={setSubmit} enableReinitialize={true} initialValues={initialFormValues} >
                         <Form className={styles.formik}>
@@ -41,7 +41,7 @@ export const TextInput: React.FC = React.memo((props) => {
                             <button type="submit" className={styles.textArea}>Send</button>
                         </Form>
                     </Formik>
-                </div>
+
 
             </div>
         </>

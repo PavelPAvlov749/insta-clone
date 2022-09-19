@@ -27,10 +27,10 @@ export const ChatDirrect : React.FC = React.memo((props) => {
     useEffect(()=>{
         dispatch(getAllUsersThunk())
     },[])
- 
+
     return (
         <section className={styles.chatWrapper}>
-            {/* <ChatList/> */}
+            <ChatList/>
             <Dirrect/>
         </section>
     )

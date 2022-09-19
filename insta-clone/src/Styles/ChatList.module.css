@@ -1,14 +1,16 @@
 .chatListWrapper{
+
     width: 100%;
-    height: auto;
-    max-height: 800px;
+    height: 90%;
+    overflow-y: scroll;
+    
     grid-area: chatList;
     border-style: solid ;
     border-width: 1px;
     border-color: lightgray;
     border-radius: 5px;
-    display: grid;
-    overflow-y: scroll;
+    display: block;
+    
     
 }
 
@@ -31,19 +33,11 @@
     object-fit: cover;
 }
 
-@media(max-height:767px){
-    .chatListWrapper{
-        max-height: 650px;
-    }
-}
-@media(max-height:707px){
-    .chatListWrapper{
-        max-height: 600px;
-    }
-}
-@media(max-height:654px){
-    .chatListWrapper{
-        max-height: 550px;
-    }
-}
 
+
+
+@media(max-width:607px){
+    .chatListWrapper{
+    border: none;
+    }
+}

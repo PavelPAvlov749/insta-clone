@@ -1,11 +1,17 @@
 .loader{
-    text-align: center;
-    margin-top: 40%;
+position: relative;
+padding-top: 45%;
+margin-left: 45%;
+display: flex;
+align-items: center;
+
+
 }
 .lineLoader{
-    margin-bottom: -1rem;
+    position: absolute;
+    margin-left: -1rem;
     padding: 0%;
-    width: 100%;
+    width: 110%;
     height: 5px;
     background: linear-gradient(90deg, #60086f, #f4e5ed, #05878c);
     background-size: 200% 200%;

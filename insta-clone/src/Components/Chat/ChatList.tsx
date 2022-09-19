@@ -4,18 +4,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { chat_actions, getChatsByUserID, getMessagesByChatID, getRoomByUserID } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
 import { UserType } from "../../Redux/Types";
+import { getAllUsersThunk } from "../../Redux/UserSearchReducer";
 // import styles from "../../Styles/Chat.module.css"
 import styles from "../../Styles/ChatList.module.css"
 import { MiniProfile } from "../MiniProfile/MiniProfile";
+import { LineLoader } from "../UserSearch/LoaderLine";
 
 const defaultAvatar = "http://www.faadooengineers.com/fests/wp-content/uploads/Tesseract-2017-Gurunanak-Institute-of-Technology.jpg"
 export const ChatList: React.FC = React.memo((props) => {
-    const activeChat = useSelector((state: Global_state_type) => {
-        return state.chat.activeChat
-    })
- 
+     
     const navigate = useNavigate()
     const dispatch: any = useDispatch()
+    useEffect(()=>{
+        dispatch(getAllUsersThunk())
+    },[])
+    let isFetch = useSelector((state : Global_state_type) => {
+        return state.app.is_fetch
+    })
     const bubleSort = (array: Array<UserType>) => {
         for (let i = 0; i < array.length - 1; i++) {
             for (let j = 0; j < array.length; j++) {
@@ -38,14 +43,13 @@ export const ChatList: React.FC = React.memo((props) => {
 
     const onClickHandler = (userID: string, avatar: string, fullName: string) => {
         //On chatlist click handler function
-        dispatch(getRoomByUserID(currentUserID.userID as string, userID))
-        dispatch(chat_actions.setActiveChat(userID, avatar, fullName))
-        dispatch(chat_actions.getMessages([]))
+       
+        // dispatch(chat_actions.setActiveChat(userID, avatar, fullName))
         navigate("/chat/id:=" + userID)
 
     }
 
-    if (Chats !== null) {
+    if (!isFetch) {
         return (
             <section className={styles.chatListWrapper}>
                 {users?.map((user) => {
@@ -57,7 +61,7 @@ export const ChatList: React.FC = React.memo((props) => {
                             
                                 <img src={user.avatar ? user.avatar : defaultAvatar} alt="#" ></img>
                                 <span>{user.fullName}</span>
-
+                                
   
 
                         </div>
@@ -68,7 +72,7 @@ export const ChatList: React.FC = React.memo((props) => {
     } else {
         return (
             <>
-                <h1>Fetch data...</h1>
+                <LineLoader/>
             </>
         )
     }

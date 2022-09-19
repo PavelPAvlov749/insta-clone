@@ -1,27 +1,27 @@
 .chatWindowWrapper{
     height: 100%;
-    max-height: 750px;
-    grid-template-columns: auto;
-    grid-template-rows: auto 1fr;
-    grid-template-areas: 
-    "Messages"
-    "input";
-    border-style: solid ;
-    border-color: lightgray;
-    border-width: 1px;
-    border-radius: 5px;
-   
+    display: flex;
+    
+    flex-direction: column;
+    height: auto;
+    position: absolute;
 }
+
 .messageArea{
-    margin-top: 2rem;
-    height: 80%;
-    max-height: 700px;
-    width: 100%;
-
-    grid-area: Messages;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 240px;
+    max-height: 600px;
+    overflow-x: hidden;
     overflow-y: scroll;
-
 }
+
+
+
+
+
 .noMessage h1{
     font-weight: 300;
     display: inline ;
@@ -37,6 +37,7 @@
     text-align: center;
 }
 .noMessage img{
+
     padding-top: 30%;
     margin-left: 42%;
     display: block;
@@ -53,18 +54,37 @@
     font-size: medium;
      color: white;
      font-weight: 500;
+} 
+
+
+
+@media(max-height:694px){
+.messageArea{
+    max-height: 550px;
 }
 
-
-
-@media(max-height:667px){
-    .chatWindowWrapper{
-        max-height: 550px;
+}
+@media(max-height:672px){
+    .messageArea{
+        max-height: 500px;
     }
-}
+}    
 @media(max-height:607px){
     .chatWindowWrapper{
         max-height: 500px;
     }
 }
+@media(max-height:470px){
+    .chatWindowWrapper{
+        max-height: 200px;
+    }
+}
 
+@media(max-width:620px){
+    .noMessage {
+        display: none;
+    }
+    .chatWindowWrapper{
+        border: none;
+    }
+}

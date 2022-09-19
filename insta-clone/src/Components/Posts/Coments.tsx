@@ -38,14 +38,23 @@ export const PostComents: React.FC<{coments : Array<ComentType>}> = React.memo((
     const currentUser = useSelector((state : Global_state_type) =>{
         return state.account.userID
     })
-    return (
-        <section className={styles.comentsWrapper}>
-            {props.coments.length > 0 ? props.coments.map((coment: ComentType) => {
-                return (
-                    <SilngleComent coment={coment} currentUserID={currentUser as string} key={coment.comentID}/>
-                )
-            }) : null}
-        </section>
+    if(props.coments.length === 0){
+        return (
+            <div>
+                <span>No coments yet</span>
+            </div>
+        )
+    }else{
+        return (
+            <section className={styles.comentsWrapper}>
+                {props.coments.length > 0 ? props.coments.map((coment: ComentType) => {
+                    return (
+                        <SilngleComent coment={coment} currentUserID={currentUser as string} key={coment.comentID}/>
+                    )
+                }) : null}
+            </section>
+    
+        )
+    }
 
-    )
 })

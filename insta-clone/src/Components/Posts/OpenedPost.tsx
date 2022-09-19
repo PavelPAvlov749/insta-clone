@@ -40,28 +40,21 @@ export const ShowedPost: React.FC = React.memo((props) => {
     if (actualPost) {
         return (
             <section className={styles.postWrapper}>
-                                    <div className={styles.postIMGContainer}>
-                    <img className={styles.postIMG} src={actualPost?.post_img ? actualPost?.post_img : "#"} alt="" />
-                        <img src={likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
-                        <span>{actualPost.likes_count?.length + "\t likes"}</span>
-                    </div>
-                <NavLink to={`/profile/id:=${actualPost.creatorID}`}>
+                                        <NavLink to={`/profile/id:=${actualPost.creatorID}`} className={styles.creatorInfo}>
                     <img className={styles.autorAvatar} src={actualPost.creatorAvatar as string} alt="#" style={{ "display": "inline" }}></img>
                     <h1 className={styles.autorName}>{actualPost?.creator}</h1>
                     <div className={styles.hr}></div>
-
                 </NavLink>
+                    <div className={styles.postIMGContainer}>
+                    <img className={styles.postIMG} src={actualPost?.post_img ? actualPost?.post_img : "#"} alt="" />
+                        <img src={likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
+                        <span>{actualPost.likes_count?.length + "\t likes"}</span>
+                    </div>           
 
-                <br />
-                
-                <br />
                 <div className={styles.postInfo}>
                     <h5>{actualPost.creator + "\t:\t"}</h5>
                     <span>{actualPost?.post_text}</span>
-
-
                 </div>
-
                 <PostComents coments={actualPost.coments} />
                 <ComentTextArea />
             </section>

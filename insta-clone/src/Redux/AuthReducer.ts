@@ -135,11 +135,13 @@ export const loginInWithEmailAndPassword = (email: string,password : string) => 
             }).then((user) => { 
                 console.log(user)
                 dispatch(auth_actions.create_user(user.user.uid))
+                dispatch(auth_actions.set_auth_true())
                 dispatch(app_actions.set_is_fetch_fasle())
             }))
 
         }catch(ex){
             dispatch(auth_actions.setError(true))
+            dispatch(auth_actions.set_auth_false())
             dispatch(app_actions.set_is_fetch_fasle())
             console.log(ex)
         }

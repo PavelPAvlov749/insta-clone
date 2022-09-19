@@ -1,31 +1,50 @@
 .inputWrapper{
+    position: relative;
+    display: flex;
     grid-area: input;
-    margin: 5vh 2vh 0rem 2vh;
+    padding: 0.5rem 0rem 0.5rem 0rem;
+    margin: 2vh 2vh 0rem 2vh;
 
     height: 100%;
-    max-height: 50px;
+    /* max-height: 50px; */
     display: grid;
+    grid-template-columns: 0.4fr 15fr;
+    grid-template-areas: 
+    "emoji text";
+    grid-gap: 1rem;
     border-radius: 180px;
     border-style: solid;
     border-width: 1px;
     border-color: lightgray;
-}
-.textAreaWrapper{
-    display: flex;
-    vertical-align:middle;
-}
-.emoji{
 
-    margin: 0.7rem 0rem 0rem 1rem;
+    
+}
+.formik{
+   
+    grid-template-columns: 5fr 1fr ;
+    grid-template-areas: 
+    "inputText button";
+    grid-area: text;
+    margin-bottom: 2px;
+    display: grid;
+    vertical-align: middle;
     width: 100%;
+}
+
+.emoji{
+    display: inline;
+    margin-left: 1rem;
+    grid-area: emoji;
     height: auto;
+
     max-width: 25px;
     max-height: 25px;
-    display: inline;
+
     vertical-align: middle;
 }
 .inputWrapper button{
-    margin-top: 1.5vh;
+    grid-area: button;
+    padding-right: 1rem;
     display: inline;
     vertical-align: middle;
     border : none;
@@ -36,21 +55,17 @@
 }
 
 .messageInput{
-    padding-left: 1rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
     height: 1.5rem;
-    margin-top:1vh;
+    grid-area: inputText;
     border: none;
-    width: 50%;
     vertical-align: middle;
-    display: inline-block;
+
    
 }
 .messageInput:active{
     border: none;
 }
-@media(max-height:667px){
+/* @media(max-height:667px){
     .messageInput{
         height: 1rem;
     }
@@ -62,4 +77,4 @@
     .inputWrapper{
         max-height: 30px;
     }
-}
+} */

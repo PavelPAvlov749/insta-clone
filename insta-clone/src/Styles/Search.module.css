@@ -1,6 +1,7 @@
 .searchWrapper{
     display: grid;
     max-width: 1000px;
+    
     width: 100%;
     grid-template-columns: 1fr;
     grid-template-areas: "Input"
@@ -9,15 +10,17 @@
 .searchResults{
     grid-area: users;
     margin-top: 1rem;
+    margin-left: 1rem;
 }
 .searchWrapper input{
     margin-bottom: 0%;
     padding-bottom: 0%;
     grid-area: Input;
-    width: 40%;
+    width: 30%;
     height: 1.5rem;
     border-radius: 5px;
     border-style: solid;
+
     border-width: 2px;
     border-color:lightgrey;
     -webkit-transition: all 0.4s;
@@ -26,7 +29,7 @@
 }
 .searchWrapper input:focus{
     outline-width: 0;
-    width: 100%;
+    width: 95%;
 }
 
 .userMiniPage{

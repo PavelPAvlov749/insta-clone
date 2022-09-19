@@ -1,5 +1,5 @@
 import { Field, Form, Formik, FormikHandlers } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { leaveComentThunk } from "../../Redux/PostReducer";
@@ -10,6 +10,7 @@ export const ComentTextArea : React.FC = React.memo((props) => {
     const currentUserID = useSelector((state:Global_state_type) => {
         return state.auth.user_id
     })
+    let [isShowComent,setShowComent] = useState(false)
     const currentUser = useSelector((state:Global_state_type) => {
         return state.account
     })
@@ -35,16 +36,21 @@ export const ComentTextArea : React.FC = React.memo((props) => {
         }))
         
     }
+    const showComents = () => {
+        setShowComent(true)
+    }
 
-        return (
-        <section className={styles.ComentInput}>
-            <Formik enableReinitialize={true} initialValues={initialFormValues} onSubmit={onSubmitHandler}>
-                <Form>
-                    <Field name="coment"  type="text"></Field>
-                    <button type="submit">Publish</button>
-                </Form>
-            </Formik>
-         
-        </section>
-    )
+            return (
+                <section className={styles.ComentInput}>
+                    <Formik enableReinitialize={true} initialValues={initialFormValues} onSubmit={onSubmitHandler}>
+                        <Form>
+                            <Field name="coment"  type="text"></Field>
+                            <button type="submit">Publish</button>
+                        </Form>
+                    </Formik>
+                 
+                </section>
+            )
+        
+    
 })
