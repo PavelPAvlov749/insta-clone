@@ -10,13 +10,14 @@ const SET_INITIALIZE = "SET_INITIALIZE";
 const SET_IS_FETCH_TRUE = "messenger/app_reducer/set_is_fetch_true";
 const SET_IS_FETCH_FALSE = "messenger/app_reducer/set_is_fetch_false";
 const SET_CURRENT_USER_ID = "messenger/app_reducer/set_current_user_id";
-
+const SET_ON_LOAD = "insta-clone/postReducer/set_on_load"
 
 
 let initial_state = {
     is_initialize: false,
     is_fetch: false,
-    currentUserID: null as unknown as string
+    currentUserID: null as unknown as string,
+    onLoad : false
 }
 
 //Acrtion types
@@ -48,6 +49,12 @@ export const appReducer = (state = initial_state, action: Action_Type) => {
                 currentUserID: action.payload
             }
         }
+        case SET_ON_LOAD : {
+            return {
+                ...state,
+                onLoad : action.payload
+            }
+        }
         default:
             return state
     }
@@ -74,7 +81,11 @@ export const app_actions = {
     setCurrentUserID: (userID: string) => ({
         type: "messenger/app_reducer/set_current_user_id",
         payload: userID
-    }as const )
+    }as const ),
+    setOnLoad : (isLoad: boolean) => ({
+        type : "insta-clone/postReducer/set_on_load",
+        payload : isLoad
+    } as const  )
 
 }
 

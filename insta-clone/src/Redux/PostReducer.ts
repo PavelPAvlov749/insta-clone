@@ -22,6 +22,7 @@ const SET_NEW_POST_PHOTO = "insta-clone/postReducer/setNewPostPhoto"
 const SET_NEW_POST_TEXT = "insta-clone/postReducer/setNewPostText"
 const CREATE_POST = "insta-clone/postReducer/createPost"
 
+
 type ActionType = InferActionType<typeof postActions>
 type initial_state_type = {
 
@@ -33,7 +34,7 @@ export let initial_state = {
     currentPost : null as unknown as PostType,
     isOnNewPost : false,
     newPostPhoto : null as unknown as string,
-    newPostText : ""
+    newPostText : "",
 }
 
 
@@ -87,7 +88,7 @@ export const PostsReducer = (state = initial_state, action: ActionType) => {
         case SET_NEW_POST_TEXT : {
             return {
                 ...state,
-                newPostText : action.payload
+                newPostText : state.newPostText.concat(action.payload)
             }
         }
         case ADD_COMENT : {
@@ -212,8 +213,11 @@ export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | A
     creatorID : string,creatorAvatar:string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
+        dispatch(app_actions.setOnLoad(true))
         await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorAvatar,creatorID)
         dispatch(app_actions.set_is_fetch_fasle())
+        dispatch(app_actions.setOnLoad(false))
+        
     }
 }
 export const deleteComentThunk = (postID:string,comentID:string) =>{
