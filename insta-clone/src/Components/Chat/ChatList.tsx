@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { chat_actions, getChatsByUserID, getMessagesByChatID, getRoomByUserID } from "../../Redux/ChatReducer";
+import { useNavigate } from "react-router-dom";
 import { Global_state_type } from "../../Redux/Store";
 import { UserType } from "../../Redux/Types";
 import { getAllUsersThunk } from "../../Redux/UserSearchReducer";
@@ -11,24 +10,18 @@ import { MiniProfile } from "../MiniProfile/MiniProfile";
 import { Avatar } from "../UserPage/Avatar";
 import { LineLoader } from "../UserSearch/LoaderLine";
 
-const defaultAvatar = "http://www.faadooengineers.com/fests/wp-content/uploads/Tesseract-2017-Gurunanak-Institute-of-Technology.jpg"
+
 export const ChatList: React.FC = React.memo((props) => {
-     
+
     const navigate = useNavigate()
     const dispatch: any = useDispatch()
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getAllUsersThunk())
-    },[])
-    let isFetch = useSelector((state : Global_state_type) => {
+    }, [])
+    let isFetch = useSelector((state: Global_state_type) => {
         return state.app.is_fetch
     })
-    const bubleSort = (array: Array<UserType>) => {
-        for (let i = 0; i < array.length - 1; i++) {
-            for (let j = 0; j < array.length; j++) {
 
-            }
-        }
-    }
     const users = useSelector((state: Global_state_type) => {
         return state.search.users
     })
@@ -44,7 +37,7 @@ export const ChatList: React.FC = React.memo((props) => {
 
     const onClickHandler = (userID: string, avatar: string, fullName: string) => {
         //On chatlist click handler function
-       
+
         // dispatch(chat_actions.setActiveChat(userID, avatar, fullName))
         navigate("/chat/id:=" + userID)
 
@@ -54,16 +47,14 @@ export const ChatList: React.FC = React.memo((props) => {
         return (
             <section className={styles.chatListWrapper}>
                 {users?.map((user) => {
-                 
+
                     return (
                         <div className={styles.userMiniPage} key={user.userID} onClick={() => {
                             onClickHandler(user.userID, user.avatar, user.fullName)
                         }}>
-                            
-                              <Avatar avatarIMG={user.avatar} userID={user.userID} fullName={user.fullName} size={"small"}/>
-                                <span className={styles.chatListFullName}>{user.fullName}</span>
-                                
 
+                            <Avatar avatarIMG={user.avatar} userID={user.userID} fullName={user.fullName} size={"small"} />
+                            <span className={styles.chatListFullName}>{user.fullName}</span>
                         </div>
                     )
                 })}
@@ -72,7 +63,7 @@ export const ChatList: React.FC = React.memo((props) => {
     } else {
         return (
             <>
-                <LineLoader/>
+                <LineLoader />
             </>
         )
     }

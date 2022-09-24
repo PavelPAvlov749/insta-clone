@@ -31,7 +31,7 @@ export class abstractAPI {
     public getDatabase() {
         return this.RealtimeDataBase
     }
-    
+
 }
 
 class PostAPI extends abstractAPI {
@@ -39,9 +39,9 @@ class PostAPI extends abstractAPI {
         super()
     }
     async getPostListRealtime(userID: string) {
-        const postRef = ref(this.RealtimeDataBase,"Posts/" + userID)
-        let postList : Array<any> = []
-        onValue(postRef,(postSnapSchot) => {
+        const postRef = ref(this.RealtimeDataBase, "Posts/" + userID)
+        let postList: Array<any> = []
+        onValue(postRef, (postSnapSchot) => {
             postSnapSchot.forEach((post) => {
                 postList.push(post.val())
             })
@@ -49,43 +49,53 @@ class PostAPI extends abstractAPI {
         return postList
     }
 
-    async createPost(userID: string, postIMG: Blob | Uint8Array | ArrayBuffer, postText: string, postTag: string, creator: string,creatorID:string) {
-        //Create random image name with makeid function (exposts from Randomizer.ts)
-        const imageID: string = makeid(12);
-        //Image ref
-        const imageRef: StorageReference = storage_ref(this.storageRefrence, imageID)
-        //If _img from arguments !== null dowload the file in storage with image_name
-        if (postIMG !== null) {
-            //Uploading the image
-            uploadBytes(imageRef, postIMG).then(() => {
-                //After upload get the dowload url of the image to put them in database
-                getDownloadURL(imageRef).then((url) => {
-                    const newPostKey = push(child(ref(this.RealtimeDataBase), "Posts")).key;
-                    //Creating the post JSON object for database
-                    const postData = {
-                        post_text: postText,
-                        postTags: postTag,
-                        post_img: url,
-                        creator: creator,
-                        likes_count: [],
-                        createdAt: new Date().getDate(),
-                        id: newPostKey,
-                        creatorID : creatorID,
+    async createPost(userID: string, postIMG: Blob | Uint8Array | ArrayBuffer, postText: string, postTag: string, creator: string, creatorID: string) {
+        try {
+            //Create random image name with makeid function (exposts from Randomizer.ts)
+            const imageID: string = makeid(12);
+            //Image ref
+            const imageRef: StorageReference = storage_ref(this.storageRefrence, imageID)
+            //If _img from arguments !== null dowload the file in storage with image_name
+            if (postIMG !== null) {
+                //Uploading the image
+                uploadBytes(imageRef, postIMG).then(() => {
+                    //After upload get the dowload url of the image to put them in database
+                    getDownloadURL(imageRef).then((url) => {
+                        const newPostKey = push(child(ref(this.RealtimeDataBase), "Posts")).key;
+                        //Creating the post JSON object for database
+                        const postData = {
+                            post_text: postText,
+                            postTags: postTag,
+                            post_img: url,
+                            creator: creator,
+                            likes_count: [],
+                            createdAt: new Date().getDate(),
+                            id: newPostKey,
+                            creatorID: creatorID,
 
-                    }
-                    const postRef = {
-                        post_img : url,
-                        id: newPostKey
-                    }
-                    const updates: any = {};
-                    updates["Posts/" + newPostKey] = postData;
-                    update(ref(this.RealtimeDataBase), updates);
-                    updates["Users/" + userID + "/posts/" + newPostKey] = postRef
-                    //Update Database with new element
-                    update(ref(this.RealtimeDataBase), updates);
+                        }
+                        const postRef = {
+                            post_img: url,
+                            id: newPostKey
+                        }
+                        const updates: any = {};
+                        updates["Posts/" + newPostKey] = postData;
+                        update(ref(this.RealtimeDataBase), updates);
+                        updates["Users/" + userID + "/posts/" + newPostKey] = postRef
+                        //Update Database with new element
+                        update(ref(this.RealtimeDataBase), updates);
+                        return postData
+                    })
                 })
-            })
+            } else {
+                throw new Error("Cannot load the post.Img equals null")
+                
+            }
+        } catch (ex) {
+            console.log(ex)
+            return ex
         }
+
     }
     async savePostToGalery(userID: string, currentUserID: string, postID: string) {
         const savedPostKey = await (await get(child(this.DatabaseRef, "Users/" + userID + "/posts/" + postID))).key
@@ -107,20 +117,20 @@ class PostAPI extends abstractAPI {
         console.log(result)
         return result
     }
-    async getPostByID( postID: string) {
+    async getPostByID(postID: string) {
         //The function takes as arguments the userID(string) and the postID(string) as an argument.
         //Returns the object of the post containing the following fields (picture, text, number of likes, creator of the post
         //And an array of comments(Array<string>)
 
         const post = await (await get(child(this.DatabaseRef, "Posts/" + "/" + postID))).val()
-        
+
         return post
     }
     async getListOfPosts(userID: string) {
         //This method will return all posts userID(Array<PostType>)
-        
+
         const postsList = await (await (await get(child(this.DatabaseRef, "Users/" + userID + "/posts/"))))
- 
+
         return postsList
     }
 
@@ -142,7 +152,7 @@ class PostAPI extends abstractAPI {
         } else {
             //Like
             //To add the like push currentUserID (witch click the like button) in Posts/likes_couunt in Database
-            const newLike = await push(child(this.DatabaseRef,"Posts/" + postID + "/likes_count/")).key
+            const newLike = await push(child(this.DatabaseRef, "Posts/" + postID + "/likes_count/")).key
             const data = currentUserID
             const updates: any = {}
             updates["Posts/" + postID + "/likes_count/" + newLike] = data
@@ -161,13 +171,13 @@ class PostAPI extends abstractAPI {
         const comentID = makeid(9)
         try {
             if (comentText.length > 0) {
-                const comentData : ComentType= {
+                const comentData: ComentType = {
                     coment_text: comentText,
                     comentatorName: creator,
                     avatar: avatar,
                     createdAt: new Date().toString(),
                     comentID: comentID,
-                    comentatorID : userID
+                    comentatorID: userID
                 };
                 const updates: any = {}
                 updates["Posts/" + postID + "/coments/" + comentID] = comentData
@@ -180,8 +190,8 @@ class PostAPI extends abstractAPI {
             console.log(ex)
         }
     }
-    async deleteComent( postID: string, comentID: string) {
-       
+    async deleteComent(postID: string, comentID: string) {
+
         let data = null
         const updates: any = {}
         updates["Posts/" + postID + "/coments/" + comentID] = data

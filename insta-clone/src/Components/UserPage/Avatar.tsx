@@ -44,7 +44,7 @@ export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
     } else {
         return (
             <div className={props.size === "large" ? styles.avatarLarge : styles.avatarSmall}>
-
+                
                 <label htmlFor="avatarInputImg">
                     <img src={props.avatarIMG} alt="#"></img>
                 </label>

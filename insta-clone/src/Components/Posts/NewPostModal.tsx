@@ -10,6 +10,7 @@ import { ComentType, PostType } from "../../Redux/Types";
 import { postAPI } from "../../DAL/PostApi";
 import { app_actions } from "../../Redux/AppReducer";
 import { useNavigate } from "react-router-dom";
+import { SelectPhoto } from "../NewPost/PictureSelector";
 
 type PostFormType = {
     post_text: string,
@@ -22,7 +23,8 @@ type PostFormType = {
 export const NewPostModalWindow: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
     const navigation = useNavigate()
-    let isOnLoad = useSelector((state:Global_state_type) => {
+    let [step, setStep] = useState(1)
+    let isOnLoad = useSelector((state: Global_state_type) => {
         return state.app.onLoad
     })
     //NEW POST SELECTORS
@@ -53,9 +55,9 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
             //If file was uploaded with error log the error
             console.log("ERROR")
         } else {
-           
+
             fileReader.readAsDataURL(target.files[0])
-            fileReader.onload = function (e:ProgressEvent<FileReader>) {
+            fileReader.onload = function (e: ProgressEvent<FileReader>) {
                 //Dispatch fileRader result in postReducer
                 dispatch(app_actions.setOnLoad(true))
                 dispatch(postActions.setNewPostPhoto(fileReader.result))
@@ -70,7 +72,7 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
         dispatch(postActions.setNewPostPhoto(null))
     }
     //TEXT INPUT onCHAHGE HANDLER FUNCTION WILL DISPATCH IN STORE NEW VALUE OF NEW POST TEXT FIELD
-    const textFieldOnChangeHandler = (e:any) => {
+    const textFieldOnChangeHandler = (e: any) => {
         console.log(e.key)
         dispatch(postActions.setNewPosttext(e.key))
     }
@@ -83,41 +85,62 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
             creator: currendUser.fullName as string,
             likes_count: [] as Array<string>,
             coments: [] as Array<ComentType>,
-            creatorID : currendUser.userID  as string,
-            creatorAvatar : currendUser.avatar as string
+            creatorID: currendUser.userID as string,
+            creatorAvatar: currendUser.avatar as string
         }
         dispatch(createNewPostThunk(currendUser.userID as string, values.file, values.post_text,
-             values.post_tag, currendUser.fullName as string,currendUser.userID as string))
+            values.post_tag, currendUser.fullName as string, currendUser.userID as string))
         dispatch(postActions.setIsOnnewPost(false))
+    }
+    const NextStepHandler = () => {
+        setStep(2)
+    }
+    const stepBack = () => {
+        setStep(1)
     }
     return (
         <section className={styles.newPostModal}>
 
-            <h1 style={{ "display": "inline" }}>Creating a publication</h1>
-            <span onClick={onCloseHandler}>Close</span>
-            <hr />
-            <label htmlFor="file_input">
-                <img src={newPostIMG ? newPostIMG : GaleryImg} alt="#" ></img>
-            </label>
-            <Formik enableReinitialize={true}
-                initialValues=
-                {{post_text: new_post_text,
-                post_img: new_post_img,
-                post_tag: new_post_tag,
-                file: file}}
-                onSubmit={formSubmit}>
-                
-            <Form >
-                <input type="file" id="file_input" style={{ "display": "none" }} accept="image/*" onChange={inputOnChangeHandler} ></input>
-                <h4>Type text to your post : </h4>
-                <Field type="text" name="post_text" className={styles.textInput} onKeyUp={textFieldOnChangeHandler}></Field>
-                <h4>Thype tags : </h4>
-                <Field type="text" name="post_tag" className={styles.textInput}/>
-                <br />
-                <button type="submit" className={styles.publish} disabled={isOnLoad}>Publish</button>
-            </Form>
-        </Formik>
-           
+            <div className={styles.newPostModal}>
+                <Formik enableReinitialize={true} onSubmit={formSubmit}
+                    initialValues={
+                        {
+                            post_text: new_post_text,
+                            post_img: newPostIMG,
+                            post_tag: new_post_tag,
+                            file: file
+                        }}>
+                    <Form>
+                        {step === 1 ? <div>
+                            <label htmlFor="file_input">
+                                {newPostIMG ?  <img className={styles.newPostIMG} src={newPostIMG } alt="#" ></img> :  <img className={styles.imgIcon} src={GaleryImg} alt="#" ></img>}
+                               
+                             
+                            </label>
+                            <br />
+                            <input type="file" id="file_input" style={{ "display": "none" }} accept="image/*" onChange={inputOnChangeHandler} ></input>
+                            <h2 onClick={NextStepHandler}>{"Next\t" + ">>"}</h2>
+                        </div> : <div>
+                            <h1>Come up with a signature</h1>
+                            <Field type="text" name="post_text" className={styles.textInput} onKeyUp={textFieldOnChangeHandler}></Field>
+                            <h1>Add tags to your post</h1>
+                            <Field type="text" name="post_tag" className={styles.textInput} />
+
+                            <br />
+                            <button type="submit" className={styles.publish} disabled={isOnLoad}>Publish</button>
+                            <br></br>
+                            <h2 onClick={stepBack}>{"<<\t" + "Back"}</h2>
+                        </div>}
+
+
+                    </Form>
+                </Formik>
+
+               
+
+            </div>
+
+
         </section >
     )
 })
