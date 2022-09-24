@@ -8,6 +8,7 @@ import { getAllUsersThunk } from "../../Redux/UserSearchReducer";
 // import styles from "../../Styles/Chat.module.css"
 import styles from "../../Styles/ChatList.module.css"
 import { MiniProfile } from "../MiniProfile/MiniProfile";
+import { Avatar } from "../UserPage/Avatar";
 import { LineLoader } from "../UserSearch/LoaderLine";
 
 const defaultAvatar = "http://www.faadooengineers.com/fests/wp-content/uploads/Tesseract-2017-Gurunanak-Institute-of-Technology.jpg"
@@ -59,10 +60,9 @@ export const ChatList: React.FC = React.memo((props) => {
                             onClickHandler(user.userID, user.avatar, user.fullName)
                         }}>
                             
-                                <img src={user.avatar ? user.avatar : defaultAvatar} alt="#" ></img>
-                                <span>{user.fullName}</span>
+                              <Avatar avatarIMG={user.avatar} userID={user.userID} fullName={user.fullName} size={"small"}/>
+                                <span className={styles.chatListFullName}>{user.fullName}</span>
                                 
-  
 
                         </div>
                     )

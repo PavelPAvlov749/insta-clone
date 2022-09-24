@@ -49,7 +49,7 @@ class PostAPI extends abstractAPI {
         return postList
     }
 
-    async createPost(userID: string, postIMG: Blob | Uint8Array | ArrayBuffer, postText: string, postTag: string, creator: string,creatorAvatar : string,creatorID:string) {
+    async createPost(userID: string, postIMG: Blob | Uint8Array | ArrayBuffer, postText: string, postTag: string, creator: string,creatorID:string) {
         //Create random image name with makeid function (exposts from Randomizer.ts)
         const imageID: string = makeid(12);
         //Image ref
@@ -71,7 +71,6 @@ class PostAPI extends abstractAPI {
                         createdAt: new Date().getDate(),
                         id: newPostKey,
                         creatorID : creatorID,
-                        creatorAvatar : creatorAvatar
 
                     }
                     const postRef = {

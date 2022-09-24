@@ -210,11 +210,11 @@ export const getSinglePostByID = (postID : string) => {
     }
 }
 export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | ArrayBuffer,postText : string,postTags : string,userFullNAme : string,
-    creatorID : string,creatorAvatar:string) => {
+    creatorID : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         dispatch(app_actions.setOnLoad(true))
-        await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorAvatar,creatorID)
+        await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorID)
         dispatch(app_actions.set_is_fetch_fasle())
         dispatch(app_actions.setOnLoad(false))
         

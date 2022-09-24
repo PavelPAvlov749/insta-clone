@@ -23,7 +23,7 @@ export const ShowedPost: React.FC = React.memo((props) => {
     const actualPost = useSelector((state: Global_state_type) => {
         return state.userPosts.currentPost
     })
-
+    console.log(actualPost.post_img)
 
     const tapLikeHandler = () => {
         if (actualPost.likes_count?.includes(currentUserID as string)) {
@@ -41,12 +41,12 @@ export const ShowedPost: React.FC = React.memo((props) => {
         return (
             <section className={styles.postWrapper}>
                                         <NavLink to={`/profile/id:=${actualPost.creatorID}`} className={styles.creatorInfo}>
-                    <img className={styles.autorAvatar} src={actualPost.creatorAvatar as string} alt="#" style={{ "display": "inline" }}></img>
+                    <img className={styles.autorAvatar} src={"sdfsdfg"} alt="#" style={{ "display": "inline" }}></img>
                     <h1 className={styles.autorName}>{actualPost?.creator}</h1>
                     <div className={styles.hr}></div>
                 </NavLink>
                     <div className={styles.postIMGContainer}>
-                    <img className={styles.postIMG} src={actualPost?.post_img ? actualPost?.post_img : "#"} alt="" />
+                    <img className={styles.postIMG} src={actualPost.post_img} alt="" />
                         <img src={likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
                         <span>{actualPost.likes_count?.length + "\t likes"}</span>
                     </div>           

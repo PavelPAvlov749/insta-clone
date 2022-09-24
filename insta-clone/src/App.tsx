@@ -29,7 +29,7 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
   },[])
  console.log(props.isFetch)
 
-  if(props.isInit){
+  if(props.isInit || !props.isFetch){
     return (
       <div className={styles.app}>
   

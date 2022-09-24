@@ -1,32 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { chatAPI } from "../../DAL/ChatAPI";
-import { app_actions } from "../../Redux/AppReducer";
-import { chat_actions } from "../../Redux/ChatReducer";
-import { AccountActions, updateAvatarThunk } from "../../Redux/ProfileReducer";
 import { Global_state_type } from "../../Redux/Store";
-import { ChatType } from "../../Redux/Types";
 import { followTooglethunk, getUserPageByID, userPageActions } from "../../Redux/UserPageReducer";
 import { UserPostsList } from "../Posts/UsersPostsList";
 import { UserStatus } from "../UserStatus/Status";
 import styles from "../../Styles/UserPage.module.css"
-import { userPageSelector } from "../../Selectors/Selectors";
+import { Avatar } from "./Avatar";
 
 
 
 
 export const UserPage: React.FC = React.memo(() => {
-    let isFetch = useSelector((state:Global_state_type) => {
-        return state.app.is_fetch
-    })
     const navigate = useNavigate()
-    const account = useSelector((state: Global_state_type) => {
-        return state.account
-    })
-    //Local state If isNewMessage true render message window
-    let [isNewMessage, setIsNewMessage] = useState(false)
-
     //Get userPageID from query string
     const userPageUrl = useLocation().pathname.split("=")[1]
     //Count of user posts 
@@ -50,22 +36,6 @@ export const UserPage: React.FC = React.memo(() => {
     const setNewStatus = (userID: string, status: string) => {
         dispatch(userPageActions.setStatus(status))
     }
-    //Avatar update handler convert file blob input into string
-    const updateAvatar = (event: any) => {
-
-        let fileReader = new FileReader()
-        if (!event.target.files.length) {
-            console.log("ERROR")
-        } else {
-            fileReader.readAsDataURL(event.target.files[0])
-            fileReader.onload = function () {
-                dispatch(updateAvatarThunk(event.target.files[0], currentUserID))
-                dispatch(AccountActions.updateAvatar(fileReader.result?.toString()))
-            }
-
-        }
-    }
-
     //Follow button handler render only when user page is not actualUser
     const followToogle = () => {
 
@@ -85,11 +55,7 @@ export const UserPage: React.FC = React.memo(() => {
     return (
         <div >
                 <section  className={styles.userPageWrapper} >
-                    <label htmlFor="avatarInput">
-                        <img className={styles.avatar} src={actualUserPage.avatar ? actualUserPage.avatar : "#"} alt="" onLoad={() => {
-                            dispatch(app_actions.set_is_fetch_true())
-                        }} />
-                    </label>
+                    <Avatar  avatarIMG={actualUserPage.avatar} userID={actualUserPage.userID} fullName={actualUserPage.fullName} size={"large"}/>
                     <br />
                     <div className={styles.info}>
                         <h1 className={styles.fullName}>{actualUserPage.fullName}</h1>
@@ -97,7 +63,6 @@ export const UserPage: React.FC = React.memo(() => {
                         <br />
                         <span className={styles.publications}>{publicatiponsCount + "\t publications"}</span>
                         <br />
-                        <input type="file" placeholder="Files" accept="image/*" onChange={updateAvatar} id="avatarInput" style={{ "display": "none" }}></input>
                         <span>{actualUserPage.followers?.length + "\t  followers"}</span>
                         <br />
 

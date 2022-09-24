@@ -87,7 +87,7 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
             creatorAvatar : currendUser.avatar as string
         }
         dispatch(createNewPostThunk(currendUser.userID as string, values.file, values.post_text,
-             values.post_tag, currendUser.fullName as string,currendUser.avatar,currendUser.userID as string))
+             values.post_tag, currendUser.fullName as string,currendUser.userID as string))
         dispatch(postActions.setIsOnnewPost(false))
     }
     return (

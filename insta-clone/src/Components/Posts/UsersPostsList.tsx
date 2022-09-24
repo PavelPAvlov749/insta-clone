@@ -13,7 +13,9 @@ export const UserPostsList: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
     const userPageID = useLocation().pathname.split("=")[1]
 
-
+    const postIMG = useSelector((state:Global_state_type) =>{
+        return 
+    })
     useEffect(() => {
         dispatch(getPostListByUserID(userPageID))
     }, [userPageID])
@@ -28,12 +30,14 @@ export const UserPostsList: React.FC = React.memo((props) => {
         dispatch(postActions.set_showed_post(postData))
 
     }
+    
     return (
         <div className={styles.wrapper}>
             <section className={styles.postsWrapper}>
                 {posts.length > 0 ? posts.map((post: PostType) => {
+                      {console.log(typeof(post.post_img))}
                     return (
-                     
+                      
                             <img src={post.post_img} className={styles.postPreview} alt="" onClick={() => {
                                 navigateToPost(post)
                             }} />

@@ -7,6 +7,7 @@ import { PostType, UserType } from "../../Redux/Types";
 import { userPageActions } from "../../Redux/UserPageReducer";
 import { getAllUsersThunk, searchUserPageByName } from "../../Redux/UserSearchReducer";
 import styles from "../../Styles/Search.module.css"
+import { Avatar } from "../UserPage/Avatar";
 import { LineLoader } from "./LoaderLine";
 
 
@@ -53,7 +54,7 @@ export const UserSearch: React.FC = React.memo((props) => {
                         <div className={styles.userMiniPage} key={user.userID} onClick={() => {
                             setCurrentUserPage(user.userID)
                         }}>
-                            <img className={styles.avatar} src={user.avatar ? user.avatar : "#"} alt="#"></img>
+                            <Avatar avatarIMG={user.avatar} userID={user.userID} fullName={user.fullName} size={"small"}/>
                             <span>{user.fullName}</span>
                            
                         </div>

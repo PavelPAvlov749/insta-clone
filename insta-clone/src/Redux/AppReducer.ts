@@ -99,9 +99,10 @@ export const InitializeThunk = ()  => {
             if(user !== null){
                 dispatch(app_actions.setCurrentUserID(user?.uid as string))
                 dispatch(getAccountByID(user.uid))
-                dispatch(app_actions.init(true))
+        
                 dispatch(auth_actions.set_auth_true())
                 dispatch(app_actions.set_is_fetch_fasle())
+                dispatch(app_actions.init(true))
             }else{
                 console.log("NOT_AUTHORIZED")
                 dispatch(auth_actions.set_auth_false())
