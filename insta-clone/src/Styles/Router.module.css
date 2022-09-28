@@ -1,0 +1,5 @@
+.router{
+    width: 95%;
+    position: grid;
+    grid-area: router;
+}

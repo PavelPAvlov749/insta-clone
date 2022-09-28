@@ -55,7 +55,7 @@ export const UserSearch: React.FC = React.memo((props) => {
                             setCurrentUserPage(user.userID)
                         }}>
                             <Avatar avatarIMG={user.avatar} userID={user.userID} fullName={user.fullName} size={"small"}/>
-                            <span>{user.fullName}</span>
+                            <span className={styles.userName}>{user.fullName}</span>
                            
                         </div>
                     )

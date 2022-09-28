@@ -7,6 +7,7 @@ import { UserPostsList } from "../Posts/UsersPostsList";
 import { UserStatus } from "../UserStatus/Status";
 import styles from "../../Styles/UserPage.module.css"
 import { Avatar } from "./Avatar";
+import { abstractAPI } from "../../DAL/PostApi";
 
 
 
@@ -47,34 +48,46 @@ export const UserPage: React.FC = React.memo(() => {
             dispatch(userPageActions.follow(currentUserID))
         }
     }
+
     //Send message Handler
     const sendMessage = () => {
 
         navigate(`/chat/id:=${actualUserPage.userID}`)
     }
     return (
-        <div >
-                <section  className={styles.userPageWrapper} >
-                    <Avatar  avatarIMG={actualUserPage.avatar} userID={actualUserPage.userID} fullName={actualUserPage.fullName} size={"large"}/>
-                    <br />
-                    <div className={styles.info}>
-                        <h1 className={styles.fullName}>{actualUserPage.fullName}</h1>
-                        {userPageUrl === currentUserID ? <UserStatus status={actualUserPage.status} userID={userPageUrl} setNewStatus={setNewStatus} /> : <span>{actualUserPage.status}</span>}
-                        <br />
-                        <span className={styles.publications}>{publicatiponsCount + "\t publications"}</span>
-                        <br />
-                        <span>{actualUserPage.followers?.length + "\t  followers"}</span>
-                        <br />
+        <div className={styles.userPageContainr}>
+            <section className={styles.userPageWrapper} >
+                <Avatar avatarIMG={actualUserPage.avatar} userID={actualUserPage.userID} fullName={actualUserPage.fullName} size={"large"} />
+                
+                <br />
+                
+                <h1 className={styles.fullName}>{actualUserPage.fullName}</h1>
 
-                        <span className={styles.subscribesCount}>{actualUserPage.subscribes?.length + "\t subscribes"}</span>
+                    
+                <div className={styles.info}>
+                {userPageUrl === currentUserID ? <UserStatus status={actualUserPage.status} userID={userPageUrl} 
+                    setNewStatus={setNewStatus} /> : <p className={styles.status}>{actualUserPage.status}</p>}
+                    <div className={styles.publications}>
+                        <span>{publicatiponsCount}</span>
+                        <br></br>
+                        <span >{"Posts"}</span>
+                    </div>
+                    <div className={styles.Follower}>
+                        <span>{actualUserPage.followers?.length}</span>
+                        <br></br>
+                        <span >{"Follower"}</span>
+                    </div>
+                    <div className={styles.Followed}>
+                        <span>{actualUserPage.subscribes?.length}</span>
+                        <br></br>
+                        <span >{"Followed"}</span>
+                    </div>
+                </div>
+                <section className={styles.contrtolButtons}>
                         {userPageUrl !== currentUserID ? <button onClick={followToogle}>{Object.values(actualUserPage.followers as Array<string>).includes(currentUserID) ? "Unfollow" : "Follow"}</button> : null}
                         {userPageUrl !== currentUserID ? <button onClick={sendMessage}>Send message</button> : null}
-
-                    </div>
-                    <div className={styles.hr}></div>
-                    
-                </section>
-                
+                    </section>
+            </section>
             <UserPostsList />
         </div>
 

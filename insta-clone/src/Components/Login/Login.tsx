@@ -21,7 +21,8 @@ export const Login: React.FC = React.memo((props) => {
     let login = "";
     let password = "";
     const set_submit = (values: { login: string, password: string },) => {
-        dispatch(loginInWithEmailAndPassword(values.login, values.password))
+        let reuslt = dispatch(loginInWithEmailAndPassword(values.login, values.password))
+        console.log(reuslt)
     }
     const sign_in_with_google = () => {
         dispatch(signInWithGooglePopUp())

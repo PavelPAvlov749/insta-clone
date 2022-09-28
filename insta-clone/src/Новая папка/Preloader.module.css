@@ -1,0 +1,38 @@
+.loader{
+position: relative;
+padding-top: 45%;
+margin-left: 45%;
+display: flex;
+align-items: center;
+
+
+}
+.lineLoader{
+    position: absolute;
+    margin-left: -1rem;
+    padding: 0%;
+    width: 110%;
+    height: 5px;
+    background: linear-gradient(90deg, #60086f, #f4e5ed, #05878c);
+    background-size: 200% 200%;
+    -webkit-animation: Animation 5s ease infinite;
+    -moz-animation: Animation 5s ease infinite;
+    animation: Animation 5s ease infinite;
+
+}
+
+@-webkit-keyframes Animation {
+    0%{background-position:10% 0%}
+    50%{background-position:91% 100%}
+    100%{background-position:10% 0%}
+}
+@-moz-keyframes Animation {
+    0%{background-position:10% 0%}
+    50%{background-position:91% 100%}
+    100%{background-position:10% 0%}
+}
+@keyframes Animation { 
+    0%{background-position:10% 0%}
+    50%{background-position:91% 100%}
+    100%{background-position:10% 0%}
+}

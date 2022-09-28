@@ -8,14 +8,12 @@ class ChatAPI extends abstractAPI {
     constructor() {
         super()
     }
-    async sendMessage(senderID: string, recepientID: string, messageText: string, senderName: string,
-        senderAvatar: string) {
+    async sendMessage(senderID: string, recepientID: string, messageText: string, senderName: string,) {
 
         let newMessage: MessageType = {
             messageData: messageText,
             createdAt: new Date(),
             userID: senderID,
-            avatar: senderAvatar,
             fullName: senderName
         }
         const roomRef = await (await get(child(this.DatabaseRef, "Users/" + senderID + "/chats/" + recepientID))).val()

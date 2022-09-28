@@ -7,6 +7,7 @@ import { Registration } from "../Components/Login/Registartion"
 import { ShowedPost } from "../Components/Posts/OpenedPost"
 import { UserPage,  } from "../Components/UserPage/UserPage"
 import { UserSearch } from "../Components/UserSearch/UserSearch"
+import styles from "../Styles/Router.module.css"
 
 
 const LOGIN = "/login"
@@ -28,7 +29,7 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
 
     if(props.isAuth){
         return (
-            <div >
+            <div className={styles.router}>
                 <Routes>
                     <Route path={LOGIN} element={<Navigate to={USER_PROFILE + "=" + props.actualUser}/>}/>
                     <Route path={ROOT} element={null}/>

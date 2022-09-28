@@ -20,22 +20,20 @@ export const TextInput: React.FC = React.memo((props) => {
 
 
     const setSubmit = (values: typeof initialFormValues) => {
-        dispatch(sendMessageThunk(currentUser.userID as string, location, values.newMessage, currentUser.fullName as string, currentUser.avatar))
-
+        dispatch(sendMessageThunk(currentUser.userID as string, location, values.newMessage, currentUser.fullName as string,))
         setNewMessageText("")
     }
     const OnChangeHandler = (e: React.UIEvent<HTMLInputElement, UIEvent>) => {
-        console.log(e.currentTarget.value)
         setNewMessageText(e.currentTarget.value)
     }
     return (
-        <>
+        <footer>
             <div className={styles.inputWrapper}>
               
                     <img src={emojiPNG} alt="#" className={styles.emoji}></img>
                     <Formik onSubmit={setSubmit} enableReinitialize={true} initialValues={initialFormValues} >
                         <Form className={styles.formik}>
-                            <Field type="text" name="newMessage" onChange={OnChangeHandler}
+                            <Field type="text" name="newMessage" autocomplete="off" onChange={OnChangeHandler}
                                 value={newMessageText} className={styles.messageInput} >
                             </Field>
                             <button type="submit" className={styles.textArea}>Send</button>
@@ -44,6 +42,6 @@ export const TextInput: React.FC = React.memo((props) => {
 
 
             </div>
-        </>
+        </footer>
     )
 })

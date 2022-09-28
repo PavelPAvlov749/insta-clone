@@ -1,0 +1,39 @@
+.chatWrapper{
+    /* position: absolute; */
+    display: grid;
+    width: 100%;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    grid-template-columns: 1.7fr 3fr;
+    grid-template-areas: 
+    "chatList Messages"
+
+}
+
+
+.isAciveChat{
+    background-color: grey;
+}
+
+
+/* @media(max-height:765px){
+    .chatWrapper{
+        max-height: 600px;
+    }
+} */
+/* @media(max-height:667px){
+    .chatWrapper{
+        max-height: 550px;
+    }
+} */
+
+@media(max-width:607px){
+    .chatWrapper{
+    grid-template-columns: 1fr;
+    width: 100%;
+    border: none;
+    }
+}
+

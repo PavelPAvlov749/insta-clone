@@ -138,7 +138,7 @@ export const getRealtimeMessages = (currentUserID:string,userID:string) => {
         let messages: Array<any> = []
             console.log(currentUserID)
             console.log(userID)
-            if(Ref.chatRef){
+            if(Ref){
                 const roomRef = ref(dataBase, "Chats/" + Ref.chatRef)
                 onValue(roomRef, (roomSnapSchot) => {
                     messages = Object.values(roomSnapSchot.val())
@@ -146,7 +146,6 @@ export const getRealtimeMessages = (currentUserID:string,userID:string) => {
                     dispatch(app_actions.set_is_fetch_fasle())
                     console.log(messages)
                 })
-            
             }else{
                 dispatch(chat_actions.getMessages([]))
                 dispatch(app_actions.set_is_fetch_fasle())
@@ -155,13 +154,12 @@ export const getRealtimeMessages = (currentUserID:string,userID:string) => {
 
     }
 }
-export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string,avatar : string) => {
+export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string) => {
     return async function (dispatch : any){
         dispatch(app_actions.set_is_fetch_true())
-        let newMessage = await chatAPI.sendMessage(sender,recepient,messageText,senderName,avatar)
+        let newMessage = await chatAPI.sendMessage(sender,recepient,messageText,senderName)
         dispatch(chat_actions.sendMEssage({
             messageData : messageText,
-            avatar : avatar,
             fullName : senderName,
             userID : sender,
             createdAt : new Date()

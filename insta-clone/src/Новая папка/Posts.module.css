@@ -1,22 +1,37 @@
 .wrapper{
-    grid-area: postList;
-}
-.postsWrapper{
 
+}
+.postsWrapper {
+    position: fixed;
     display: grid;
     grid-template-columns:repeat(3,1fr);
     text-align: center;
     grid-column-start: 1;
     grid-column-end: -1;
     grid-gap: 0.5rem;
+    
+}
+@media(max-width:1300px){
+
+}
+@media(max-width:986px){
 
 }
 
-.postPreview{
+@media(max-width:400px){
+
+
+
+}
+
+
+.postPreview {
+    
+    cursor: pointer;
     display: grid;
     width:100%;
-    max-width:250px;
+    max-width:350px;
     height:100%;
-    max-height: 250px;
+    max-height: 350px;
     object-fit:cover;
 }

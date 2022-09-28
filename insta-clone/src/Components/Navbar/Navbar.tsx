@@ -36,7 +36,7 @@ export const Navbar: React.FC = React.memo((props) => {
     }
     return (
         <section className={style.navbarContainer}>
-            <div className={style.navbar}>
+
             
                 <section className={style.navigation}>
                
@@ -73,7 +73,7 @@ export const Navbar: React.FC = React.memo((props) => {
                     
                 </section>
               
-            </div>
+
             <hr className={style.hr} />
         </section>
 

@@ -4,7 +4,6 @@ import styles from "../../Styles/Message.module.css"
 
 type MessagePropsType = {
     messageText: string,
-    avatar: string | null,
     userName: string,
     userID: string,
     currentUserID : string
@@ -16,7 +15,7 @@ export const Message: React.FC<MessagePropsType> = React.memo((props) => {
         <section   className={props.currentUserID === props.userID ? styles.currentUserMessage : styles.message}>
            
             <NavLink to={`/profile/id=${props.userID}`}>
-                <img src={props.avatar ? props.avatar : "#"} alt="#" className={props.currentUserID === props.userID ? styles.currentAvatar : styles.avatar}></img>
+                {/* <img src={props.avatar ? props.avatar : "#"} alt="#" className={props.currentUserID === props.userID ? styles.currentAvatar : styles.avatar}></img> */}
             </NavLink>
             <br />
             <span>{props.messageText} </span>

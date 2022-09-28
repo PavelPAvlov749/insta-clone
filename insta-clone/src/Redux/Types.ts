@@ -47,7 +47,7 @@ export type ChatType = {
 export type MessageType = {
     fullName : string,
     userID : string,
-    avatar : string,
+    avatar? : string,
     messageData : string,
     createdAt : any,
 }
