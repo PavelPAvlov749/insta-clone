@@ -1,0 +1,53 @@
+footer{
+    position:fixed;
+    bottom:0;
+    display: grid;
+    width: 100%;
+    padding: 0%;
+    margin: 0%;
+    grid-area: input;
+    
+}
+
+.inputWrapper{
+    padding: 1rem 0rem 1rem 0.0rem;
+    border-width: 2px;
+    width: 100%;
+    border-style: solid;
+    border-color: lightgrey;
+    border-radius: 10px;
+
+    
+}
+.formik{
+    display: inline;
+    padding: 1rem 0.5rem 2rem 1rem;
+}
+
+.emoji{
+    display: inline;
+    vertical-align: middle;
+    width: 25px;
+    height: 25px;
+}
+.inputWrapper button{
+
+    border: none;
+    color: #0095F6;
+    background-color:transparent;
+    vertical-align: middle;
+    
+}
+
+.messageInput{
+    height: 1.5rem;
+    display: inline;
+    width: 65%;
+    
+    /* height: max-content; */
+    vertical-align: middle;
+   
+}
+.messageInput:active{
+    border: none;
+}

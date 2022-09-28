@@ -2,7 +2,6 @@
     width: 100%;
     display: grid;
     overflow-y: scroll;
-    background-color: aqua;
     height: 100%;
 }
 .searchResults{

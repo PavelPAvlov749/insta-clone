@@ -1,0 +1,24 @@
+.noMessage{
+
+}
+.noMessage img{
+    width: 100px;
+    height: 100px;
+}
+.messageArea{
+    width: 105%;
+    grid-area: messages;
+    display: block;
+    overflow-y: scroll;
+ 
+
+    height: -moz-calc(100% - 200px);
+    height: -webkit-calc(100% - 200px);
+    height: calc(100vh - 135px);
+
+}
+@media(max-width : 767px){
+    .noMessage{
+        display: none;
+    }
+}
