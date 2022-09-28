@@ -52,8 +52,8 @@ export type MessageType = {
     createdAt : any,
 }
 export type AvatarPropsType = {
-    fullName : string,
+    fullName? : string,
     avatarIMG : string | null,
-    size : "large" | "small" ,
-    userID : string
+    size : "large" | "small" | "chatSize",
+    userID? : string
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { getMessagesByChatID, getRealtimeMessages, getRoomByUserID, } from "../../Redux/ChatReducer";
+import { getInterlocutorAvatar, getMessagesByChatID, getRealtimeMessages, getRoomByUserID, } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
 import styles from "../../Styles/MessageWindow.module.css"
 import { Message } from "./Message";
@@ -22,7 +22,9 @@ export const Dirrect: React.FC = React.memo((props) => {
     const activeChat = useSelector((state:Global_state_type) => {
         return state.chat.activeChat
     })
-
+    useEffect(() => {
+        dispatch(getInterlocutorAvatar(location))
+    },[location])
     useEffect(()=>{
         dispatch(getRoomByUserID(currentUser as string, location))
     },[location])
@@ -31,7 +33,9 @@ export const Dirrect: React.FC = React.memo((props) => {
         dispatch(getRealtimeMessages(currentUser as string,location))
         console.log("USEEFFECT")
     }, [location])
-
+    const interlocutorAvatar = useSelector((state: Global_state_type) => {
+        return state.chat.interlocutorAvatar
+    })
     return (
         <section className={styles.chatWindowWrapper}>
             <div className={styles.messageArea} >
@@ -39,7 +43,7 @@ export const Dirrect: React.FC = React.memo((props) => {
                     return (
                         <>
                             <Message userName={message.fullName}  userID={message.userID}
-                                messageText={message.messageData} currentUserID={currentUser as string} />
+                                messageText={message.messageData} currentUserID={currentUser as string} avatar={interlocutorAvatar} />
                         </>
                     )
                 }) :
@@ -47,7 +51,6 @@ export const Dirrect: React.FC = React.memo((props) => {
                 }
                 <div ref={chat_anchor_ref}></div>
             </div>
-
                 <TextInput />
         </section>
     )

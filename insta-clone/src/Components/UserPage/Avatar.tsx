@@ -19,7 +19,7 @@ export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
         } else {
             fileReader.readAsDataURL(event.target.files[0])
             fileReader.onload = function () {
-                dispatch(updateAvatarThunk(event.target.files[0], props.userID))
+                dispatch(updateAvatarThunk(event.target.files[0], props.userID as string))
                 dispatch(AccountActions.updateAvatar(fileReader.result?.toString()))
             }
 
@@ -27,6 +27,7 @@ export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
     }
     //IF THE USER HAS NOT FOUND THE AVATAR, THE AVATAR IS null IN THIS CASE, 
     //THE COMPONENT RENDERS THE AVATAR FROM THE FIRST LETTER OF prop.fullNAme SET IN UPPERCASE
+
     if (props.avatarIMG === null || props.avatarIMG === undefined) {
         let userName = props.fullName?.charAt(0).toUpperCase()
 
@@ -43,7 +44,7 @@ export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
             </div>
 
         )
-    } else {
+    }else  {
         return (
             <div className={props.size === "large" ? styles.avatarLarge : styles.avatarSmall}>
 
