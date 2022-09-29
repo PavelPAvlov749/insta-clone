@@ -34,7 +34,6 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
       <div className={styles.app}>
   
         <HashRouter>  
-        {props.isNewPost ? <NewPostModalWindow/> : null}
         <Navbar/>
         <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
         </HashRouter>

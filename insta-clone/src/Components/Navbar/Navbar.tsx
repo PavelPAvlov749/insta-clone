@@ -64,7 +64,10 @@ export const Navbar: React.FC = React.memo((props) => {
                             </NavLink>
                         </li>
                         <li>
-                            <img src={upload} alt="#" onClick={newPostHandler}/>
+                           <NavLink to="newPost">
+                                <img src={upload} alt="#" />
+                            </NavLink> 
+                           
                         </li>
                         <li>
                             {isAuth ? <img src={logout_img} alt="" onClick={logOut} /> : null}

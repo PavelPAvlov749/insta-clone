@@ -1,0 +1,128 @@
+.newPostContainer{
+
+    text-align: center;
+}
+
+.newPostModal {
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: max-content;
+    min-height: 300px;
+    text-align: center;
+
+}
+
+.newPostModal h1 {
+    font-weight: 500;
+}
+
+.imgContainer {
+    width: max-content;
+    height: max-content;
+
+}
+
+.step2 {
+    transform: translateY(-150%);
+    animation: step2 1s forwards;
+
+}
+
+@keyframes step2 {
+    0% {
+        transform: translateY(-150%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.showNext {
+    transform: translateX(-150%);
+    animation: next 1.5s forwards;
+    color: rgb(31, 62, 147);
+    font-weight: 500;
+    margin-top: 1rem;
+}
+
+@keyframes next {
+    0% {
+        transform: translateX(-150%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.disableNext {
+    display: none;
+}
+input{
+    width: 40%;
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+}
+input:focus{
+    outline-width: 0;
+    width: 70%;
+}
+.imgIcon {
+    vertical-align: middle;
+    margin-top: calc(30vh - 100px);
+    width: 100px;
+    height: 100px;
+
+}
+
+.newPostIMG {
+    object-fit: cover;
+    margin: 0%;
+    padding: 0%;
+    display: inline-block;
+    max-height: 400px;
+}
+
+.publish {
+
+    margin-top: 3rem;
+
+    border: none;
+    height: 2rem;
+    width: 50%;
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(31, 62, 147);
+}
+
+.stepBack {
+    margin-top: 5rem;
+    color: rgb(31, 62, 147);
+}
+
+.publish:active {
+    background-color: rgb(16, 31, 72);
+    height: 2rem + 2px;
+}
+
+.publish:disabled {
+    background-color: rgb(76, 85, 109);
+}
+.cancelNewPost{
+    margin-top: 1rem;
+    display: inline;
+    border: none;
+    height: 2rem;
+    width: 70%;
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(31, 62, 147);
+}
+.cancelNewPost:active{
+    background-color: rgb(16, 31, 72);
+    height: 2rem + 2px;
+}

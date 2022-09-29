@@ -4,6 +4,7 @@ import { ChatList } from "../Components/Chat/ChatList"
 import { Dirrect } from "../Components/Chat/ChatWindow"
 import { Login_container } from "../Components/Login/Login"
 import { Registration } from "../Components/Login/Registartion"
+import { NewPostModalWindow } from "../Components/Posts/NewPostModal"
 import { ShowedPost } from "../Components/Posts/OpenedPost"
 import { UserPage,  } from "../Components/UserPage/UserPage"
 import { UserSearch } from "../Components/UserSearch/UserSearch"
@@ -15,7 +16,7 @@ const CHAT = "/chat"
 const USERS = "/users"
 const USER_PROFILE = "/profile/:id"
 const no_match_route = "*"
-const NEW_POST = "/new_post"
+const NEW_POST = "/newPost"
 const POST = "/p/:id"
 const Empty = "";
 const SEARCH = "/search"
@@ -38,6 +39,7 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                     <Route path={SEARCH} element={<UserSearch/>}/>
                     <Route path={CHAT} element={<Chat/>}/>
                     <Route path={DIRECT} element={<Dirrect/>}/>
+                    <Route path={NEW_POST} element={<NewPostModalWindow/>}/>
                 </Routes>
             </div>
         )

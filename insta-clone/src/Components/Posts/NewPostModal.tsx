@@ -22,6 +22,7 @@ type PostFormType = {
 
 export const NewPostModalWindow: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
+    let navigate = useNavigate()
     const navigation = useNavigate()
     let [step, setStep] = useState(1)
     let isOnLoad = useSelector((state: Global_state_type) => {
@@ -70,6 +71,8 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
     const onCloseHandler = () => {
         dispatch(postActions.setIsOnnewPost(false))
         dispatch(postActions.setNewPostPhoto(null))
+        navigate(`/profile/id:${currendUser.userID}`)
+        
     }
     //TEXT INPUT onCHAHGE HANDLER FUNCTION WILL DISPATCH IN STORE NEW VALUE OF NEW POST TEXT FIELD
     const textFieldOnChangeHandler = (e: any) => {
@@ -99,7 +102,7 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
         setStep(1)
     }
     return (
-        <section className={styles.newPostModal}>
+        <section className={styles.newPostContainer}>
 
             <div className={styles.newPostModal}>
                 <Formik enableReinitialize={true} onSubmit={formSubmit}
@@ -113,34 +116,41 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
                     <Form>
                         {step === 1 ? <div>
                             <label htmlFor="file_input">
-                                {newPostIMG ?  <img className={styles.newPostIMG} src={newPostIMG } alt="#" ></img> :  <img className={styles.imgIcon} src={GaleryImg} alt="#" ></img>}
-                               
-                             
+                                <div className={styles.imgContainer}>
+
+                                </div>
+                                {newPostIMG ? 
+                                <img className={styles.newPostIMG} src={newPostIMG } alt="#" ></img> :  
+                                <div className={styles.selectPhoto}>
+                                    <h1>Select photo from galery</h1>
+                                     <img className={styles.imgIcon} src={GaleryImg} alt="#" ></img>
+                                </div>
+                               }
                             </label>
                             <br />
                             <input type="file" id="file_input" style={{ "display": "none" }} accept="image/*" onChange={inputOnChangeHandler} ></input>
-                            <h2 onClick={NextStepHandler}>{"Next\t" + ">>"}</h2>
-                        </div> : <div>
+                            <h2  onClick={NextStepHandler}  className={newPostIMG ? styles.showNext : styles.disableNext}>{"Next\t" + ">>"}</h2>
+                        </div> : <div className={styles.step2}>
                             <h1>Come up with a signature</h1>
-                            <Field type="text" name="post_text" className={styles.textInput} onKeyUp={textFieldOnChangeHandler}></Field>
+                            <Field type="text" name="post_text" className={styles.textInput} autocomplete="off" onKeyUp={textFieldOnChangeHandler}></Field>
                             <h1>Add tags to your post</h1>
-                            <Field type="text" name="post_tag" className={styles.textInput} />
+                            <Field type="text" name="post_tag" autocomplete="off" className={styles.textInput} />
 
                             <br />
-                            <button type="submit" className={styles.publish} disabled={isOnLoad}>Publish</button>
+                            <button type="submit" className={styles.publish} disabled={isOnLoad || (newPostIMG === null || newPostText.length < 1)}>Publish</button>
                             <br></br>
-                            <h2 onClick={stepBack}>{"<<\t" + "Back"}</h2>
+                            <h2 onClick={stepBack} className={styles.stepBack}>{"<<\t" + "Back"}</h2>
                         </div>}
 
 
                     </Form>
                 </Formik>
 
-               
+              
 
             </div>
 
-
+            <button className={styles.cancelNewPost} onClick={onCloseHandler}>Cancel</button>
         </section >
     )
 })
