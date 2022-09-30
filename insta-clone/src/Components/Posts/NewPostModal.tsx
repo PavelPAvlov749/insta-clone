@@ -7,10 +7,8 @@ import styles from "../../Styles/NewPostModal.module.css"
 import GaleryImg from "../../Media/imageGallery.png"
 import { Global_state_type } from "../../Redux/Store";
 import { ComentType, PostType } from "../../Redux/Types";
-import { postAPI } from "../../DAL/PostApi";
 import { app_actions } from "../../Redux/AppReducer";
 import { useNavigate } from "react-router-dom";
-import { SelectPhoto } from "../NewPost/PictureSelector";
 
 type PostFormType = {
     post_text: string,
@@ -21,6 +19,9 @@ type PostFormType = {
 
 
 export const NewPostModalWindow: React.FC = React.memo((props) => {
+    const isFetch = useSelector((state:Global_state_type) => {
+        return state.app.is_fetch
+    })
     const dispatch: any = useDispatch()
     let navigate = useNavigate()
     const navigation = useNavigate()
@@ -71,7 +72,7 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
     const onCloseHandler = () => {
         dispatch(postActions.setIsOnnewPost(false))
         dispatch(postActions.setNewPostPhoto(null))
-        navigate(`/profile/id:${currendUser.userID}`)
+        navigate(`/profile/id=${currendUser.userID}`)
         
     }
     //TEXT INPUT onCHAHGE HANDLER FUNCTION WILL DISPATCH IN STORE NEW VALUE OF NEW POST TEXT FIELD
@@ -94,6 +95,7 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
         dispatch(createNewPostThunk(currendUser.userID as string, values.file, values.post_text,
             values.post_tag, currendUser.fullName as string, currendUser.userID as string))
         dispatch(postActions.setIsOnnewPost(false))
+        navigate(`/profile/id=${currendUser.userID}`)
     }
     const NextStepHandler = () => {
         setStep(2)
@@ -103,7 +105,6 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
     }
     return (
         <section className={styles.newPostContainer}>
-
             <div className={styles.newPostModal}>
                 <Formik enableReinitialize={true} onSubmit={formSubmit}
                     initialValues={
@@ -141,12 +142,8 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
                             <br></br>
                             <h2 onClick={stepBack} className={styles.stepBack}>{"<<\t" + "Back"}</h2>
                         </div>}
-
-
                     </Form>
                 </Formik>
-
-              
 
             </div>
 

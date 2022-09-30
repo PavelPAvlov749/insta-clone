@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { app_actions } from "../../Redux/AppReducer";
 import { AccountActions, updateAvatarThunk } from "../../Redux/ProfileReducer";
 import { AvatarPropsType } from "../../Redux/Types";
 import styles from "../../Styles/UserPage.module.css"
@@ -9,7 +8,6 @@ import styles from "../../Styles/UserPage.module.css"
 //the component takes into account the user name, the picture, and the size of the avatar 
 //depends on the place where it is rendered (large for the user's page and small, for example, for user lists)
 export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
-    console.log(props)
     const dispatch: any = useDispatch()
 
     const onAvatarCkickHandler = (event: any) => {

@@ -27,7 +27,7 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
   useEffect(() => {
     props.init()
   },[])
- console.log(props.isFetch)
+
 
   if(props.isInit || !props.isFetch){
     return (

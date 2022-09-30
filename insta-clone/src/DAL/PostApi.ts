@@ -56,41 +56,39 @@ class PostAPI extends abstractAPI {
             //Image ref
             const imageRef: StorageReference = storage_ref(this.storageRefrence, imageID)
             //If _img from arguments !== null dowload the file in storage with image_name
-            if (postIMG !== null) {
-                //Uploading the image
-                uploadBytes(imageRef, postIMG).then(() => {
-                    //After upload get the dowload url of the image to put them in database
-                    getDownloadURL(imageRef).then((url) => {
-                        const newPostKey = push(child(ref(this.RealtimeDataBase), "Posts")).key;
-                        //Creating the post JSON object for database
-                        const postData = {
-                            post_text: postText,
-                            postTags: postTag,
-                            post_img: url,
-                            creator: creator,
-                            likes_count: [],
-                            createdAt: new Date().getDate(),
-                            id: newPostKey,
-                            creatorID: creatorID,
+            const newPostKey =  await push(child(ref(this.RealtimeDataBase), "Posts")).key
+            //Uploading the image
+            let newPOst : Promise<string | null> =  uploadBytes(imageRef, postIMG).then(() => {
+               
+                //After upload get the dowload url of the image to put them in database
+                getDownloadURL(imageRef).then((url) => {
+                    
+                    //Creating the post JSON object for database
+                    const postData = {
+                        post_text: postText,
+                        postTags: postTag,
+                        post_img: url,
+                        creator: creator,
+                        likes_count: [],
+                        createdAt: new Date().getDate(),
+                        id: newPostKey,
+                        creatorID: creatorID,
 
-                        }
-                        const postRef = {
-                            post_img: url,
-                            id: newPostKey
-                        }
-                        const updates: any = {};
-                        updates["Posts/" + newPostKey] = postData;
-                        update(ref(this.RealtimeDataBase), updates);
-                        updates["Users/" + userID + "/posts/" + newPostKey] = postRef
-                        //Update Database with new element
-                        update(ref(this.RealtimeDataBase), updates);
-                        return postData
-                    })
+                    }
+                    const postRef = {
+                        post_img: url,
+                        id: newPostKey
+                    }
+                    const updates: any = {};
+                    updates["Posts/" + newPostKey] = postData;
+                    update(ref(this.RealtimeDataBase), updates);
+                    updates["Users/" + userID + "/posts/" + newPostKey] = postRef
+                    //Update Database with new element
+                    update(ref(this.RealtimeDataBase), updates);
                 })
-            } else {
-                throw new Error("Cannot load the post.Img equals null")
-                
-            }
+                return newPOst
+            })
+            return newPostKey
         } catch (ex) {
             console.log(ex)
             return ex
@@ -122,9 +120,9 @@ class PostAPI extends abstractAPI {
         //Returns the object of the post containing the following fields (picture, text, number of likes, creator of the post
         //And an array of comments(Array<string>)
 
-        const post = await (await get(child(this.DatabaseRef, "Posts/" + "/" + postID))).val()
-
-        return post
+        const post = await (await get(child(this.DatabaseRef, "Posts/" + postID)))
+        console.log(post.val())
+        return post.val()
     }
     async getListOfPosts(userID: string) {
         //This method will return all posts userID(Array<PostType>)

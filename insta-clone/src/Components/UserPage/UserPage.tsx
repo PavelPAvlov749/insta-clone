@@ -83,10 +83,13 @@ export const UserPage: React.FC = React.memo(() => {
                         <span >{"Followed"}</span>
                     </div>
                 </div>
-                <section className={styles.contrtolButtons}>
-                        {userPageUrl !== currentUserID ? <button onClick={followToogle}>{Object.values(actualUserPage.followers as Array<string>).includes(currentUserID) ? "Unfollow" : "Follow"}</button> : null}
-                        {userPageUrl !== currentUserID ? <button onClick={sendMessage}>Send message</button> : null}
-                    </section>
+                {userPageUrl !== currentUserID ? 
+                                <section className={styles.contrtolButtons}>
+                                {userPageUrl !== currentUserID ? <button onClick={followToogle}>{Object.values(actualUserPage.followers as Array<string>).includes(currentUserID) ? "Unfollow" : "Follow"}</button> : null}
+                                {userPageUrl !== currentUserID ? <button onClick={sendMessage}>Send message</button> : null}
+                            </section> : null
+                }
+
             </section>
             <UserPostsList />
         </div>

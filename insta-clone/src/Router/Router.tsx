@@ -9,7 +9,7 @@ import { ShowedPost } from "../Components/Posts/OpenedPost"
 import { UserPage,  } from "../Components/UserPage/UserPage"
 import { UserSearch } from "../Components/UserSearch/UserSearch"
 import styles from "../Styles/Router.module.css"
-
+import React from "react"
 
 const LOGIN = "/login"
 const CHAT = "/chat"

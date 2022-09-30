@@ -35,7 +35,7 @@ export const UserPostsList: React.FC = React.memo((props) => {
         <div className={styles.wrapper}>
             <section className={styles.postsWrapper}>
                 {posts.length > 0 ? posts.map((post: PostType) => {
-                      {console.log(typeof(post.post_img))}
+                     
                     return (
                       
                             <img src={post.post_img} className={styles.postPreview} alt="" onClick={() => {

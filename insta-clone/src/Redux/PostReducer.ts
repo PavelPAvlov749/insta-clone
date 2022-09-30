@@ -212,11 +212,26 @@ export const getSinglePostByID = (postID : string) => {
 export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | ArrayBuffer,postText : string,postTags : string,userFullNAme : string,
     creatorID : string) => {
     return async function (dispatch : any) {
-        dispatch(app_actions.set_is_fetch_true())
-        dispatch(app_actions.setOnLoad(true))
-        await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorID)
-        dispatch(app_actions.set_is_fetch_fasle())
-        dispatch(app_actions.setOnLoad(false))
+        try{
+            dispatch(app_actions.set_is_fetch_true())
+            if(postIMG !== null && postIMG !== undefined){
+                
+                dispatch(app_actions.setOnLoad(true))
+                const newPostKey = await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorID)
+                console.log(typeof(newPostKey))
+                if(newPostKey){
+                    dispatch(app_actions.set_is_fetch_fasle())
+                    dispatch(app_actions.setOnLoad(false))
+                }
+
+            }else{
+                throw new Error("Post image is null.Cant upload the post")
+            }
+
+        }catch(ex){
+            console.log(ex)
+        }
+
         
     }
 }
