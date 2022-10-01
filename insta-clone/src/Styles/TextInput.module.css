@@ -27,6 +27,7 @@ footer{
 .emoji{
     display: inline;
     vertical-align: middle;
+    margin-left: 0.5rem;
     width: 25px;
     height: 25px;
 }

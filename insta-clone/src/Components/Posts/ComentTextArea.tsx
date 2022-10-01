@@ -44,7 +44,8 @@ export const ComentTextArea : React.FC = React.memo((props) => {
                 <section className={styles.ComentInput}>
                     <Formik enableReinitialize={true} initialValues={initialFormValues} onSubmit={onSubmitHandler}>
                         <Form>
-                            <Field name="coment"  type="text"></Field>
+                            <Field name="coment"  type="text" autocomplete="off"></Field>
+                            <br />
                             <button type="submit">Publish</button>
                         </Form>
                     </Formik>

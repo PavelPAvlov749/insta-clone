@@ -5,16 +5,17 @@
     text-align: right;
 }
 .currentUserMessage span {
-    
+    margin-right: 1rem;
     border-radius: 30px;
     padding: 0.3rem 1rem 0.3rem 1rem;
-    background-color: aqua;
+    background-color: lightgrey;
 }
 .message{
     text-align: left;
 }
 .message span{
-    border-radius: 30px;
+    margin-left: 1rem;
+    border-radius: 15px;
     padding: 0.3rem 1rem 0.3rem 1rem;
-    background-color: aqua;
+    border: 1px solid grey;
 }

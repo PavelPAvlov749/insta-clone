@@ -1,0 +1,77 @@
+.formDivContainer{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+    
+}
+.wrapper{
+    width: 97%;
+    padding: 0%;
+    border-radius: 5px;
+    height: 350px;
+    border-color: grey;
+    border-width: 1px;
+    border-style: solid;
+}
+.wrapper hr{
+    position: relative;
+    width: 100%;
+}
+.loginForms input{
+    border-radius: 5px;
+    border-width: 1px;
+    width: 300px;
+    height: 30px;
+    border-style: none;
+    background-color: lightgray;
+    margin-bottom: 0.5rem;
+}
+.loginFormsError input{
+    border-radius: 5px;
+    border-width: 1px;
+    --main-bg-color : rgb(176, 61, 61);
+    border-color: var(--main-bg-color);
+    height: 100%;
+    border-style:solid;
+    background-color: lightgray;
+}
+.spanError{
+    font-size:medium;
+    color: rgb(176, 61, 61);
+}
+.loginButton:hover{
+    border-width: 1px;
+    border-color: black;
+}
+.loginButton {
+    border-radius: 5px;
+    border-width: 0px;
+    background-color: rgb(77, 90, 190);
+    font-size: medium;
+    width: 300px;
+    height: 35px;
+    color: white;
+}.loginButtonGoogle{
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    border-style: none;
+    background-color: lightgray;
+    color: black;
+}
+.wrapper img{
+    vertical-align: middle;
+    width: 27px;
+    height: 27px;
+}
+.loginButtonGoogle:hover{
+    margin: 0%;
+    padding: 0%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+a{
+    text-decoration: none;
+}

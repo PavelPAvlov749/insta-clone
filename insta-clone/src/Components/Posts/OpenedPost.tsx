@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Global_state_type } from "../../Redux/Store";
 import { PostComents } from "./Coments";
 import likeImg from "../../Media/like.png"
+import comentIcon from "../../Media/coment.png"
 import { getSinglePostByID, likeToogleThunk, postActions } from "../../Redux/PostReducer";
 import { ComentTextArea } from "./ComentTextArea";
 import { NavLink, useLocation } from "react-router-dom";
 import styles from "../../Styles/OpenPost.module.css"
+import { Avatar } from "../UserPage/Avatar";
 
 export const ShowedPost: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
@@ -36,27 +38,31 @@ export const ShowedPost: React.FC = React.memo((props) => {
         }
 
     }
-
+    const onComentClickHandler = () => {
+        
+    }
     if (actualPost) {
         return (
             <section className={styles.postWrapper}>
-                                        <NavLink to={`/profile/id:=${actualPost.creatorID}`} className={styles.creatorInfo}>
-                    <img className={styles.autorAvatar} src={"sdfsdfg"} alt="#" style={{ "display": "inline" }}></img>
+                <NavLink to={`/profile/id:=${actualPost.creatorID}`} className={styles.creatorInfo}>
+                    <Avatar avatarIMG={actualUserPage.avatar} fullName={actualUserPage.fullName} size="small" />
+
                     <h1 className={styles.autorName}>{actualPost?.creator}</h1>
                     <div className={styles.hr}></div>
                 </NavLink>
-                    <div className={styles.postIMGContainer}>
+                <div className={styles.postIMGContainer}>
                     <img className={styles.postIMG} src={actualPost.post_img} alt="" />
-                        <img src={likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
-                        <span>{actualPost.likes_count?.length + "\t likes"}</span>
-                    </div>           
+                    <img src={likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
+                    <img src={comentIcon} alt="#" className={styles.comentIcon}></img>
+                    <span className={styles.likesCount} onClick={onComentClickHandler}>{actualPost.likes_count?.length + "\t likes"}</span>
+                </div>
 
                 <div className={styles.postInfo}>
                     <h5>{actualPost.creator + "\t:\t"}</h5>
                     <span>{actualPost?.post_text}</span>
                 </div>
                 <PostComents coments={actualPost.coments} />
-                <ComentTextArea />
+                <ComentTextArea/>
             </section>
         )
     } else {
