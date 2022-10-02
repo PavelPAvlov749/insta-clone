@@ -10,6 +10,7 @@ import { UserPage,  } from "../Components/UserPage/UserPage"
 import { UserSearch } from "../Components/UserSearch/UserSearch"
 import styles from "../Styles/Router.module.css"
 import React from "react"
+import { AllComents } from "../Components/Posts/AllComents"
 
 const LOGIN = "/login"
 const CHAT = "/chat"
@@ -23,7 +24,7 @@ const SEARCH = "/search"
 const REGISTRATION = "/registration"
 const ROOT = "/"
 const DIRECT = "chat/:id"
-
+const ALL_COMENTS = "/coments"
 
 
 export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props : {actualUser : string,isAuth : boolean,}) => {

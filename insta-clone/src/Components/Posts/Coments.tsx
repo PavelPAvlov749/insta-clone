@@ -5,8 +5,11 @@ import { deleteComentThunk, postActions } from "../../Redux/PostReducer";
 import { Global_state_type } from "../../Redux/Store";
 import { ComentType } from "../../Redux/Types";
 import styles from "../../Styles/OpenPost.module.css"
+import { Avatar } from "../UserPage/Avatar";
+import crossIcon from "../../Media/close.png"
 
-const SilngleComent: React.FC<{coment : ComentType,currentUserID : string}> = React.memo((props) => {
+
+export const SilngleComent: React.FC<{coment : ComentType,currentUserID : string}> = React.memo((props) => {
     const dispatch : any = useDispatch()
     const location = useLocation().pathname.split("=")[1]
     const onDeleteHandler = () => {
@@ -14,12 +17,15 @@ const SilngleComent: React.FC<{coment : ComentType,currentUserID : string}> = Re
     }
 
     return (
-        <div key={props.coment.comentID}>
-            <img src={props.coment.avatar as string} alt="#" style={{"display" : "inline"}}/>
-            <h1 style={{"display" : "inline"}}>{props.coment.comentatorName}</h1>
-            {props.coment.comentatorID === props.currentUserID ?  <h5 style={{"color" : "red","display" : "inline"}} onClick={onDeleteHandler}>delete coment</h5> : null}
+        <div key={props.coment.comentID} className={styles.singleComentWrapper}>
+            
+            <span>{props.coment.comentatorName + "\t:\t"}</span>
+            <figure className={styles.closeWrapper}>
+            {props.coment.comentatorID === props.currentUserID ?  <img className={styles.deleteComent} src={crossIcon} alt="#" onClick={onDeleteHandler}></img> : null}
+            </figure>
+
             <br />
-            <span>{props.coment.coment_text}</span>
+            <span className={styles.comentText}>{props.coment.coment_text}</span>
             <br />
         </div>
 
