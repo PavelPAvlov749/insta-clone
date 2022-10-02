@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { leaveComentThunk } from "../../Redux/PostReducer";
 import { Global_state_type } from "../../Redux/Store";
-import styles from "../../Styles/OpenPost.module.css"
+import styles from "../../Styles/Coments.module.css"
 
 export const ComentTextArea : React.FC = React.memo((props) => {
     const currentUserID = useSelector((state:Global_state_type) => {
@@ -15,7 +15,7 @@ export const ComentTextArea : React.FC = React.memo((props) => {
         return state.account
     })
 
-    const postURL = useLocation().pathname.split("=")[1]
+    const postURL = useLocation().pathname.split("=")[1].split("/")[0]
     const dispatch : any = useDispatch()
     let initialFormValues = {coment : ""}
 

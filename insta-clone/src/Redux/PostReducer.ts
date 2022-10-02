@@ -235,6 +235,18 @@ export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | A
         
     }
 }
+export const deletePostThunk = (userID:string,postID:string) => {
+    return async function (dispatch : any) {
+        dispatch(app_actions.set_is_fetch_true())
+        await postAPI.deletePost(userID,postID)
+        const posts = await postAPI.getListOfPosts(userID)
+        if(posts) {
+            dispatch(postActions.getPosts(Object.values(posts.val())))
+        }
+        
+        dispatch(app_actions.set_is_fetch_fasle())
+    }
+}
 export const deleteComentThunk = (postID:string,comentID:string) =>{
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true)
@@ -253,5 +265,17 @@ export const likeToogleThunk = (postID:string,currentUserID : string) => {
             console.error(ex)
         }
       
+    }
+}
+
+export const getAllPosts = () => {
+    return async function (dispatch : any){
+        dispatch(app_actions.set_is_fetch_true())
+        const posts = await postAPI.getAllPost()
+        if(posts) {
+            dispatch(postActions.getPosts(posts as Array<PostType>))
+            dispatch(app_actions.set_is_fetch_fasle())
+        }
+        
     }
 }

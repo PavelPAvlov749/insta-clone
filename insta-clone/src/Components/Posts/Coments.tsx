@@ -13,19 +13,19 @@ export const SilngleComent: React.FC<{coment : ComentType,currentUserID : string
     const dispatch : any = useDispatch()
     const location = useLocation().pathname.split("=")[1]
     const onDeleteHandler = () => {
-        dispatch(deleteComentThunk(location,props.coment.comentID as string))
+        dispatch(deleteComentThunk(location,props.coment?.comentID as string))
     }
 
     return (
-        <div key={props.coment.comentID} className={styles.singleComentWrapper}>
-            
-            <span>{props.coment.comentatorName + "\t:\t"}</span>
+        <div key={props.coment?.comentID} className={styles.singleComentWrapper}>
+           
+            <span>{props.coment?.comentatorName + "\t:\t"}</span>
             <figure className={styles.closeWrapper}>
-            {props.coment.comentatorID === props.currentUserID ?  <img className={styles.deleteComent} src={crossIcon} alt="#" onClick={onDeleteHandler}></img> : null}
+            {props.coment?.comentatorID === props.currentUserID ?  <img className={styles.deleteComent} src={crossIcon} alt="#" onClick={onDeleteHandler}></img> : null}
             </figure>
 
             <br />
-            <span className={styles.comentText}>{props.coment.coment_text}</span>
+            <span className={styles.comentText}>{props.coment?.coment_text}</span>
             <br />
         </div>
 

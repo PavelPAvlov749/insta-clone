@@ -11,6 +11,7 @@ import { UserSearch } from "../Components/UserSearch/UserSearch"
 import styles from "../Styles/Router.module.css"
 import React from "react"
 import { AllComents } from "../Components/Posts/AllComents"
+import { AllPosts } from "../Components/News/News"
 
 const LOGIN = "/login"
 const CHAT = "/chat"
@@ -24,8 +25,8 @@ const SEARCH = "/search"
 const REGISTRATION = "/registration"
 const ROOT = "/"
 const DIRECT = "chat/:id"
-const ALL_COMENTS = "/coments"
-
+const ALL_COMENTS = "/p/:id/coments"
+const News = "/news"
 
 export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props : {actualUser : string,isAuth : boolean,}) => {
 
@@ -41,6 +42,8 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                     <Route path={CHAT} element={<Chat/>}/>
                     <Route path={DIRECT} element={<Dirrect/>}/>
                     <Route path={NEW_POST} element={<NewPostModalWindow/>}/>
+                    <Route path={ALL_COMENTS} element={<AllComents/>}/>
+                    <Route path={News} element={<AllPosts/>}/>
                 </Routes>
             </div>
         )

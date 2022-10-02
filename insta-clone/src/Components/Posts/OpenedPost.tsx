@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Global_state_type } from "../../Redux/Store";
 import comentIcon from "../../Media/coment.png"
-import { getSinglePostByID, likeToogleThunk, postActions } from "../../Redux/PostReducer";
+import { deletePostThunk, getSinglePostByID, likeToogleThunk, postActions } from "../../Redux/PostReducer";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 //COMPONENTS
-import { PostComents } from "./Coments";
+import { PostComents, SilngleComent } from "./Coments";
 import { ComentTextArea } from "./ComentTextArea";
 //STYLES IMPORT
 import styles from "../../Styles/OpenPost.module.css"
@@ -15,6 +15,7 @@ import likeImg from "../../Media/like.png"
 import likeBefore from "../../Media/likeBefore.png"
 import likeAfter from "../../Media/likeAfter.png"
 import { Avatar } from "../UserPage/Avatar";
+import crossIcon from "../../Media/close.png"
 
 
 export const ShowedPost: React.FC = React.memo((props) => {
@@ -33,8 +34,9 @@ export const ShowedPost: React.FC = React.memo((props) => {
     const actualPost = useSelector((state: Global_state_type) => {
         return state.userPosts.currentPost
     })
-    console.log(actualPost.post_img)
-
+    
+    let coments = Object.values(actualPost.coments)
+    console.log(coments)
     const tapLikeHandler = () => {
         if (actualPost.likes_count?.includes(currentUserID as string)) {
             dispatch(likeToogleThunk(actualPost.id as string, currentUserID as string))
@@ -49,6 +51,10 @@ export const ShowedPost: React.FC = React.memo((props) => {
     const onComentClickHandler = () => {
         navigate("coments")
     }
+    const deletePostHandler = () => {
+        dispatch(deletePostThunk(currentUserID as string,actualPost.id as string))
+        navigate(`/profile/id=${currentUserID}`)
+    }
     if (actualPost) {
         return (
             <section className={styles.postWrapper}>
@@ -62,15 +68,20 @@ export const ShowedPost: React.FC = React.memo((props) => {
                     <img className={styles.postIMG} src={actualPost.post_img} alt="" />
                     <img src={actualPost.likes_count.includes(currentUserID as string) ? likeAfter : likeBefore} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
                     <img src={comentIcon} alt="#" className={styles.comentIcon} onClick={onComentClickHandler}></img>
+                   
+                   
                     <span className={styles.likesCount} onClick={onComentClickHandler}>{actualPost.likes_count?.length + "\t likes"}</span>
+                    {currentUserID === actualPost.creatorID ?  <img src={crossIcon} alt="#" className={styles.deletePost} onClick={deletePostHandler}></img> : null }
                 </div>
 
                 <div className={styles.postInfo}>
                     <h5>{actualPost.creator + "\t:\t"}</h5>
                     <span>{actualPost?.post_text}</span>
                 </div>
-                <PostComents coments={actualPost.coments} />
-
+                <span>{actualPost.coments.length + "\t coments"}</span>
+                {actualPost.coments.length > 0 ? <SilngleComent coment={actualPost?.coments[actualPost.coments.length - 1]} currentUserID={currentUserID as string}/> : 
+                "There is no coments"}
+                <h2 onClick={onComentClickHandler} className={styles.showAll}>Show all Coments</h2>
             </section>
         )
     } else {

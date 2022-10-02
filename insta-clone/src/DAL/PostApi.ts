@@ -48,7 +48,12 @@ class PostAPI extends abstractAPI {
         })
         return postList
     }
+    async getAllPost () {
+        const result = await (await get(child(this.DatabaseRef, "Posts/"))).val()
+        const post = Object.values(result)
+        return post
 
+    }
     async createPost(userID: string, postIMG: Blob | Uint8Array | ArrayBuffer, postText: string, postTag: string, creator: string, creatorID: string) {
         try {
             //Create random image name with makeid function (exposts from Randomizer.ts)
@@ -166,7 +171,7 @@ class PostAPI extends abstractAPI {
     }
     async addComentToPost(userID: string, postID: string, comentText: string, creator: string, avatar: string) {
         //create id by ID generator
-        const comentID = makeid(9)
+        const newComentKey =  await push(child(ref(this.RealtimeDataBase), "Posts" + postID + "/coments/")).key
         try {
             if (comentText.length > 0) {
                 const comentData: ComentType = {
@@ -174,11 +179,12 @@ class PostAPI extends abstractAPI {
                     comentatorName: creator,
                     avatar: avatar,
                     createdAt: new Date().toString(),
-                    comentID: comentID,
+                    comentID: newComentKey as string,
                     comentatorID: userID
                 };
+                console.log("postID : " + postID + "\t newKey : " + newComentKey)
                 const updates: any = {}
-                updates["Posts/" + postID + "/coments/" + comentID] = comentData
+                updates["Posts/" + postID + "/coments/" + newComentKey] = comentData
                 update(ref(this.RealtimeDataBase), updates)
                 return comentData
             } else {
