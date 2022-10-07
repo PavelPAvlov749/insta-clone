@@ -22,7 +22,7 @@ type ActionType = InferActionType<typeof chat_actions>
 type Thunk_type = ThunkAction<void,Global_state_type,unknown,ActionType>
 
 let initialState = {
-    activeChat : null as unknown as ChatType,
+    activeChat : null as unknown as string,
     chats : [] as Array<UserType>,
     messages : [] as Array<MessageType>,
     newMessage : "",
@@ -41,7 +41,7 @@ export const chatReducer = (state = initialState,action:ActionType) => {
         case SET_ACTIVE_CHATS : {
             return {
                 ...state,
-                activeChat : {...action.payload}
+                activeChat : action.payload
             }
         }
         case GET_MESSAGES : {
@@ -78,13 +78,9 @@ export const chat_actions = {
         type : "instaClone/chatReducer/getChats",
         payload : chats
     } as const),
-    setActiveChat : (userID : string,avatar : string,fullName:string) => ({
+    setActiveChat : (roomID :string) => ({
         type : "instaClone/chatReducer/setActiveChat",
-        payload : {
-            userID : userID,
-            avatar : avatar,
-            fullName : fullName
-        }
+        payload : roomID
     } as const),
     getMessages : (messages : Array<MessageType>) => ({
         type : "instaClone/chatReducer/get_messages",
@@ -118,12 +114,12 @@ export const getChatsByUserID = (userID:string) => {
 export const getRoomByUserID = (currentUserID : string,userID:string) => {
     return async function (dispatch : any) {
         const room = await chatAPI.getRoom(currentUserID,userID)
-       
-        // if(room){
-        //     dispatch(chat_actions.setActiveChat(room))
-        // }else{
-        //     dispatch(chat_actions.setActiveChat(room))
-        // }
+       console.log(room)
+        if(room){
+            dispatch(chat_actions.setActiveChat(room))
+        }else{
+            dispatch(chat_actions.setActiveChat(""))
+        }
         
     }
 }
@@ -163,7 +159,6 @@ export const getRealtimeMessages = (currentUserID:string,userID:string) => {
             }else{
                 dispatch(chat_actions.getMessages([]))
                 dispatch(app_actions.set_is_fetch_fasle())
-                console.log("sdfsdf")
             }
 
     }

@@ -6,6 +6,7 @@ import { sendMessageThunk } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
 import styles from "../../Styles/TextInput.module.css"
 import emojiPNG from "../../Media/emoji.png"
+import { appReducer, app_actions } from "../../Redux/AppReducer";
 
 
 
@@ -20,8 +21,14 @@ export const TextInput: React.FC = React.memo((props) => {
 
 
     const setSubmit = (values: typeof initialFormValues) => {
-        dispatch(sendMessageThunk(currentUser.userID as string, location, values.newMessage, currentUser.fullName as string,))
-        setNewMessageText("")
+        if(values.newMessage.length === 0) {
+            console.error("messsage cannot be an empty string")
+            
+        }else{
+            dispatch(sendMessageThunk(currentUser.userID as string, location, values.newMessage, currentUser.fullName as string,))
+            setNewMessageText("")
+        }
+
     }
     const OnChangeHandler = (e: React.UIEvent<HTMLInputElement, UIEvent>) => {
         setNewMessageText(e.currentTarget.value)

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import styles from "../src/App.module.css"
 import { connect } from 'react-redux';
@@ -10,7 +10,9 @@ import { Navbar } from './Components/Navbar/Navbar';
 import { NewPostModalWindow } from './Components/Posts/NewPostModal';
 import { postActions } from './Redux/PostReducer';
 import { Preloader } from './Components/Preloader/Preloader';
+import {child, get, getDatabase, onChildAdded, onChildChanged, ref } from "firebase/database"
 
+const messageTone = require("./Media/MessageTone.mp3")
 
 type AppPropsType = {
   isInit : boolean,
@@ -28,13 +30,23 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
     props.init()
   },[])
 
+  const db = getDatabase()
+  const messageRef = ref(db,"Chats/")
+  onChildChanged(messageRef,() => {
+    console.log("Message Recieved")
+  })
+  const getAllMessages = async function (dbRef : any,path : string) {
+    let allMEssages = await get(child(dbRef,path))
 
+    console.log(Object.values(allMEssages))
+  }
   if(props.isInit || !props.isFetch){
     return (
       <div className={styles.app}>
-  
+        
         <HashRouter>  
         <Navbar/>
+
         <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
         </HashRouter>
       </div>
