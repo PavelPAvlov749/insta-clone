@@ -30,16 +30,7 @@ const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
     props.init()
   },[])
 
-  const db = getDatabase()
-  const messageRef = ref(db,"Chats/")
-  onChildChanged(messageRef,() => {
-    console.log("Message Recieved")
-  })
-  const getAllMessages = async function (dbRef : any,path : string) {
-    let allMEssages = await get(child(dbRef,path))
 
-    console.log(Object.values(allMEssages))
-  }
   if(props.isInit || !props.isFetch){
     return (
       <div className={styles.app}>

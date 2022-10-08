@@ -12,6 +12,7 @@ import styles from "../Styles/Router.module.css"
 import React from "react"
 import { AllComents } from "../Components/Posts/AllComents"
 import { AllPosts } from "../Components/News/News"
+import { UsersList } from "../Components/UsersList/usersList"
 
 const LOGIN = "/login"
 const CHAT = "/chat"
@@ -27,6 +28,8 @@ const ROOT = "/"
 const DIRECT = "chat/:id"
 const ALL_COMENTS = "/p/:id/coments"
 const News = "/news"
+const FOLLOWERS = "/profile/:id/Followers"
+const FOLOOWED = "/profile/:id/Followed"
 
 export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props : {actualUser : string,isAuth : boolean,}) => {
 
@@ -44,6 +47,9 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                     <Route path={NEW_POST} element={<NewPostModalWindow/>}/>
                     <Route path={ALL_COMENTS} element={<AllComents/>}/>
                     <Route path={News} element={<AllPosts/>}/>
+                    <Route path={FOLLOWERS} element={<UsersList/>}/>
+                    <Route path={FOLOOWED} element={<UsersList/>}/>
+
                 </Routes>
             </div>
         )

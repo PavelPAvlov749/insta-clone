@@ -6,7 +6,7 @@ import { sendMessageThunk } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
 import styles from "../../Styles/TextInput.module.css"
 import emojiPNG from "../../Media/emoji.png"
-import { appReducer, app_actions } from "../../Redux/AppReducer";
+
 
 
 

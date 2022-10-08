@@ -15,10 +15,12 @@
     text-align: center;
 
 }
+
 .comentWrapper{
-    text-align: center;
+    text-align: left;
     overflow-y: scroll;
     max-height: 500px;
+
 }
 .noComents{
     font-size: large;

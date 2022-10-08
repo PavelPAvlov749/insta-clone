@@ -183,7 +183,7 @@
 
 .Follower {
 
-
+    text-decoration: none;
     height: max-content;
     text-align: center;
     width: max-content;

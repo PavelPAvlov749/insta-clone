@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Global_state_type } from "../../Redux/Store";
-import { UserType } from "../../Redux/Types";
 import { getAllUsersThunk } from "../../Redux/UserSearchReducer";
 // import styles from "../../Styles/Chat.module.css"
 import styles from "../../Styles/ChatList.module.css"
-import { MiniProfile } from "../MiniProfile/MiniProfile";
 import { Avatar } from "../UserPage/Avatar";
 import { LineLoader } from "../UserSearch/LoaderLine";
 

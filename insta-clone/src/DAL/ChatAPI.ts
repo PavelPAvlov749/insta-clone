@@ -37,15 +37,14 @@ class ChatAPI extends abstractAPI {
 
     }
     async getRoom(currentUserID: string, userID: string) {
-        console.log(currentUserID +  "/ " + userID)
+        
         return await (await get(child(this.DatabaseRef, "Users/" + currentUserID + "/chats/" + userID))).val().chatRef
 
  
     }
     async getMessages(roomID: string) {
         const result = await (await get(child(this.DatabaseRef, "Chats/" + roomID))).val()
-        console.log(roomID)
-        console.log(result)
+      
         const chat = Object.values(result)
         return chat
     }
@@ -71,8 +70,7 @@ class ChatAPI extends abstractAPI {
             const roomRef = this.ref(this.RealtimeDataBase, "Chats/" + ref.chatRef)
             this.onValue(roomRef, (roomSnapSchot) => {
                 messages = Object.values(roomSnapSchot.val())
-                console.log("OnValue")
-
+              
             })
         }
         return messages

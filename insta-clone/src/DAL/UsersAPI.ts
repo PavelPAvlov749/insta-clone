@@ -80,6 +80,34 @@ class UsersAPI extends abstractAPI {
         }
 
     }
+    async getFollowers (userID : string) {
+        try{
+            const followersRef : DatabaseReference = await ref(this.RealtimeDataBase,"Users/" + userID + "/followers")
+            const users = await (await get(query(followersRef))).val()
+
+            if(users) {
+                return users
+            }else{
+                return null
+            }
+        }catch(ex){
+            console.log(ex)
+        }
+
+    }
+    async getFollowedUsers (userID : string) {
+        try{
+            const FolowedRef = ref(this.RealtimeDataBase,"Users/" + userID + "subscribes")
+            const users = (await get(query(FolowedRef))).val()
+            if(users) {
+                return users
+            }else{
+                return null
+            }
+        }catch(ex){
+            console.log(ex)
+        }
+    }
 }
 
 export const usersAPI = new UsersAPI()

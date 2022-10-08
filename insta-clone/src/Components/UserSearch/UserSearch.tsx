@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { postActions } from "../../Redux/PostReducer";
@@ -14,6 +14,7 @@ import { LineLoader } from "./LoaderLine";
 export const UserSearch: React.FC = React.memo((props) => {
     const navigate = useNavigate()
     const dispatch: any = useDispatch()
+    let [onSearch,setOnSearch] = useState(false)
 
     //Get finded users or just all users(if the user has not searched for anything yet) from redux
     const users = useSelector((state: Global_state_type) => {
@@ -24,13 +25,15 @@ export const UserSearch: React.FC = React.memo((props) => {
         dispatch(getAllUsersThunk())
     }, [])
     //Is fetch === true show load indicator
-    const onSearch = useSelector((state: Global_state_type) => {
-        return state.search.onSearch
-    })
+    // const onSearch = useSelector((state: Global_state_type) => {
+    //     return state.
+    // })
 
     //onChange
     const onChangeHandler = (e: any) => {
+       
         if (e.currentTarget.value.length > 0) {
+            setOnSearch(true)
             dispatch(searchUserPageByName(e.currentTarget.value))
         } else {
             dispatch(getAllUsersThunk())
@@ -47,7 +50,9 @@ export const UserSearch: React.FC = React.memo((props) => {
 
     return (
         <section className={styles.searchWrapper}>
-            <input type="text" placeholder="find users" onChange={onChangeHandler}></input>
+            <input type="text" placeholder="find users" onChange={onChangeHandler} onBlur={() => {
+                setOnSearch(false)
+            }}></input>
             <section className={styles.searchResults}>
                 {!onSearch ? users?.map((user) => {
                     return (

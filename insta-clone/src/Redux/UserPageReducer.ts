@@ -10,6 +10,7 @@ const FOLLOW = "instaClone/UsersReducer/follow"
 const UNFOLLOW = "instaClone/UsersReducer/unfollow"
 const UPDATE_STATUS = "instaClone/profileReducer/updateStatus"
 
+
 type ActionType = InferActionType<typeof userPageActions>
 type initStateType = UserType
 
@@ -56,6 +57,7 @@ export const UsersPageReducer = (state = initial_state, action: ActionType) => {
             }
         }
 
+
         default: return state
     }
 }
@@ -80,7 +82,8 @@ export const userPageActions = {
     updateStatus : (status : string) => ({
         type : "instaClone/profileReducer/updateStatus",
         payload : status
-    } as const )
+    } as const ),
+
 }
 
 export const getUserPageByID = (userID : string) => {
@@ -114,3 +117,4 @@ export const followTooglethunk = (currentUserID: string,userID : string) => {
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }
+

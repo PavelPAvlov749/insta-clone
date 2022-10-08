@@ -7,7 +7,8 @@ const GET_ALL_USERS = "messenger/usersSearchReducer/getAllUsers"
 const GET_USER_PAGE = "messenger/usersSearchReducer/getUserPage"
 const SET_SEARCHNAM = "messenger/userSearchReducer/setSearchName"
 const SET_ON_SEARCH = "messenger/userSearchReducer/setOnSearch"
-
+const GET_FOLOOWERS = "instaClone/userSearchReducer/getFollowers"
+const GET_FOLLOWED = "instaClone/userSearchReducer/getFollowed"
 type ActionType = InferActionType<typeof searchActions>
 type initStateType = UserType
 
@@ -44,6 +45,18 @@ export const usersSearchReducer = (state = initialState,action : ActionType ) =>
                 onSearch : action.payload
             }
         }
+        case GET_FOLOOWERS : {
+            return {
+                ...state,
+                users : action.payload
+            }
+        }
+        case GET_FOLLOWED : {
+            return {
+                ...state,
+                users : action.payload
+            }
+        }
         default : return state
     }
 }
@@ -64,7 +77,15 @@ export const searchActions = {
     setOnSearch : (onSearch : boolean) => ({
         type : "messenger/userSearchReducer/setOnSearch",
         payload : onSearch
-    } as const )
+    } as const ),
+    getFollowers : (users : Array<UserType>) => ({
+        type : "instaClone/userSearchReducer/getFollowers",
+        payload : users
+    } as const ),
+    getFollowed : (users : Array<UserType>) => ({
+        type : "instaClone/userSearchReducer/getFollowed",
+        payload : users 
+    } as const)
 
 }
 
@@ -95,6 +116,23 @@ export const searchUserPageByName = (userName : string) => {
             dispatch(searchActions.getAllUsers(userPage as Array<UserType>))
             dispatch(app_actions.set_is_fetch_fasle())
             dispatch(searchActions.setOnSearch(false))
+        }
+    }
+}
+
+export const getFolloewrsThunk = (userId : string) => {
+    return async function (dispatch : any) {
+        const users = await usersAPI.getFollowers(userId)
+        if(users) {
+            dispatch(searchActions.getFollowers(users))
+        }
+    }
+}
+export const getFollowedthunk = (userID : string) => {
+    return async function (dispatch : any) {
+        const users = await usersAPI.getFollowedUsers(userID)
+        if(users) {
+            dispatch(searchActions.getFollowed(users))
         }
     }
 }

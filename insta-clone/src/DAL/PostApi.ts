@@ -112,12 +112,12 @@ class PostAPI extends abstractAPI {
     }
     async deletePsotFromGalery(currentUserID: string, postID: string) {
         const result = await remove(child(this.DatabaseRef, "Users/" + currentUserID + "/savedPosts/" + postID))
-        console.log(result)
+      
         return result
     }
     async deletePost(userID: string, postID: string) {
         const result = await remove(child(this.DatabaseRef, "Users/" + userID + "/posts/" + postID))
-        console.log(result)
+      
         return result
     }
     async getPostByID(postID: string) {
@@ -126,7 +126,7 @@ class PostAPI extends abstractAPI {
         //And an array of comments(Array<string>)
 
         const post = await (await get(child(this.DatabaseRef, "Posts/" + postID)))
-        console.log(post.val())
+       
         return post.val()
     }
     async getListOfPosts(userID: string) {
@@ -166,7 +166,7 @@ class PostAPI extends abstractAPI {
     }
     async removeLikefromPost(userID: string, postID: string, likeOwnerID: string) {
         const result = await remove(child(this.DatabaseRef, "Users/" + userID + "/posts/" + postID + "likes" + likeOwnerID))
-        console.log(result)
+      
         return result
     }
     async addComentToPost(userID: string, postID: string, comentText: string, creator: string, avatar: string) {
@@ -182,7 +182,7 @@ class PostAPI extends abstractAPI {
                     comentID: newComentKey as string,
                     comentatorID: userID
                 };
-                console.log("postID : " + postID + "\t newKey : " + newComentKey)
+                
                 const updates: any = {}
                 updates["Posts/" + postID + "/coments/" + newComentKey] = comentData
                 update(ref(this.RealtimeDataBase), updates)

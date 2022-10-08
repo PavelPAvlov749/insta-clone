@@ -3,3 +3,6 @@
     position: grid;
     grid-area: router;
 }
+.router::-webkit-scrollbar {
+    display: none;
+  }

@@ -33,7 +33,7 @@ export const Dirrect: React.FC = React.memo((props) => {
     
     useEffect(() => {
         dispatch(getRealtimeMessages(currentUser as string,location))
-        console.log("USEEFFECT")
+      
     }, [location])
     const interlocutorAvatar = useSelector((state: Global_state_type) => {
         return state.chat.interlocutorAvatar

@@ -103,11 +103,17 @@ a{
     display: inline-block;
     text-align: right;
 }
+
+.singleComentWrapper{
+    margin-bottom: 1.5rem;
+}
 .singleComentWrapper span{
 
-    font-weight: 600;
+    font-weight: 400;
 }
 .comentsWrapper img{
+
+
     width: 40px;
     height: 40px;
     border-radius: 180px;
@@ -130,6 +136,7 @@ a{
     margin-top: -2vh;
 }
 .buttons img{
+
     display: inline;
 }
 .deletePost{

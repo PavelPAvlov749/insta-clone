@@ -114,7 +114,7 @@ export const getChatsByUserID = (userID:string) => {
 export const getRoomByUserID = (currentUserID : string,userID:string) => {
     return async function (dispatch : any) {
         const room = await chatAPI.getRoom(currentUserID,userID)
-       console.log(room)
+       
         if(room){
             dispatch(chat_actions.setActiveChat(room))
         }else{
@@ -144,17 +144,16 @@ export const getRealtimeMessages = (currentUserID:string,userID:string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         let Ref = await (await get(child(ref(dataBase), "Users/" + currentUserID + '/chats/' + userID))).val()
-        console.log(Ref)
+  
         let messages: Array<any> = []
-            console.log(currentUserID)
-            console.log(userID)
+          
             if(Ref){
                 const roomRef = ref(dataBase, "Chats/" + Ref.chatRef)
                 onValue(roomRef, (roomSnapSchot) => {
                     messages = Object.values(roomSnapSchot.val())
                     dispatch(chat_actions.getMessages(messages))
                     dispatch(app_actions.set_is_fetch_fasle())
-                    console.log(messages)
+                  
                 })
             }else{
                 dispatch(chat_actions.getMessages([]))

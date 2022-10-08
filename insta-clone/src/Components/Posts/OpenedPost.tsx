@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Global_state_type } from "../../Redux/Store";
-import comentIcon from "../../Media/coment.png"
+
 import { deletePostThunk, getSinglePostByID, likeToogleThunk, postActions } from "../../Redux/PostReducer";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 //COMPONENTS
@@ -16,6 +16,8 @@ import likeBefore from "../../Media/likeBefore.png"
 import likeAfter from "../../Media/likeAfter.png"
 import { Avatar } from "../UserPage/Avatar";
 import crossIcon from "../../Media/close.png"
+import comentIcon from "../../Media/coment.png"
+import { Preloader } from "../Preloader/Preloader";
 
 
 export const ShowedPost: React.FC = React.memo((props) => {
@@ -36,7 +38,7 @@ export const ShowedPost: React.FC = React.memo((props) => {
     })
     
     let coments = Object.values(actualPost.coments)
-    console.log(coments)
+
     const tapLikeHandler = () => {
         if (actualPost.likes_count?.includes(currentUserID as string)) {
             dispatch(likeToogleThunk(actualPost.id as string, currentUserID as string))
@@ -87,7 +89,7 @@ export const ShowedPost: React.FC = React.memo((props) => {
     } else {
         return (
             <>
-                <h1>Now Feth ...</h1>
+                <Preloader/>
             </>
 
         )

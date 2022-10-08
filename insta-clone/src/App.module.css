@@ -13,3 +13,6 @@
     "Navbar"
     "router";
 }
+.app::-webkit-scrollbar {
+    display: none;
+}
