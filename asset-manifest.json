@@ -1,22 +1,23 @@
 {
   "files": {
-    "main.css": "/insta-clone/static/css/main.77146b33.css",
-    "main.js": "/insta-clone/static/js/main.83e075e7.js",
+    "main.css": "/insta-clone/static/css/main.ef07ab5d.css",
+    "main.js": "/insta-clone/static/js/main.3e425ca0.js",
     "static/js/787.fc1ce4eb.chunk.js": "/insta-clone/static/js/787.fc1ce4eb.chunk.js",
     "static/media/google_button.png": "/insta-clone/static/media/google_button.ba94402307dab3d9e2f0.png",
     "static/media/6.gif": "/insta-clone/static/media/6.865b752f64bfb5e2345f.gif",
     "static/media/message.png": "/insta-clone/static/media/message.4eeb592f1be2adb280b5.png",
     "static/media/emoji.png": "/insta-clone/static/media/emoji.780467997739d41d3736.png",
+    "static/media/MessageTone.mp3": "/insta-clone/static/media/MessageTone.71875f38f16101cf915c.mp3",
     "static/media/imageGallery.png": "/insta-clone/static/media/imageGallery.6efc1d3040f2b00bf278.png",
     "static/media/Chat.png": "/insta-clone/static/media/Chat.f128ce4551469efb9f16.png",
     "static/media/search.png": "/insta-clone/static/media/search.bbf2dec15d518049563b.png",
     "index.html": "/insta-clone/index.html",
-    "main.77146b33.css.map": "/insta-clone/static/css/main.77146b33.css.map",
-    "main.83e075e7.js.map": "/insta-clone/static/js/main.83e075e7.js.map",
+    "main.ef07ab5d.css.map": "/insta-clone/static/css/main.ef07ab5d.css.map",
+    "main.3e425ca0.js.map": "/insta-clone/static/js/main.3e425ca0.js.map",
     "787.fc1ce4eb.chunk.js.map": "/insta-clone/static/js/787.fc1ce4eb.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.77146b33.css",
-    "static/js/main.83e075e7.js"
+    "static/css/main.ef07ab5d.css",
+    "static/js/main.3e425ca0.js"
   ]
 }
