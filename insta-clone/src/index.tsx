@@ -5,6 +5,7 @@ import { AppContainer } from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './Redux/Store';
+import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +17,9 @@ try {
 
     <React.StrictMode>
       <Provider store={store}>
+    
         <AppContainer />
+      
       </Provider>
     </React.StrictMode>
   );

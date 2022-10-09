@@ -10,70 +10,77 @@ import { Navbar } from './Components/Navbar/Navbar';
 import { NewPostModalWindow } from './Components/Posts/NewPostModal';
 import { postActions } from './Redux/PostReducer';
 import { Preloader } from './Components/Preloader/Preloader';
-import {child, get, getDatabase, onChildAdded, onChildChanged, ref } from "firebase/database"
+import { child, get, getDatabase, onChildAdded, onChildChanged, ref } from "firebase/database"
+import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 
 const messageTone = require("./Media/MessageTone.mp3")
 
 type AppPropsType = {
-  isInit : boolean,
-  isFetch : boolean,
-  init : () => void,
-  currentUserID : string | null,
-  isNewPost : boolean,
-  setIsOnNewPost : (isPost : boolean) => void,
-  isAuth : boolean
+  isInit: boolean,
+  isFetch: boolean,
+  init: () => void,
+  currentUserID: string | null,
+  isNewPost: boolean,
+  setIsOnNewPost: (isPost: boolean) => void,
+  isAuth: boolean
 }
 
-const App :React.FC<AppPropsType> = React.memo((props : AppPropsType) =>{
+const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
 
   useEffect(() => {
     props.init()
-  },[])
+  }, [])
 
 
-  if(props.isInit || !props.isFetch){
+  if (props.isInit || !props.isFetch) {
     return (
       <div className={styles.app}>
-        
-        <HashRouter>  
-        <Navbar/>
 
-        <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
-        </HashRouter>
+          <HashRouter>
+            <Navbar />
+
+            <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
+          </HashRouter>
+
       </div>
+
+
     )
-  }else{
+  } else {
     return (
-      <div> 
-        <BrowserRouter>
-        <Navbar/>
-        <Preloader/>
-        </BrowserRouter>
+      <div>
+       
+          <BrowserRouter>
+            <Navbar />
+            <Preloader />
+          </BrowserRouter>
+
+
       </div>
     )
   }
 
 })
 
-let MapStateToProps = (state : Global_state_type) => {
+let MapStateToProps = (state: Global_state_type) => {
   return {
-      isInit : state.app.is_initialize,
-      isFetch : state.app.is_fetch,
-      currentUserID : state.app.currentUserID,
-      userPage : state.userPage,
-      isNewPost : state.userPosts.isOnNewPost,
-      isAuth : state.auth.is_auth
+    isInit: state.app.is_initialize,
+    isFetch: state.app.is_fetch,
+    currentUserID: state.app.currentUserID,
+    userPage: state.userPage,
+    isNewPost: state.userPosts.isOnNewPost,
+    isAuth: state.auth.is_auth
   }
 }
-let MapDispatchToProps = (dispatch : any) => {
+let MapDispatchToProps = (dispatch: any) => {
   return {
-    init : () => {
+    init: () => {
       dispatch(InitializeThunk())
     },
-    setIsOnNewPost : (isPost : boolean) => {
+    setIsOnNewPost: (isPost: boolean) => {
       dispatch(postActions.setIsOnnewPost(isPost))
     }
   }
 }
 
-export const AppContainer = connect(MapStateToProps,MapDispatchToProps)(App)
+export const AppContainer = connect(MapStateToProps, MapDispatchToProps)(App)

@@ -1,7 +1,4 @@
 import { ref, get, child, push, update, query, DatabaseReference, orderByChild, equalTo, remove, startAt, startAfter, endBefore } from "firebase/database";
-import { connectStorageEmulator } from "firebase/storage";
-import { stringify } from "querystring";
-import { IndexKind, isObjectLiteralElement } from "typescript";
 import { UserType } from "../Redux/Types";
 
 import { abstractAPI } from "./PostApi";

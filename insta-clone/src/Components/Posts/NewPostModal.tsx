@@ -131,7 +131,10 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
                             <br />
                             <input type="file" id="file_input" style={{ "display": "none" }} accept="image/*" onChange={inputOnChangeHandler} ></input>
                             <h2  onClick={NextStepHandler}  className={newPostIMG ? styles.showNext : styles.disableNext}>{"Next\t" + ">>"}</h2>
-                        </div> : <div className={styles.step2}>
+                        </div> : 
+                        
+                        // STEP 2
+                        <div className={styles.step2}>
                             <h1>Come up with a signature</h1>
                             <Field type="text" name="post_text" className={styles.textInput} autocomplete="off" onKeyUp={textFieldOnChangeHandler}></Field>
                             <h1>Add tags to your post</h1>
