@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts, likeToogleThunk } from "../../Redux/PostReducer";
 import { Global_state_type } from "../../Redux/Store";
@@ -11,6 +11,7 @@ import { Avatar } from "../UserPage/Avatar";
 
 const PostNews: React.FC<{ post: PostType, currentUserId: string }> = React.memo((props) => {
     const dispatch = useDispatch()
+
     const tapLikeHandler = function () {
 
     }
@@ -18,15 +19,19 @@ const PostNews: React.FC<{ post: PostType, currentUserId: string }> = React.memo
 
     }
     return (
-        <section>
+        <section className={styles.postNewsContainer} key={props.post.id}>
             <NavLink to={`/profile/id:=${props.post.creator}`} className={styles.creatorInfo}>
-                <Avatar avatarIMG={props.post.creatorAvatar} fullName={props.post.creator} size="small" />
-                <h1 className={styles.autorName}>{props.post.creator}</h1>
-                <div className={styles.hr}></div>
-            </NavLink>
+                <div className={styles.avatarWrapper}>
+                    <Avatar avatarIMG={props.post.creatorAvatar} fullName={props.post.creator} size="small" />
+                </div>
 
+                <h1 className={styles.autorName}>{props.post.creator}</h1>
+
+
+            </NavLink>
             <NavLink to={`/p/id=${props.post.id}`}>
                 <div className={styles.postIMGContainer}>
+                    <br />
                     <img className={styles.postIMG} src={props.post.post_img} alt="" />
                 </div>
             </NavLink>
@@ -39,24 +44,34 @@ const PostNews: React.FC<{ post: PostType, currentUserId: string }> = React.memo
 
 export const AllPosts: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
+    let [scroll, setScroll] = useState(false)
+    const chat_anchor_ref = useRef<HTMLDivElement>(null);
+
+    const isFetch = useSelector((state: Global_state_type) => {
+        return state.app.is_fetch
+    })
+    useEffect(() => {
+        console.log(isFetch)
+    }, [isFetch])
 
     useEffect(() => {
         dispatch(getAllPosts())
     }, [])
+
     const posts = useSelector((state: Global_state_type) => {
         return state.userPosts.posts
     })
     const currentUserID = useSelector((state: Global_state_type) => {
         return state.account.userID
     })
-    const ScrollToTop = function () {
-
+    const scrollToTop = () => {
+        
     }
-    if (posts) {
+    if (!isFetch) {
         return (
-            <section className={styles.news}>
+            <div className={styles.news}>
 
-                <button type="button" onClick={ScrollToTop}>Top</button>
+                <span onClick={scrollToTop} className={styles.ScrollBtn}>^</span>
 
                 {posts.length ? posts.map((post) => {
                     return (
@@ -66,7 +81,7 @@ export const AllPosts: React.FC = React.memo((props) => {
                     )
 
                 }) : null}
-            </section>
+            </div>
 
 
         )
