@@ -97,7 +97,7 @@ export const Registration: React.FC = React.memo((props) => {
 
                             <Field style={{ "display": "none" }} name="avatar" type={"file"} placeholder={"Select avatar"}
                             accept="image/*" id="AvatarSelector" onChange={inputOnChangeHandler}></Field>
-                            <Field type="text" name="status" placeholder="Set your status"  className={styles.regUserStatus}></Field>
+                            <Field type="text" name="status" placeholder="Set your status" d className={styles.regUserStatus}></Field>
                             <button type="submit" className={styles.registrationButton} >Create Acount</button>
                         </section>
 

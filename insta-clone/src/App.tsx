@@ -27,7 +27,7 @@ type AppPropsType = {
 
 const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
 
-  useEffect(() => {
+  useEffect( () => {
     props.init()
   }, [])
 
