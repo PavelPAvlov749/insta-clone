@@ -6,7 +6,8 @@ import { Global_state_type } from "../Redux/Store";
 import { getAuth, GoogleAuthProvider ,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth";
 import { authAPI } from "../DAL/AuthAPI";
 import { app_actions } from "./AppReducer";
-import { AccountActions } from "./ProfileReducer";
+import { AccountActions, updateAvatarThunk, updateStatusThunk } from "./ProfileReducer";
+import { DataSnapshot } from "firebase/database";
 
 
 
@@ -149,20 +150,21 @@ export const loginInWithEmailAndPassword = (email: string,password : string) => 
     }
 }
 
-export const createUserByEmailAndPassword = (email:string,password : string,userName : string) => {
+export const createUserByEmailAndPassword = (email:string,password : string,userName : string,avatar:string | ArrayBuffer | null,status:string) => {
     return async function (dispatch: any) {
         try{
             if(email.length === 0 || password.length === 0 || userName.length === 0){
                 throw new Error("Please fill all fields.\nEmail,password and username cant be an empty string")
             }else{
-                const newUser = await authAPI.createUserWithEmailAndPassword(email,password,userName)
-                dispatch(app_actions.setCurrentUserID(newUser?.val().userID))
+                console.log(avatar)
+                const newUser : DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(email,password,userName)
+                await dispatch(updateAvatarThunk(avatar,newUser?.val().userID))
+                await dispatch(updateStatusThunk(newUser?.val().userID,status))
+                await dispatch(app_actions.setCurrentUserID(newUser?.val().userID))
+                console.log(newUser?.val())
                 dispatch(AccountActions.set_current_user_profile(newUser?.val()))
                 dispatch(auth_actions.set_auth_true())
             }
-            
-
-            
         }catch(ex){
             console.error(ex)
         }

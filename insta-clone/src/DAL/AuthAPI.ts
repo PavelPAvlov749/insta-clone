@@ -49,7 +49,7 @@ class AuthAPI extends abstractAPI {
 
     }
 
-    async createUserWithEmailAndPassword(email: string, password: string, userName: string) {
+    async createUserWithEmailAndPassword(email: string, password: string, userName: string,avatar?:Blob | Uint16Array | ArrayBuffer,status? : string) {
         try {
             const newUser = (await createUserWithEmailAndPassword(this.firebaseAuth, email, password)).user
             const newUserRef = push(child(ref(this.RealtimeDataBase), "Users/")).key

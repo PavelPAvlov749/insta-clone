@@ -30,7 +30,7 @@ class ProfileAPI extends abstractAPI {
         }
 
     }
-    async updateAvatar(userID: string, avatarIMG: Blob | Uint8Array | ArrayBuffer) {
+    async updateAvatar(userID: string, avatarIMG: string | ArrayBuffer | null) {
         //Create random image name with makeid function (exposts from Randomizer.ts)
         const avatarID: string = makeid(12);
         //Image avatar ref
@@ -39,7 +39,7 @@ class ProfileAPI extends abstractAPI {
 
         if (avatarIMG !== null) {
             //Uploading the image
-            uploadBytes(avatarRef, avatarIMG).then(() => {
+            uploadBytes(avatarRef, avatarIMG as ArrayBuffer).then(() => {
                 //After upload get the dowload url of the image to put them in database
                 getDownloadURL(avatarRef).then((url) => {
 

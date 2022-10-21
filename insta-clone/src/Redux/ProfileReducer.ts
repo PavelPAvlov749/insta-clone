@@ -9,6 +9,10 @@ import { ChatType, MainAccountType } from "./Types";
 const SET_CURRENT_USER_PROFILE = "instaClone/profile_reducer/set_current_user+profile"
 const UPDATE_AVATAR = "instaClone/profileReducer/updateAvatar"
 const UPDATE_STATUS = "instaClone/profileReducer/updateStatus"
+const SET_NEW_STATUS = "instaClone/profileReducer/setNewStatus"
+const SET_NEW_AVATAR = "instaClone/profileReducer/setNewAvatar"
+
+
 
 type ActionType = InferActionType<typeof AccountActions>;
 
@@ -19,7 +23,9 @@ type initial_state_type = {
     fullName: string | null,
     avatar: string | null,
     status : string | null,
-    chats : Array<ChatType> | null 
+    chats : Array<ChatType> | null,
+    newStatus : string | null,
+    newAvatar : string | ArrayBuffer | null
 }
 
 let initial_state: initial_state_type = {
@@ -27,7 +33,9 @@ let initial_state: initial_state_type = {
     fullName: null as unknown as string,
     avatar: null as unknown as string,
     status : null as unknown as string,
-    chats : [] as unknown as Array<ChatType>
+    chats : [] as unknown as Array<ChatType>,
+    newStatus : null as unknown as string,
+    newAvatar : null as unknown as ArrayBuffer
 }
 
 export const AccountReducer = (state = initial_state, action: ActionType) => {
@@ -51,7 +59,18 @@ export const AccountReducer = (state = initial_state, action: ActionType) => {
                 status : action.payload
             }
         }
-
+        case SET_NEW_STATUS : {
+            return {
+                ...state,
+                newStatus : action.payload
+            }
+        }
+        case SET_NEW_AVATAR : {
+            return {
+                ...state,
+                newAvatar : action.payload
+            }
+        }
         default:
             return state
     }
@@ -73,6 +92,14 @@ export const AccountActions = {
     updareStatus : (status : string) => ({
         type : "instaClone/profileReducer/updateStatus",
         payload : status
+    } as const),
+    setNewStatus : (newStatus : string) => ({
+        type : "instaClone/profileReducer/setNewStatus",
+        payload : newStatus
+    } as const),
+    setNewAvatar : (newAvatar : string | ArrayBuffer | null) => ({
+        type : "instaClone/profileReducer/setNewAvatar",
+        payload : newAvatar
     } as const)
 }
 
@@ -102,13 +129,12 @@ export const getAccountByID = (userID: string) => {
 
 }
 
-export const updateAvatarThunk = (newAvatar : any,userID : string) => {
+export const updateAvatarThunk = (newAvatar : string | ArrayBuffer | null,userID : string) => {
     return async function (dispatch: any) {
         try{
             dispatch(app_actions.set_is_fetch_true())
             let updatedAvatar = await profileAPI.updateAvatar(userID,newAvatar)
             dispatch(AccountActions.updateAvatar(updatedAvatar))
-           
             dispatch(app_actions.set_is_fetch_fasle())
         }
         catch(ex) {
@@ -117,6 +143,8 @@ export const updateAvatarThunk = (newAvatar : any,userID : string) => {
 
     }
 }
+
+
 export const updateStatusThunk = (userID : string,newStatusText : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
