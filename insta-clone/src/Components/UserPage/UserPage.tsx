@@ -7,7 +7,7 @@ import { UserPostsList } from "../Posts/UsersPostsList";
 import { UserStatus } from "../UserStatus/Status";
 import styles from "../../Styles/UserPage.module.css"
 import { Avatar } from "./Avatar";
-import { abstractAPI } from "../../DAL/PostApi";
+
 
 
 

@@ -10,8 +10,6 @@ import { AccountActions, updateAvatarThunk, updateStatusThunk } from "./ProfileR
 import { DataSnapshot } from "firebase/database";
 
 
-
-
 //Creating a type for auth_reducer action creator functions
 export type Action_Type = InferActionType<typeof auth_actions>;
 export type Dispatch_type = Dispatch<Action_Type>;
@@ -25,20 +23,42 @@ const SET_AUTH_FALSE = "messenger/auth_reducer/set_false";
 const SET_TOKEN = "messenger/auth_reducer/set_token";
 const CREATE_USER = "messenger/auth_reducer/create_user";
 const SET_ERROR = "messenger/authReducer/setError"
+const SET_NEW_USER_EMAIL = "messenger/authReducer/setNewUserEmail"
+const SET_NEW_USER_USERNAME = "messenger/authReducer/setNewUserUsername"
+const SET_NEW_USER_PASSWORD_1 = "messenger/authReducer/setNewUserPassword"
+const SET_NEW_USER_PASSWORD_2 = "messenger/authReducer/setNewUserPassword2"
+const SET_NEW_USER_AVATAR = "messenger/authReducer/setNewUserAvatar"
 
 let initial_state: initial_state_type = {
     is_auth: false,
     auth_token: null as unknown as string,
     is_initialize: false,
     user_id: null as unknown as string,
-    onError : false
+    onError : false,
+    regForm : {
+        username : "",
+        email : "",
+        passTake1 : "",
+        passTake2 : "",
+        avatar : null as unknown as string,
+        status : null as unknown as string
+    }
+
 }
 type initial_state_type = {
     is_auth: boolean,
     auth_token: string | undefined,
     is_initialize: boolean,
     user_id: string,
-    onError : boolean
+    onError : boolean,
+    regForm : {
+        username : string,
+        email : string, 
+        passTake1 : string,
+        passTake2 : string,
+        avatar : string | null,
+        status : string
+    }
 }
 
 export const authReducer = (state = initial_state, action: Action_Type) => {
@@ -73,6 +93,30 @@ export const authReducer = (state = initial_state, action: Action_Type) => {
                 auth_token: action.payload
             }
         }
+        case SET_NEW_USER_EMAIL : {
+            return {
+                ...state,
+                regForm : {...state.regForm,email : action.payload}
+            }
+        }
+        case SET_NEW_USER_PASSWORD_1 : {
+            return {
+                ...state,
+                regForm : {...state.regForm,passTake1 : action.payload}
+            }
+        }
+        case SET_NEW_USER_PASSWORD_2 : {
+            return {
+                ...state,
+                regForm : {...state.regForm,passTake2 : action.payload}
+            }
+        }
+        case SET_NEW_USER_USERNAME : {
+            return {
+                ...state,
+                regForm : {...state.regForm,username : action.payload}
+            }
+        }
         default:
             return state
     }
@@ -98,7 +142,28 @@ export const auth_actions = {
     setError : (isError : boolean) => ({
         type : "messenger/authReducer/setError",
         payload : isError
+    } as const),
+    setNewUserName : (username : string) => ({
+        type : "messenger/authReducer/setNewUserUsername",
+        payload : username
+    } as const ),
+    setNewUserPassword : (password : string) => ({
+        type : "messenger/authReducer/setNewUserPassword",
+        payload : password
+    } as const ),
+    setNewUserPassword2 : (password : string) => ({
+        type : "messenger/authReducer/setNewUserPassword2",
+        payload : password
+    } as const),
+    setNewUserEmail : (email : string) => ({
+        type : "messenger/authReducer/setNewUserEmail",
+        payload : email
+    } as const ),
+    setNewUserAvatar : (avatar : string) => ({
+        type : "messenger/authReducer/avatar",
+        payload : avatar
     } as const)
+
 }
 
 export const CheckAuthThunk = () => {

@@ -4,7 +4,9 @@ import { Global_state_type } from "../Redux/Store";
 import { UserType } from "../Redux/Types";
 
 
-const userPageFromState = (state : Global_state_type) => state.userPage
+export  const userPageFromState = (state : Global_state_type) => state.userPage
+export const newUserRegFormFromState = (state : Global_state_type) => state.auth.regForm
+
 
 export const userPageSelector = createSelector(userPageFromState,(UserPage) => {
     if(UserPage){
@@ -12,4 +14,9 @@ export const userPageSelector = createSelector(userPageFromState,(UserPage) => {
     }else{
         return null as unknown as UserType
     }
+})
+
+
+export const getUserRegFormFromState = createSelector(newUserRegFormFromState,(regForm) => {
+    return regForm
 })

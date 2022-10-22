@@ -2,41 +2,34 @@ import React, { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createUserByEmailAndPassword } from "../../Redux/AuthReducer";
+import { auth_actions, createUserByEmailAndPassword } from "../../Redux/AuthReducer";
 import styles from "../../Styles/Registration.module.css"
 import { Global_state_type } from "../../Redux/Store";
 import GaleryImg from "../../Media/imageGallery.png"
 import { AccountActions, updateAvatarThunk, updateStatusThunk } from "../../Redux/ProfileReducer";
+import {getUserRegFormFromState } from "../../Selectors/Selectors";
 
 
 
 export const Registration: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
     const navigate = useNavigate()
-    const newStatus = useSelector((state: Global_state_type) => {
-        return state.account.newStatus
-    })
-    const newAvatar = useSelector((state:Global_state_type) => {
-        return state.account.newAvatar
-    })
+
+    const newUserRegForm = useSelector(getUserRegFormFromState)
+    
+    
     let [file, set_file] = useState(null);
     let [onError, setOnError] = useState({ onError: false, errorMessage: null as unknown as string })
     let [step, setStep] = useState(1)
     
-    let avatar = useSelector((state: Global_state_type) => {
-        return state.account.avatar
-    })
-    const currentUserID = useSelector((state:Global_state_type) => {
-        return state.auth.user_id
-    })
 
-    const setSubmit = (values: { username: string, email: string, password_1: string, password_2: string,avatar : string | ArrayBuffer | null,status : string }) => {
-        if (values.email.length < 6 || values.username.length < 6 || values.password_1.length < 6) {
+    const setSubmit = (values: { username: string, email: string, passTake1: string, passTake2: string,avatar : string | null,status : string }) => {
+        if (values.email.length < 6 || values.username.length < 6 || values.passTake1.length < 6) {
             setOnError({ onError: true, errorMessage: "Fields should contain minimum 6 charecters" })
-        } else if (values.password_1 !== values.password_2) {
+        } else if (values.passTake1 !== values.passTake2) {
             setOnError({ onError: true, errorMessage: "Password dint match" })
         } else {
-            dispatch(createUserByEmailAndPassword(values.email, values.password_1, values.username,newAvatar,newStatus as string))
+            dispatch(createUserByEmailAndPassword(values.email, values.passTake1, values.username,newUserRegForm.avatar,newUserRegForm.status as string))
             
           
         }
@@ -49,14 +42,11 @@ export const Registration: React.FC = React.memo((props) => {
     const inputOnChangeHandler = (event: any) => {
         let target = event.target
         let fileReader = new FileReader()
-
         set_file(event.target.files[0]);
-
         if (!target.files.length) {
             //If file was uploaded with error log the error
             console.log("ERROR")
         } else {
-
             fileReader.readAsDataURL(target.files[0])
             fileReader.onload = function (e: ProgressEvent<FileReader>) {
                 //Dispatch fileRader result in postReducer
@@ -81,36 +71,40 @@ export const Registration: React.FC = React.memo((props) => {
                 enableReinitialize={true} //<= If true Form will reinitialize after reciving new initial value from state 
                 className="login_forms"
                 //FORM INITIAL VALUES
-                initialValues={{ 
-                    username: "", 
-                    email: "", 
-                    password_1: "",
-                    password_2: "",
-                    status : "",
-                    avatar : null as unknown as string | ArrayBuffer | null
-                    }} onSubmit={setSubmit}>
-
+                initialValues={newUserRegForm} onSubmit={setSubmit}>
+                    
                 <Form className={styles.loginForms}>
                     {step === 1 ?
                         <div className={onError ? styles.loginFormsDIV : styles.loginFormsOnEror}>
 
-                            <Field type="text" name="username" placeholder={"Username"}></Field>
+                            <Field type="text" name="username" placeholder={"Username"} onChange={(e:any) => {
+                                dispatch(auth_actions.setNewUserName(e.currentTarget.value))
+                            }}></Field>
                             <br />
 
-                            <Field type="text" name="email" placeholder={"Email"}></Field>
+                            <Field type="text" name="email" placeholder={"Email"} onChange={(e:any) => {
+                                dispatch(auth_actions.setNewUserEmail(e.currentTarget.value))
+                            }}></Field>
                             <br />
 
-                            <Field type="text" name="password_1" placeholder={"Password"}></Field>
+                            <Field type="text" name="passTake1" placeholder={"Password"} onChange={(e : any) => {
+                                dispatch(auth_actions.setNewUserPassword(e.currentTarget.value))
+                            }}></Field>
                             <br />
 
-                            <Field type="text" name="password_2" placeholder={"Repeat the password"}></Field>
+                            <Field type="text" name="passTake2" placeholder={"Repeat the password"} onChange={(e:any) => {
+                                if(e.currentTarget.value !== newUserRegForm.passTake1){
+                                    console.log("Pass dint match")
+                                }
+                                dispatch(auth_actions.setNewUserPassword2(e.currentTarget.value))
+                            }}></Field>
                             <br />
                             <button className={styles.registrationButton} onClick={nexStepHandler} type="button">Next Step</button>
                         </div> :
                         <section className={styles.registrationStep2}>
                             <label htmlFor="AvatarSelector">
                                 <div className={styles.avatarPicker}>
-                                {avatar ? <img className={styles.registrationAvatar} src={avatar} alt="#"></img> : <img className={styles.regAvatarIcon} src={GaleryImg} alt={"#"}></img>}
+                                {newUserRegForm.avatar ? <img className={styles.registrationAvatar} src={newUserRegForm.avatar} alt="#"></img> : <img className={styles.regAvatarIcon} src={GaleryImg} alt={"#"}></img>}
                                 </div>
                             </label>
 
@@ -121,8 +115,6 @@ export const Registration: React.FC = React.memo((props) => {
                         </section>
 
                     }
-
-                   
 
                 </Form>
             </Formik>

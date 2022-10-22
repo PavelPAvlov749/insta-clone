@@ -29,6 +29,7 @@
 }
 .loginFormsError input{
     border-radius: 5px;
+    width: 300px;
     border-width: 1px;
     --main-bg-color : rgb(176, 61, 61);
     border-color: var(--main-bg-color);

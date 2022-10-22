@@ -39,6 +39,11 @@
     border-style:solid;
     background-color: lightgray;
 }
+.loginForms input:focus{
+    border-style: none;
+    outline: none;
+    box-shadow: 0px 2px 10px 2px rgb(32, 37, 65);
+}
 .hrReg{
     width: 100%;
     height: 1px;
