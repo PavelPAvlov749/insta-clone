@@ -1,19 +1,21 @@
 .formDivContainer{
+    position: fixed;
+    top: 3rem;
+    
+    width: 100%;
     text-align: center;
     justify-content: center;
     align-items: center;
     margin-bottom: 0;
-    
-}
-.wrapper{
-    width: 97%;
-    padding: 0%;
+    width: 100%;
     border-radius: 5px;
     height: 350px;
     border-color: grey;
     border-width: 1px;
     border-style: solid;
+    
 }
+
 .wrapper hr{
     position: relative;
     width: 100%;
@@ -28,12 +30,13 @@
     margin-bottom: 0.5rem;
 }
 .loginFormsError input{
+    margin-top: 0.3rem;
     border-radius: 5px;
     width: 300px;
     border-width: 1px;
     --main-bg-color : rgb(176, 61, 61);
     border-color: var(--main-bg-color);
-    height: 100%;
+    height: 29px;
     border-style:solid;
     background-color: lightgray;
 }

@@ -30,19 +30,19 @@ class ProfileAPI extends abstractAPI {
         }
 
     }
-    async updateAvatar(userID: string, avatarIMG: string | ArrayBuffer | null) {
+    async updateAvatar(userID: string, avatarIMG: Blob | ArrayBuffer | Uint16Array) {
+        try{
         //Create random image name with makeid function (exposts from Randomizer.ts)
         const avatarID: string = makeid(12);
         //Image avatar ref
         const avatarRef: StorageReference = storage_ref(this.storageRefrence, avatarID)
         //If _img from arguments !== null dowload the file in storage with image_name
-
+        console.log(avatarIMG)
         if (avatarIMG !== null) {
             //Uploading the image
-            uploadBytes(avatarRef, avatarIMG as ArrayBuffer).then(() => {
+            uploadBytes(avatarRef, avatarIMG).then(() => {
                 //After upload get the dowload url of the image to put them in database
                 getDownloadURL(avatarRef).then((url) => {
-
                     //Put avatar storage url into "Data"
                     const Data = url
                     const updates: any = {};
@@ -54,6 +54,10 @@ class ProfileAPI extends abstractAPI {
             })
           
         }
+    }catch(ex){
+        console.log(ex)
+    }
+
     }
     async getFollowers(currentUserID: string) {
 

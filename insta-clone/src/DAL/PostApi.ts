@@ -59,6 +59,7 @@ class PostAPI extends abstractAPI {
             //Create random image name with makeid function (exposts from Randomizer.ts)
             const imageID: string = makeid(12);
             //Image ref
+            console.log(userID)
             const imageRef: StorageReference = storage_ref(this.storageRefrence, imageID)
             //If _img from arguments !== null dowload the file in storage with image_name
             const newPostKey =  await push(child(ref(this.RealtimeDataBase), "Posts")).key

@@ -23,11 +23,7 @@ const SET_AUTH_FALSE = "messenger/auth_reducer/set_false";
 const SET_TOKEN = "messenger/auth_reducer/set_token";
 const CREATE_USER = "messenger/auth_reducer/create_user";
 const SET_ERROR = "messenger/authReducer/setError"
-const SET_NEW_USER_EMAIL = "messenger/authReducer/setNewUserEmail"
-const SET_NEW_USER_USERNAME = "messenger/authReducer/setNewUserUsername"
-const SET_NEW_USER_PASSWORD_1 = "messenger/authReducer/setNewUserPassword"
-const SET_NEW_USER_PASSWORD_2 = "messenger/authReducer/setNewUserPassword2"
-const SET_NEW_USER_AVATAR = "messenger/authReducer/setNewUserAvatar"
+
 
 let initial_state: initial_state_type = {
     is_auth: false,
@@ -93,30 +89,6 @@ export const authReducer = (state = initial_state, action: Action_Type) => {
                 auth_token: action.payload
             }
         }
-        case SET_NEW_USER_EMAIL : {
-            return {
-                ...state,
-                regForm : {...state.regForm,email : action.payload}
-            }
-        }
-        case SET_NEW_USER_PASSWORD_1 : {
-            return {
-                ...state,
-                regForm : {...state.regForm,passTake1 : action.payload}
-            }
-        }
-        case SET_NEW_USER_PASSWORD_2 : {
-            return {
-                ...state,
-                regForm : {...state.regForm,passTake2 : action.payload}
-            }
-        }
-        case SET_NEW_USER_USERNAME : {
-            return {
-                ...state,
-                regForm : {...state.regForm,username : action.payload}
-            }
-        }
         default:
             return state
     }
@@ -143,26 +115,6 @@ export const auth_actions = {
         type : "messenger/authReducer/setError",
         payload : isError
     } as const),
-    setNewUserName : (username : string) => ({
-        type : "messenger/authReducer/setNewUserUsername",
-        payload : username
-    } as const ),
-    setNewUserPassword : (password : string) => ({
-        type : "messenger/authReducer/setNewUserPassword",
-        payload : password
-    } as const ),
-    setNewUserPassword2 : (password : string) => ({
-        type : "messenger/authReducer/setNewUserPassword2",
-        payload : password
-    } as const),
-    setNewUserEmail : (email : string) => ({
-        type : "messenger/authReducer/setNewUserEmail",
-        payload : email
-    } as const ),
-    setNewUserAvatar : (avatar : string) => ({
-        type : "messenger/authReducer/avatar",
-        payload : avatar
-    } as const)
 
 }
 
@@ -223,7 +175,6 @@ export const createUserByEmailAndPassword = (email:string,password : string,user
             }else{
                 console.log(avatar)
                 const newUser : DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(email,password,userName)
-                await dispatch(updateAvatarThunk(avatar,newUser?.val().userID))
                 await dispatch(updateStatusThunk(newUser?.val().userID,status))
                 await dispatch(app_actions.setCurrentUserID(newUser?.val().userID))
                 console.log(newUser?.val())

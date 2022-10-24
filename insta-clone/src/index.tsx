@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './Redux/Store';
 import { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
+import { Navbar } from './Components/Navbar/Navbar';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -31,7 +32,7 @@ try {
       <Provider store={store}>
     
         <AppContainer />
-      
+       
       </Provider>
     </React.StrictMode>
   );

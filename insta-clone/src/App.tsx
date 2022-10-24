@@ -37,9 +37,10 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
       <div className={styles.app}>
 
           <HashRouter>
-            <Navbar />
+           
 
             <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
+            <Navbar />
           </HashRouter>
 
       </div>
@@ -51,8 +52,9 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
       <div>
        
           <BrowserRouter>
-            <Navbar />
+           
             <Preloader />
+            <Navbar />
           </BrowserRouter>
 
 

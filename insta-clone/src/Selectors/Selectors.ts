@@ -5,7 +5,7 @@ import { UserType } from "../Redux/Types";
 
 
 export  const userPageFromState = (state : Global_state_type) => state.userPage
-export const newUserRegFormFromState = (state : Global_state_type) => state.auth.regForm
+export const newUserRegFormFromState = (state : Global_state_type) => state.registration
 
 
 export const userPageSelector = createSelector(userPageFromState,(UserPage) => {

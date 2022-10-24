@@ -1,17 +1,12 @@
 .app {
+    position: fixed;
+    overflow-y: scroll;
     align-items: center;
     justify-content: center;
-    display: grid;
-    margin: 0% 0.3rem 0% 0.3rem;
     width: 100%;
-    position: inherit;
     height: 100%;
-    
-    grid-template-columns: 100%;
-    grid-template-rows: 1fr auto;
-    grid-template-areas: 
-    "Navbar"
-    "router";
+  
+
 }
 .app::-webkit-scrollbar {
     display: none;

@@ -1,5 +1,6 @@
 .wrapper{
     grid-area: postList;
+  
 }
 .postsWrapper::-webkit-scrollbar {
     display: none;

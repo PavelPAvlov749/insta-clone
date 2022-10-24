@@ -1,13 +1,15 @@
 .container{
     display: block;
+    position: fixed;
     justify-content: center;
     text-align: center;
     border-radius: 5px;
     border-color: gray;
     border-width: 1px;
     border-style: solid;
-    margin-right: 0.5rem;
     height: 100%;
+    width: 100%;
+    
 }
 .container h3{
     text-align: left;
@@ -29,13 +31,13 @@
     background-color: lightgray;
 }
 
-.loginFormsError input{
-
-    border-radius: 5px;
+.loginFormsOnError input{
+    background-color: black;
+    border-radius: 5px; 
     border-width: 1px;
-    --main-bg-color : rgb(176, 61, 61);
+    --main-bg-color : rgb(215, 64, 64);
     border-color: var(--main-bg-color);
-    height: 20px;
+    height: 2.5rem;
     border-style:solid;
     background-color: lightgray;
 }
@@ -52,8 +54,7 @@
     margin-bottom: 1rem;
 }
 .registrationButton{
-    position: static;
-    bottom: 0;
+    
     width: 81%;
     height: 40px;
     font-size:small;
@@ -94,7 +95,7 @@
 
 }
 .avatarPicker{
-    
+    margin: 20% 0 20% 0;
     position:relative;
     width: 100%;
     text-align: center;

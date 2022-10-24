@@ -129,9 +129,10 @@ export const getAccountByID = (userID: string) => {
 
 }
 
-export const updateAvatarThunk = (newAvatar : string | ArrayBuffer | null,userID : string) => {
+export const updateAvatarThunk = (newAvatar : Blob | ArrayBuffer | Uint16Array,userID : string) => {
     return async function (dispatch: any) {
         try{
+            console.log("Upadte avatar thunk")
             dispatch(app_actions.set_is_fetch_true())
             let updatedAvatar = await profileAPI.updateAvatar(userID,newAvatar)
             dispatch(AccountActions.updateAvatar(updatedAvatar))

@@ -57,3 +57,11 @@ export type AvatarPropsType = {
     size : "large" | "small" | "chatSize",
     userID? : string
 }
+export type CreateNewUserType = {
+    userName : string ,
+    passwordField1 : string,
+    passwordField2? : string,
+    email : string ,
+    avatar : any,
+    status : string 
+}

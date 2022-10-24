@@ -139,7 +139,6 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
                             <Field type="text" name="post_text" className={styles.textInput} autocomplete="off" onKeyUp={textFieldOnChangeHandler}></Field>
                             <h1>Add tags to your post</h1>
                             <Field type="text" name="post_tag" autocomplete="off" className={styles.textInput} />
-
                             <br />
                             <button type="submit" className={styles.publish} disabled={isOnLoad || (newPostIMG === null || newPostText.length < 1)}>Publish</button>
                             <br></br>

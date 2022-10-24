@@ -35,7 +35,7 @@ export const Navbar: React.FC = React.memo((props) => {
         dispatch(postActions.setIsOnnewPost(true))
     }
     return (
-        <section className={style.navbarContainer}>
+        <footer className={style.navbarContainer}>
 
             
                 <section className={style.navigation}>
@@ -78,7 +78,7 @@ export const Navbar: React.FC = React.memo((props) => {
               
 
             <hr className={style.hr} />
-        </section>
+        </footer>
 
     )
 });
