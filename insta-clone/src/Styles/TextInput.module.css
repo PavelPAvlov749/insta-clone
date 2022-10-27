@@ -1,24 +1,17 @@
-footer{
-    position:fixed;
-    bottom:0;
-    display: grid;
-    width: 100%;
-    padding: 0%;
-    margin: 0%;
-    grid-area: input;
-    
-}
-
 .inputWrapper{
-    padding: 1rem 0rem 1rem 0.0rem;
-    border-width: 2px;
+    position:absolute;
+    bottom:0;
     width: 100%;
-    border-style: solid;
-    border-color: lightgrey;
+    padding: 4px 0rem 4px 0.0rem;
+    border-width: 1px;
+    width: 100%;
+    border-style:groove;
+    border-color: grey;
     border-radius: 10px;
-
+    margin-bottom: 3px;
     
 }
+
 .formik{
     display: inline;
     padding: 1rem 0.5rem 2rem 1rem;
@@ -32,23 +25,24 @@ footer{
     height: 25px;
 }
 .inputWrapper button{
-
     border: none;
     color: #0095F6;
     background-color:transparent;
     vertical-align: middle;
-    
 }
 
 .messageInput{
-    height: 1.5rem;
+    height: 2rem;
+    border-radius: 5px;
+    border-style: none;
     display: inline;
     width: 65%;
-    
     /* height: max-content; */
     vertical-align: middle;
    
 }
 .messageInput:active{
     border: none;
+    border-style: none;
+    outline: none;
 }

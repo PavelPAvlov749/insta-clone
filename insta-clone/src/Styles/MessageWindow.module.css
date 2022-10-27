@@ -1,9 +1,18 @@
-.noMessage{
-
+.chatWindowWrapper{
+    /* background-color: aqua; */
+    height: 100%;
 }
-.noMessage img{
-    width: 100px;
-    height: 100px;
+
+
+.noMessages{
+    padding-top: 35%;
+    text-align: center;
+}
+
+.mailboxIcon{
+    text-align: center;
+    width: 120px;
+    height: 120px;
 }
 .messageArea{
     width: 105%;

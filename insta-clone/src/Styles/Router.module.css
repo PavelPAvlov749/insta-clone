@@ -1,7 +1,9 @@
 .router{
     width: 100%;
+    height: calc(93% - 1rem);
     margin-top: 1rem;
     position:relative;
+    
 
 
 }

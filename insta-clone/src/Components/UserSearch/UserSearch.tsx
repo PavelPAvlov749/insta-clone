@@ -24,10 +24,6 @@ export const UserSearch: React.FC = React.memo((props) => {
     useEffect(() => {
         dispatch(getAllUsersThunk())
     }, [])
-    //Is fetch === true show load indicator
-    // const onSearch = useSelector((state: Global_state_type) => {
-    //     return state.
-    // })
 
     //onChange
     const onChangeHandler = (e: any) => {

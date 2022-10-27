@@ -1,5 +1,15 @@
-import { type } from "@testing-library/user-event/dist/type"
 
+
+//Main Compoenent PropsType (App.tsx)
+export type AppPropsType = {
+    isInit: boolean,
+    isFetch: boolean,
+    init: () => void,
+    currentUserID: string | null,
+    isNewPost: boolean,
+    setIsOnNewPost: (isPost: boolean) => void,
+    isAuth: boolean
+}
 
 export type MainAccountType = {
     userID : string | null,
@@ -50,6 +60,8 @@ export type MessageType = {
     avatar? : string,
     messageData : string,
     createdAt : any,
+    messageStatus : "unreaded" | "readed",
+    messageID? : string | null
 }
 export type AvatarPropsType = {
     fullName? : string,
@@ -65,3 +77,4 @@ export type CreateNewUserType = {
     avatar : any,
     status : string 
 }
+

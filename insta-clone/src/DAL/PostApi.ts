@@ -34,10 +34,15 @@ export class abstractAPI {
 
 }
 
+
 class PostAPI extends abstractAPI {
     constructor() {
         super()
+    
     }
+
+    //GET USER POST LIST BY ID IN REALTIME
+
     async getPostListRealtime(userID: string) {
         const postRef = ref(this.RealtimeDataBase, "Posts/" + userID)
         let postList: Array<any> = []
@@ -48,12 +53,18 @@ class PostAPI extends abstractAPI {
         })
         return postList
     }
+
+    //GET ALL POSTS OF ALL USERS :::::::::::::::::::
+
     async getAllPost () {
         const result = await (await get(child(this.DatabaseRef, "Posts/"))).val()
         const post = Object.values(result)
         return post
 
     }
+
+    //CREATE POST :::::::::::::::::::
+
     async createPost(userID: string, postIMG: Blob | Uint8Array | ArrayBuffer, postText: string, postTag: string, creator: string, creatorID: string) {
         try {
             //Create random image name with makeid function (exposts from Randomizer.ts)
@@ -101,6 +112,9 @@ class PostAPI extends abstractAPI {
         }
 
     }
+
+    //ADD POST TO SAVED GALERY :::::::::::::::::::
+
     async savePostToGalery(userID: string, currentUserID: string, postID: string) {
         const savedPostKey = await (await get(child(this.DatabaseRef, "Users/" + userID + "/posts/" + postID))).key
         const savedPostData = {
@@ -111,16 +125,22 @@ class PostAPI extends abstractAPI {
         return update(this.DatabaseRef, updates)
 
     }
+    //DELETE POST FROM SAVED GALERY :::::::::::::::::::
     async deletePsotFromGalery(currentUserID: string, postID: string) {
         const result = await remove(child(this.DatabaseRef, "Users/" + currentUserID + "/savedPosts/" + postID))
       
         return result
     }
+
+    //DELETE POST :::::::::::::::::::
+
     async deletePost(userID: string, postID: string) {
         const result = await remove(child(this.DatabaseRef, "Users/" + userID + "/posts/" + postID))
       
         return result
     }
+    //GET SINGLE POST BY USER ID :::::::::::::::::::
+
     async getPostByID(postID: string) {
         //The function takes as arguments the userID(string) and the postID(string) as an argument.
         //Returns the object of the post containing the following fields (picture, text, number of likes, creator of the post
@@ -130,6 +150,9 @@ class PostAPI extends abstractAPI {
        
         return post.val()
     }
+
+    //GET LIST OF POST :::::::::::::::::::
+
     async getListOfPosts(userID: string) {
         //This method will return all posts userID(Array<PostType>)
 
@@ -137,6 +160,9 @@ class PostAPI extends abstractAPI {
 
         return postsList
     }
+
+
+    //ADD LIKE TO POST :::::::::::::::::::
 
     async addLikeToPost(currentUserID: string, postID: string) {
         //Get post refrence
@@ -170,6 +196,8 @@ class PostAPI extends abstractAPI {
       
         return result
     }
+    //ADD COMENT :::::::::::::::::::
+
     async addComentToPost(userID: string, postID: string, comentText: string, creator: string, avatar: string) {
         //create id by ID generator
         const newComentKey =  await push(child(ref(this.RealtimeDataBase), "Posts" + postID + "/coments/")).key
@@ -195,6 +223,8 @@ class PostAPI extends abstractAPI {
             console.log(ex)
         }
     }
+    //DELETE COMENT :::::::::::::::::::
+
     async deleteComent(postID: string, comentID: string) {
 
         let data = null

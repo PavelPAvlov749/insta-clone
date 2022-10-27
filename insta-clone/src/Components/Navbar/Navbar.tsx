@@ -20,12 +20,12 @@ import { logOutThunk } from "../../Redux/AuthReducer";
 
 
 export const Navbar: React.FC = React.memo((props) => {
-    const dispatch : any = useDispatch()
+    const dispatch: any = useDispatch()
 
-    let isAuth = useSelector((state:Global_state_type) => {
+    let isAuth = useSelector((state: Global_state_type) => {
         return state.auth.is_auth
     })
-    let currentUserUrl = useSelector((state:Global_state_type) => {
+    let currentUserUrl = useSelector((state: Global_state_type) => {
         return state.account.userID
     })
     const logOut = () => {
@@ -37,47 +37,43 @@ export const Navbar: React.FC = React.memo((props) => {
     return (
         <footer className={style.navbarContainer}>
 
-            
-                <section className={style.navigation}>
-               
-                    <ul className={style.navigation_list}>
-                    <li>
-                            <NavLink to={`/search`}>
-                                <img src={search} alt="#" />
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/chat">
-                                <img src={chat_img} alt="#"
-                                onClick={() => {
-                                    }} />
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to={`/profile/id=${currentUserUrl}`}>
-                                <img src={profile} alt="#" />
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/news">
-                                <img src={home} alt="" />
-                            </NavLink>
-                        </li>
-                        <li>
-                           <NavLink to="newPost">
-                                <img src={upload} alt="#" />
-                            </NavLink> 
-                           
-                        </li>
-                        <li>
-                            {isAuth ? <img src={logout_img} alt="" onClick={logOut} /> : null}
-                        </li>
-                    </ul>
-                    
-                </section>
-              
 
-            <hr className={style.hr} />
+            <section className={style.navigation}>
+
+                <ul className={style.navigation_list}>
+                    <li>
+                        <NavLink to={`/search`}>
+                            <img src={search} alt="#" />
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/chat">
+                            <img src={chat_img} alt="#"
+                                onClick={() => {
+                                }} />
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to={`/profile/id=${currentUserUrl}`}>
+                            <img src={profile} alt="#" />
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/news">
+                            <img src={home} alt="" />
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="newPost">
+                            <img src={upload} alt="#" />
+                        </NavLink>
+
+                    </li>
+                    <li>
+                        {isAuth ? <img src={logout_img} alt="" onClick={logOut} /> : null}
+                    </li>
+                </ul>
+            </section>
         </footer>
 
     )

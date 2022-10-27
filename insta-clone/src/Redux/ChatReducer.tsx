@@ -120,7 +120,6 @@ export const getRoomByUserID = (currentUserID : string,userID:string) => {
         }else{
             dispatch(chat_actions.setActiveChat(""))
         }
-        
     }
 }
 export const getMessagesByChatID = (currentUserID:string,chatID : string) => {
@@ -133,10 +132,6 @@ export const getMessagesByChatID = (currentUserID:string,chatID : string) => {
                 dispatch(app_actions.set_is_fetch_fasle())
         
             }
-
-       
-
-
     }
 }
 
@@ -151,9 +146,9 @@ export const getRealtimeMessages = (currentUserID:string,userID:string) => {
                 const roomRef = ref(dataBase, "Chats/" + Ref.chatRef)
                 onValue(roomRef, (roomSnapSchot) => {
                     messages = Object.values(roomSnapSchot.val())
+                    console.log(messages[messages.length -1])
                     dispatch(chat_actions.getMessages(messages))
                     dispatch(app_actions.set_is_fetch_fasle())
-                  
                 })
             }else{
                 dispatch(chat_actions.getMessages([]))
@@ -170,7 +165,8 @@ export const sendMessageThunk = (sender: string, recepient: string, messageText:
             messageData : messageText,
             fullName : senderName,
             userID : sender,
-            createdAt : new Date()
+            createdAt : new Date(),
+            messageStatus : "unreaded",
         }))
         dispatch(app_actions.set_is_fetch_fasle())
     }
