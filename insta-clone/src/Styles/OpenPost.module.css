@@ -15,7 +15,7 @@
 }
 .creatorInfo{
     grid-area: CreatorInfo;
-    padding: 0%;
+    padding: 5px;
     margin: 0%;
 }
 .comentIcon{
@@ -28,7 +28,7 @@
 .autorName{
     margin-left: 1rem;
     display: inline;
-    font-size:medium;
+    font-size:large;
     text-decoration: none;
     grid-area: Name;
     text-decoration: none;
@@ -119,7 +119,8 @@ a{
     border-radius: 180px;
 }
 
-.postInfo h5{
+.postInfo h4{
+    font-weight: 500;
     display: inline;
 }
 .postInfo{

@@ -23,11 +23,15 @@
 
 }
 .noComents{
+    margin-left: 25%;
+    text-align: center;
+    width: 100%;
     font-size: large;
     font-weight: 500;
 }
 .backArrow{
     padding-right: 1rem;
+    margin-left: 1rem;
     vertical-align: middle;
     display: inline;
     height: auto;
@@ -36,16 +40,19 @@
     max-width: 30px;
 }
 .ComentInput input {
-    width: 90%;
+    position: fixed;
+    bottom: 12%;
+    width: 100%;
 }
 .ComentInput button{
-   
-    height: 1.5rem;
+   position: fixed;
+   bottom: 7%;
+    height: 2rem;
     border-style: none;
     color: white;
     font-size: medium;
     border-radius: 3px;
     background-color: rgb(77, 90, 190);
     text-align: center;
-    width: 92%;
+    width: 100%;
 }

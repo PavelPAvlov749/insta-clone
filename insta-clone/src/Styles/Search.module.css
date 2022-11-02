@@ -1,6 +1,5 @@
 .searchWrapper{
     width: 100%;
-    display: grid;
     overflow-y:scroll;
     height: 100%;
 }

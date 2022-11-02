@@ -49,7 +49,6 @@
 
     display: grid;
     height: max-content;
-    margin-left: 0%;
     font-size: medium;
     grid-area: status;
 
@@ -64,11 +63,7 @@
 
 }
 
-.wraperDiv {
-    display: inline;
 
-
-}
 .defaultAvatarSmall{
     margin-bottom: 0%;
     margin-left: 0.1rem;
@@ -159,9 +154,7 @@
 }
 
 .defaultAvatarLarge span {
-
     position: relative;
-
     bottom: -20%;
     left: 25%;
     margin-left: -50%;
@@ -205,16 +198,17 @@
 }
 
 .contrtolButtons {
-    width: 100%;
+    width: 98%;
     grid-area: Buttons;
+    text-align: center;
 }
 .contrtolButtons button{
     width: 49%;
     height: 2rem;
     color: white;
     border: none;
+    margin-right: 1px;
     border-radius: 5px;
-    margin-left: 2px;
     background-color: rgb(77, 90, 190);
     display: inline;
 }

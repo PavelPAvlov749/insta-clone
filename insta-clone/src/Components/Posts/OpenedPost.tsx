@@ -11,12 +11,11 @@ import { ComentTextArea } from "./ComentTextArea";
 //STYLES IMPORT
 import styles from "../../Styles/OpenPost.module.css"
 //MEDIA IMPORTS
-import likeImg from "../../Media/like.png"
-import likeBefore from "../../Media/likeBefore.png"
-import likeAfter from "../../Media/likeAfter.png"
+import likeImg from "../../Media/like-96.png"
+import dislikeIMG from "../../Media/dislike-96.png"
 import { Avatar } from "../UserPage/Avatar";
-import crossIcon from "../../Media/close.png"
-import comentIcon from "../../Media/coment.png"
+import crossIcon from "../../Media/trash-96.png"
+import comentIcon from "../../Media/comments-96.png"
 import { Preloader } from "../Preloader/Preloader";
 
 
@@ -64,23 +63,21 @@ export const ShowedPost: React.FC = React.memo((props) => {
                     <Avatar avatarIMG={actualUserPage.avatar} fullName={actualUserPage.fullName} size="small" />
 
                     <h1 className={styles.autorName}>{actualPost?.creator}</h1>
-                    <div className={styles.hr}></div>
+                
                 </NavLink>
                 <div className={styles.postIMGContainer}>
                     <img className={styles.postIMG} src={actualPost.post_img} alt="" />
-                    <img src={actualPost.likes_count.includes(currentUserID as string) ? likeAfter : likeBefore} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
+                    <img src={actualPost.likes_count.includes(currentUserID as string) ? dislikeIMG : likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
                     <img src={comentIcon} alt="#" className={styles.comentIcon} onClick={onComentClickHandler}></img>
-                   
                    
                     <span className={styles.likesCount} onClick={onComentClickHandler}>{actualPost.likes_count?.length + "\t likes"}</span>
                     {currentUserID === actualPost.creatorID ?  <img src={crossIcon} alt="#" className={styles.deletePost} onClick={deletePostHandler}></img> : null }
                 </div>
 
                 <div className={styles.postInfo}>
-                    <h5>{actualPost.creator + "\t:\t"}</h5>
+                    <h4>{actualPost.creator + "\t:\t"}</h4>
                     <span>{actualPost?.post_text}</span>
                 </div>
-                <span>{actualPost.coments.length + "\t coments"}</span>
                 {actualPost.coments.length > 0 ? <SilngleComent coment={actualPost?.coments[actualPost.coments.length - 1]} currentUserID={currentUserID as string}/> : 
                 "There is no coments"}
                 <h2 onClick={onComentClickHandler} className={styles.showAll}>Show all Coments</h2>

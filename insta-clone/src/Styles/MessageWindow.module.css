@@ -1,6 +1,7 @@
 .chatWindowWrapper{
     /* background-color: aqua; */
     height: 100%;
+  
 }
 
 
@@ -15,15 +16,18 @@
     height: 120px;
 }
 .messageArea{
-    width: 105%;
+    width: 100%;
     grid-area: messages;
     display: block;
     overflow-y: scroll;
- 
+    position: fixed;
+    top: 0;
+    height: 100%;
 
-    height: -moz-calc(100% - 200px);
-    height: -webkit-calc(100% - 200px);
-    height: calc(100vh - 180px);
+
+    height: -webkit-calc(10% + 2rem);
+    height: -webkit-calc(10% + 2rem);
+    height: calc(100vh - (10% + 2rem));
 
 }
 @media(max-width : 767px){

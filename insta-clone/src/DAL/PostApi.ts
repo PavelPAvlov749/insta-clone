@@ -1,6 +1,6 @@
 import { dataBase, Firebase_auth } from "./FirebaseConfig";
 import { firebase } from "./FirebaseConfig";
-import { ref, get, child, push, update, remove, onValue } from "firebase/database";
+import { ref, get, child, push, update, remove, onValue ,getDatabase} from "firebase/database";
 import { getStorage, ref as storage_ref, uploadBytes, getDownloadURL, StorageReference } from "firebase/storage";
 import { makeid } from "./Randomizer";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
@@ -20,6 +20,7 @@ export class abstractAPI {
     public ref = ref
 
     public getAuthProvider() {
+
         return this.googleAuthProvider
     }
     public getAuthInstatnce() {
@@ -28,6 +29,7 @@ export class abstractAPI {
     public getApp() {
         return this.firebaseAPP
     }
+    
     public getDatabase() {
         return this.RealtimeDataBase
     }

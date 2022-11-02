@@ -1,15 +1,12 @@
 import { ThunkAction } from "redux-thunk";
 import { Global_state_type, InferActionType } from "./Store";
-import { Firestore_instance } from "../DAL/Firestore_config";
 import {child, get, onValue, ref} from "firebase/database"
 import { ChatType, MessageType, UserType } from "./Types";
 import { app_actions } from "./AppReducer";
 import { chatAPI } from "../DAL/ChatAPI";
-import { send } from "process";
 import { dataBase } from "../DAL/FirebaseConfig";
-import { disableNetwork } from "firebase/firestore";
 import { usersAPI } from "../DAL/UsersAPI";
-import { hasPointerEvents } from "@testing-library/user-event/dist/utils";
+
 
 const SEND_MESSAGE = "instaClone/chat_reducer/send_message"
 const GET_MESSAGES = "instaClone/chatReducer/get_messages"
@@ -18,15 +15,16 @@ const SET_ACTIVE_CHATS = "instaClone/chatReducer/setActiveChat"
 const SET_NEW_MESSAGE = "instaClone/chatReducer/setNewMessage"
 const GET_INTERLOCUTOR_AVATAR = "insta-clone/chatReducer/getAvatar"
 
+
 type ActionType = InferActionType<typeof chat_actions>
-type Thunk_type = ThunkAction<void,Global_state_type,unknown,ActionType>
 
 let initialState = {
     activeChat : null as unknown as string,
     chats : [] as Array<UserType>,
     messages : [] as Array<MessageType>,
     newMessage : "",
-    interlocutorAvatar : null as unknown as string
+    interlocutorAvatar : null as unknown as string,
+    unreadedMessages : null as unknown as number
 
 }
 
@@ -160,14 +158,8 @@ export const getRealtimeMessages = (currentUserID:string,userID:string) => {
 export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string) => {
     return async function (dispatch : any){
         dispatch(app_actions.set_is_fetch_true())
-        let newMessage = await chatAPI.sendMessage(sender,recepient,messageText,senderName)
-        dispatch(chat_actions.sendMEssage({
-            messageData : messageText,
-            fullName : senderName,
-            userID : sender,
-            createdAt : new Date(),
-            messageStatus : "unreaded",
-        }))
+        await chatAPI.sendMessage(sender,recepient,messageText,senderName)
+        await chatAPI.incrementUnreadedMessagesCount(recepient)
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }

@@ -1,4 +1,4 @@
-import { child, DatabaseReference, DataSnapshot, equalTo, get, orderByChild, push, query, update } from "firebase/database";
+import { child, DatabaseReference, DataSnapshot, equalTo, get, orderByChild, push, query, runTransaction, update } from "firebase/database";
 import { Message } from "../Components/Chat/Message";
 import { ChatType, MessageType } from "../Redux/Types";
 import { abstractAPI } from "./PostApi";
@@ -9,14 +9,38 @@ class ChatAPI extends abstractAPI {
         super()
     }
 
-    //INCREMENT UNREDED MESSAGES COUNT ::::::::::::
+    //INCREMENT UNREADED MESSAGES COUNT ::::::::::::
     
     async incrementUnreadedMessagesCount (userID: string) {
+        const countRef = await this.ref(this.RealtimeDataBase,"Users/" + userID + '/' + "unreadedMessages")
+        try{
+            await runTransaction(countRef,(unreadedMessages : number) => {
+                if(unreadedMessages){
+                    unreadedMessages++
+                    console.log(unreadedMessages)
+                }else{
+                    // const data = 1
+                    // const updates : any = {}
+                    // updates["Users/" + userID + "/unreadedMessages/"] = data
+                    // update(this.ref(this.RealtimeDataBase),updates)
+                }
+                return unreadedMessages 
+            })
+        }catch(ex ){
+            console.log("CANT INCREMENT : " + ex)
+        }
 
     }
+
     //DECREMENT UNEADED MESSAGES COUNT ::::::::::::: 
     async decrementUnreadedMessagesCount (userID : string){
-        
+        const countRef = this.ref(this.RealtimeDataBase,"Users/" + userID + '/' + "unreadedMessages")
+        runTransaction(countRef,(messagesCount : number) => {
+            if(messagesCount){
+                messagesCount--
+            }
+            return messagesCount
+        })
     }
 
     //SEND MESSAGE ::::::::::::::
@@ -56,7 +80,7 @@ class ChatAPI extends abstractAPI {
             update(this.ref(this.RealtimeDataBase), updates)
 
         }
-
+    
     }
 
     //GET ROOM ::::::::::::::::
