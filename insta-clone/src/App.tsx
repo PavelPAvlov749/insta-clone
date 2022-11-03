@@ -16,6 +16,7 @@ import { InitializeThunk } from './Redux/AppReducer';
 import { AppPropsType } from './Redux/Types';
 //Firebase imports
 import { ref,getDatabase, onChildAdded, onChildChanged } from "firebase/database";
+import { chatAPI } from "./DAL/ChatAPI";
 //Media and assets
 const sound = require("../src/Media/MessageTone.mp3")
 
@@ -53,6 +54,7 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
           {onMessage ? <audio src={sound} autoPlay={true}></audio> : null}
             <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
             <Navbar />
+
           </HashRouter  >
 
       </div>

@@ -155,10 +155,19 @@ export const getRealtimeMessages = (currentUserID:string,userID:string) => {
 
     }
 }
-export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string) => {
+export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string,recepientName : string) => {
     return async function (dispatch : any){
+        const user_1 = {
+            userID : sender,
+            senderName
+        }
+        const user_2 = {
+            userID : recepient,
+            fullName : recepientName
+        }
         dispatch(app_actions.set_is_fetch_true())
-        await chatAPI.sendMessage(sender,recepient,messageText,senderName)
+        // await chatAPI.sendMessage(sender,recepient,messageText,senderName)
+        // await chatAPI.createNewChat(user_1,user_2)
         await chatAPI.incrementUnreadedMessagesCount(recepient)
         dispatch(app_actions.set_is_fetch_fasle())
     }

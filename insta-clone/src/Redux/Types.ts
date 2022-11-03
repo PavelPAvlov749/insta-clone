@@ -78,3 +78,10 @@ export type CreateNewUserType = {
     status : string 
 }
 
+export type newMessageType = {
+    senderID : string,
+    recepientID : string,
+    senderFullName : string,
+    recepientFullName : string,
+    messageText : string,
+}

@@ -18,14 +18,16 @@ export const TextInput: React.FC = React.memo((props) => {
     const [newMessageText, setNewMessageText] = useState("")
     let location = useLocation().pathname.split("=")[1]
     const initialFormValues = { newMessage: newMessageText }
-
+    const chat = useSelector((state:Global_state_type) => {
+        return 
+    })
 
     const setSubmit = (values: typeof initialFormValues) => {
         if(values.newMessage.length === 0) {
             console.error("messsage cannot be an empty string")
             
         }else{
-            dispatch(sendMessageThunk(currentUser.userID as string, location, values.newMessage, currentUser.fullName as string,))
+            // dispatch(sendMessageThunk(currentUser.userID as string, location, values.newMessage, currentUser.fullName as string,))
             setNewMessageText("")
         }
 

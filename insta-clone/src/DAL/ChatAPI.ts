@@ -1,6 +1,7 @@
-import { child, DatabaseReference, DataSnapshot, equalTo, get, orderByChild, push, query, runTransaction, update } from "firebase/database";
+import { timeStamp } from "console";
+import { child, DatabaseReference, DataSnapshot, equalTo, ref, get, orderByChild, push, query, runTransaction, update, orderByValue } from "firebase/database";
 import { Message } from "../Components/Chat/Message";
-import { ChatType, MessageType } from "../Redux/Types";
+import { ChatType, MessageType, newMessageType } from "../Redux/Types";
 import { abstractAPI } from "./PostApi";
 import { makeid } from "./Randomizer";
 
@@ -10,33 +11,33 @@ class ChatAPI extends abstractAPI {
     }
 
     //INCREMENT UNREADED MESSAGES COUNT ::::::::::::
-    
-    async incrementUnreadedMessagesCount (userID: string) {
-        const countRef = await this.ref(this.RealtimeDataBase,"Users/" + userID + '/' + "unreadedMessages")
-        try{
-            await runTransaction(countRef,(unreadedMessages : number) => {
-                if(unreadedMessages){
+
+    async incrementUnreadedMessagesCount(userID: string) {
+        const countRef = await this.ref(this.RealtimeDataBase, "Users/" + userID + '/' + "unreadedMessages")
+        try {
+            await runTransaction(countRef, (unreadedMessages: number) => {
+                if (unreadedMessages) {
                     unreadedMessages++
                     console.log(unreadedMessages)
-                }else{
+                } else {
                     // const data = 1
                     // const updates : any = {}
                     // updates["Users/" + userID + "/unreadedMessages/"] = data
                     // update(this.ref(this.RealtimeDataBase),updates)
                 }
-                return unreadedMessages 
+                return unreadedMessages
             })
-        }catch(ex ){
+        } catch (ex) {
             console.log("CANT INCREMENT : " + ex)
         }
 
     }
 
     //DECREMENT UNEADED MESSAGES COUNT ::::::::::::: 
-    async decrementUnreadedMessagesCount (userID : string){
-        const countRef = this.ref(this.RealtimeDataBase,"Users/" + userID + '/' + "unreadedMessages")
-        runTransaction(countRef,(messagesCount : number) => {
-            if(messagesCount){
+    async decrementUnreadedMessagesCount(userID: string) {
+        const countRef = this.ref(this.RealtimeDataBase, "Users/" + userID + '/' + "unreadedMessages")
+        runTransaction(countRef, (messagesCount: number) => {
+            if (messagesCount) {
                 messagesCount--
             }
             return messagesCount
@@ -63,7 +64,7 @@ class ChatAPI extends abstractAPI {
                 userID: senderID,
                 fullName: senderName,
                 messageStatus: "unreaded",
-                messageID : newMessageKey
+                messageID: newMessageKey
             }
             const updates: any = {}
             updates["Chats/" + roomRef.chatRef + "/" + newMessageKey] = newMessage
@@ -80,7 +81,7 @@ class ChatAPI extends abstractAPI {
             update(this.ref(this.RealtimeDataBase), updates)
 
         }
-    
+
     }
 
     //GET ROOM ::::::::::::::::
@@ -124,9 +125,9 @@ class ChatAPI extends abstractAPI {
 
     //SWITCH MESSAGE STATUS ::::::::::::::
 
-    async switchMessageStatus(roomID:string,messageID : string) {
-        const ref = await (await get(child(this.DatabaseRef,"Chats/" + roomID + "/" + messageID)))
-     
+    async switchMessageStatus(roomID: string, messageID: string) {
+        const ref = await (await get(child(this.DatabaseRef, "Chats/" + roomID + "/" + messageID)))
+
         console.log(ref.val())
         let messageData = {
             messageData: ref.val().messageData,
@@ -134,9 +135,9 @@ class ChatAPI extends abstractAPI {
             userID: ref.val().userID,
             fullName: ref.val().fullName,
             messageStatus: "readed",
-            messageID : messageID
+            messageID: messageID
         }
-        const updates : any = {}
+        const updates: any = {}
         updates["Chats/" + roomID + "/" + messageID] = messageData;
         update(this.ref(this.RealtimeDataBase), updates)
     }
@@ -155,8 +156,111 @@ class ChatAPI extends abstractAPI {
 
             })
         }
-    
+
         return messages
+    }
+
+
+    async startChatting(newMessage : newMessageType,roomID : string) {
+        try{
+            const isChatExist = await (await get(child(this.DatabaseRef, "Chats/" + roomID))).exists()
+            if(isChatExist){
+                const newMessageID = push(child(this.ref(this.RealtimeDataBase),"Messages/" + roomID + "/")).key
+                let newMessageData = {
+                    messageData: newMessage.messageText,
+                    createdAt: await new Date().toUTCString(),
+                    userID: newMessage.senderID,
+                    fullName: newMessage.senderFullName,
+                    messageStatus: "ureaded",
+                    messageID: newMessageID
+                }
+                const updates : any = {}
+                updates["Messages" + roomID + "/" + newMessageID] = newMessageData
+                update(this.ref(this.RealtimeDataBase),updates)
+            }else{
+                const user_1 = {
+                    fullName : newMessage.senderFullName,
+                    userID : newMessage.senderID
+                }
+                const user_2 = {
+                    fullName : newMessage.recepientFullName,
+                    userID : newMessage.recepientID
+                }
+                const roomKey = await this.createNewChat(user_1,user_2)
+                const newMessageID = push(child(this.ref(this.RealtimeDataBase),"Messages/" + roomKey + "/")).key
+                let newMessageData = {
+                    messageData: newMessage.messageText,
+                    createdAt: await new Date().toUTCString(),
+                    userID: newMessage.senderID,
+                    fullName: newMessage.senderFullName,
+                    messageStatus: "ureaded",
+                    messageID: newMessageID
+                }
+                const updates : any = {}
+                updates["Messages" + roomKey + "/" + newMessageID] = newMessageData
+                update(this.ref(this.RealtimeDataBase),updates)
+                return newMessageData
+            }
+        
+        }catch(ex) {
+            console.log(ex)
+        }
+      
+    }
+
+    async createNewChat(user_1 : {userID : string,fullName : string},user_2 : {userID : string,fullName : string}) {
+        try {
+            const roomRef = await push(child(this.ref(this.RealtimeDataBase), "Chats/")).key
+            let membersData = {
+                user_1: {
+                    userID : user_1.userID,
+                    fullName : user_1.fullName
+                },
+                user_2 : {
+                    userID : user_2.userID,
+                    fullName : user_2.fullName
+                }
+            }
+            let chatData = {
+                lastMessage: null,
+                chatID: roomRef,
+                timestamp: new Date().toUTCString()
+            }
+            const updates: any = {}
+            updates["Chats/" + roomRef] = chatData
+            updates["Members/" + roomRef] = membersData
+            updates["Messages/" + roomRef] = {
+
+            }
+            update(this.ref(this.RealtimeDataBase), updates)
+            return roomRef
+        } catch (ex) {
+            console.log(ex)
+        }
+    }
+
+    //GET SINGLE CHAT BY CHAT ID :::::::::::::::::
+
+    async getChat(chatID: string) {
+        try {
+            const chatRef = await (await get(child(this.DatabaseRef, "Chats/" + chatID))).val()
+            if (chatRef) {
+                return chatRef
+            } else {
+                return null
+            }
+        } catch (ex) {
+            console.log(ex)
+        }
+
+    }
+    //GET ALL CURRENT USER CHATS BY USER ID :::::::::::::::::
+
+    async getListOfChatsByUserID(userID: string) {
+        let users_ref: DatabaseReference = ref(this.RealtimeDataBase, "Members/");
+        let result = await get(query(users_ref,orderByChild("User_1"),equalTo(userID)))
+        console.log(result.val())
+
     }
 }
 
