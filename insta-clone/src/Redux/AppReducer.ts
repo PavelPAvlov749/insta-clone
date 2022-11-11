@@ -1,5 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth_actions } from "./AuthReducer";
+import { getChatsByUserID } from "./ChatReducer";
 import { getAccountByID, AccountActions } from "./ProfileReducer";
 import { InferActionType } from "./Store";
 
@@ -99,7 +100,7 @@ export const InitializeThunk = ()  => {
             if(user !== null){
                 dispatch(app_actions.setCurrentUserID(user?.uid as string))
                 dispatch(getAccountByID(user.uid))
-        
+                dispatch(getChatsByUserID(user.uid))
                 dispatch(auth_actions.set_auth_true())
                 dispatch(app_actions.set_is_fetch_fasle())
                 dispatch(app_actions.init(true))

@@ -78,10 +78,34 @@ export type CreateNewUserType = {
     status : string 
 }
 
-export type newMessageType = {
-    senderID : string,
-    recepientID : string,
-    senderFullName : string,
-    recepientFullName : string,
-    messageText : string,
+export type newChatType = {
+    sender : {
+        senderID : string,
+        senderFullName : string,
+        avatar? : string 
+    },
+    recepient : {
+        recepientID : string,
+        recepientFullName : string,
+        avatar? : string 
+    }
+}
+
+export type MessagePropsType = {
+    messageText: string,
+    userName: string,
+    userID: string,
+    currentUserID : string,
+    avatar : string | null
+}
+
+export type newMessagePropsType = {
+    messageText: string,
+    createdAt?: string,
+    senderID: string,
+    senderFullName: string,
+    messageStatus: "unreaded" | "readed",
+    messageID: string,
+    chatID : string,
+
 }

@@ -15,7 +15,7 @@ import { InitializeThunk } from './Redux/AppReducer';
 //Types imports
 import { AppPropsType } from './Redux/Types';
 //Firebase imports
-import { ref,getDatabase, onChildAdded, onChildChanged } from "firebase/database";
+import { ref,getDatabase, onChildAdded, onChildChanged, serverTimestamp } from "firebase/database";
 import { chatAPI } from "./DAL/ChatAPI";
 //Media and assets
 const sound = require("../src/Media/MessageTone.mp3")
@@ -38,20 +38,13 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
   useEffect( () => {
     props.init()
   }, [])
-  const [onMessage,setOnMessage] = useState(false)
 
-  const db = getDatabase();
-  const messageRef = ref(db,("Chat/"))
-  onChildChanged(messageRef,(message) => {
-    setOnMessage(true)
-    console.log("Message recieved")
-  })
   //If one of them fasle return Preloader anotherwise return router
   if (props.isInit || !props.isFetch) {
     return (
       <div className={styles.app}>
           <HashRouter >
-          {onMessage ? <audio src={sound} autoPlay={true}></audio> : null}
+        
             <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
             <Navbar />
 

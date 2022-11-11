@@ -10,6 +10,7 @@ import messageIMG from "../../Media/message.png"
 import { chatAPI } from "../../DAL/ChatAPI";
 import { getDatabase, onChildAdded, ref } from "firebase/database";
 import messageBoxIcon from "../../Media/mailbox.png"
+import { newMessagePropsType } from "../../Redux/Types";
 
 const messageTone = require("../../Media/MessageTone.mp3")
 
@@ -22,31 +23,23 @@ export const Dirrect: React.FC = React.memo((props) => {
     let activeChat = useSelector((state: Global_state_type) => { return state.chat.activeChat })
     const messages = useSelector((state: Global_state_type) => { return state.chat.messages })
     let location = useLocation().pathname.split("=")[1]
-    const db = getDatabase();
+
     const chat = useSelector((state: Global_state_type) => {
         return state.chat.activeChat
     })
 
     useEffect(() => {
-        dispatch(getInterlocutorAvatar(location))
-    }, [location])
-    useEffect(() => {
         dispatch(getRoomByUserID(currentUser as string, location))
+        
     }, [location])
 
     useEffect(() => {
-        dispatch(getRealtimeMessages(currentUser as string, location))
-
+        dispatch(getRealtimeMessages(location))
+        // dispatch(getMessagesByChatID(location))
     }, [location])
     const interlocutorAvatar = useSelector((state: Global_state_type) => {
         return state.chat.interlocutorAvatar
     })
-
-    if (messages.length > 0 && messages[messages.length - 1].userID !== currentUser) {
-
-        chatAPI.switchMessageStatus(activeChat, messages[messages.length - 1].messageID as string)
-    }
-
 
     return (
         <section className={styles.chatWindowWrapper}>
@@ -54,10 +47,11 @@ export const Dirrect: React.FC = React.memo((props) => {
             <div className={styles.messageArea} >
                 {messages.length > 0 ? messages.map((message) => {
                     return (
-                        <>
-                            <Message userName={message.fullName} userID={message.userID}
-                                messageText={message.messageData} currentUserID={currentUser as string} avatar={interlocutorAvatar} />
-                        </>
+                        <div key={message.messageID}>
+                              <Message messageText={message.messageText} senderID={message.userID} currentUser={currentUser} />
+                        </div>
+                          
+                
                     )
                 }) :
                     <div className={styles.noMessages}>

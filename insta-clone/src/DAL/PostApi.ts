@@ -1,6 +1,6 @@
 import { dataBase, Firebase_auth } from "./FirebaseConfig";
 import { firebase } from "./FirebaseConfig";
-import { ref, get, child, push, update, remove, onValue ,getDatabase} from "firebase/database";
+import { ref, get, child, push, update, remove, onValue ,getDatabase, serverTimestamp} from "firebase/database";
 import { getStorage, ref as storage_ref, uploadBytes, getDownloadURL, StorageReference } from "firebase/storage";
 import { makeid } from "./Randomizer";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
@@ -16,6 +16,7 @@ export class abstractAPI {
     protected storageRefrence = storage_ref(this.firebaseStorage)
     protected firebaseAuth = Firebase_auth
     protected googleAuthProvider = new GoogleAuthProvider()
+    protected timeStamp = serverTimestamp()
     public onValue = onValue
     public ref = ref
 

@@ -1,11 +1,13 @@
 import { ThunkAction } from "redux-thunk";
 import { Global_state_type, InferActionType } from "./Store";
-import {child, get, onValue, ref} from "firebase/database"
-import { ChatType, MessageType, UserType } from "./Types";
+import {child, equalTo, get, onValue, orderByChild, query, ref} from "firebase/database"
+import { ChatType, MessageType, newChatType, UserType } from "./Types";
 import { app_actions } from "./AppReducer";
 import { chatAPI } from "../DAL/ChatAPI";
 import { dataBase } from "../DAL/FirebaseConfig";
 import { usersAPI } from "../DAL/UsersAPI";
+import { stringify } from "querystring";
+import { reduceEachLeadingCommentRange } from "typescript";
 
 
 const SEND_MESSAGE = "instaClone/chat_reducer/send_message"
@@ -21,7 +23,7 @@ type ActionType = InferActionType<typeof chat_actions>
 let initialState = {
     activeChat : null as unknown as string,
     chats : [] as Array<UserType>,
-    messages : [] as Array<MessageType>,
+    messages : [] as Array<any>,
     newMessage : "",
     interlocutorAvatar : null as unknown as string,
     unreadedMessages : null as unknown as number
@@ -101,18 +103,19 @@ export const chat_actions = {
 export const getChatsByUserID = (userID:string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
-        const chats = await chatAPI.getChatList(userID)
+        const chats = await chatAPI.getListOfChatsByUserID(userID)
+
         if(chats) {
-            dispatch(chat_actions.getChats(chats))
+            dispatch(chat_actions.getChats(Object.values(chats)))
             dispatch(app_actions.set_is_fetch_fasle())
+        }else{
             
         }
     }
 }
 export const getRoomByUserID = (currentUserID : string,userID:string) => {
     return async function (dispatch : any) {
-        const room = await chatAPI.getRoom(currentUserID,userID)
-       
+        const room = await chatAPI.getRoom(currentUserID)
         if(room){
             dispatch(chat_actions.setActiveChat(room))
         }else{
@@ -120,7 +123,7 @@ export const getRoomByUserID = (currentUserID : string,userID:string) => {
         }
     }
 }
-export const getMessagesByChatID = (currentUserID:string,chatID : string) => {
+export const getMessagesByChatID = (chatID : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
 
@@ -133,42 +136,32 @@ export const getMessagesByChatID = (currentUserID:string,chatID : string) => {
     }
 }
 
-export const getRealtimeMessages = (currentUserID:string,userID:string) => {
+export const getRealtimeMessages = (chatID : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
-        let Ref = await (await get(child(ref(dataBase), "Users/" + currentUserID + '/chats/' + userID))).val()
-  
-        let messages: Array<any> = []
-          
-            if(Ref){
-                const roomRef = ref(dataBase, "Chats/" + Ref.chatRef)
-                onValue(roomRef, (roomSnapSchot) => {
-                    messages = Object.values(roomSnapSchot.val())
-                    console.log(messages[messages.length -1])
-                    dispatch(chat_actions.getMessages(messages))
+        try{
+            const chatRef = await ref(dataBase,"Messages/" + chatID)
+            onValue(chatRef,(dataSnapshot) => { 
+                if(dataSnapshot.exists()) {
+                    dispatch(chat_actions.getMessages(Object.values(dataSnapshot.val())))
                     dispatch(app_actions.set_is_fetch_fasle())
-                })
-            }else{
-                dispatch(chat_actions.getMessages([]))
-                dispatch(app_actions.set_is_fetch_fasle())
-            }
-
+                }else{
+                    dispatch(chat_actions.getMessages([]))
+                    dispatch(app_actions.set_is_fetch_fasle())
+                }
+            })
+        }catch(ex){
+            console.log(ex)
+        }
     }
 }
-export const sendMessageThunk = (sender: string, recepient: string, messageText: string,senderName: string,recepientName : string) => {
+export const sendMessageThunk = (sender: string, senderName : string,messageText : string,chatID : string) => {
     return async function (dispatch : any){
-        const user_1 = {
-            userID : sender,
-            senderName
-        }
-        const user_2 = {
-            userID : recepient,
-            fullName : recepientName
-        }
+        console.log(chatID)
         dispatch(app_actions.set_is_fetch_true())
         // await chatAPI.sendMessage(sender,recepient,messageText,senderName)
         // await chatAPI.createNewChat(user_1,user_2)
-        await chatAPI.incrementUnreadedMessagesCount(recepient)
+        await chatAPI.sendMessage(sender,senderName,messageText,chatID)
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }
@@ -184,5 +177,13 @@ export const getInterlocutorAvatar = (interlocutorID : string) => {
             dispatch(chat_actions.getAvatar(null as unknown as string))
             dispatch(app_actions.set_is_fetch_fasle())
         }
+    }
+}
+export const createNewChat = (newChat : newChatType) => {
+    return async function (dispatch : any) {
+        dispatch(app_actions.set_is_fetch_true())
+        const newChatID =  await chatAPI.createNewChat(newChat)
+        dispatch(chat_actions.setActiveChat(newChatID as string))
+        dispatch(app_actions.set_is_fetch_true())
     }
 }

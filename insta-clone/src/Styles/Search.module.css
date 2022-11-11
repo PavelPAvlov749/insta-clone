@@ -12,10 +12,12 @@
 
 }
 .userName{
+    display: inline;
     margin-left: 1rem;
     font-size: larger;
 }
 .userMiniPage{
+
     margin-bottom: 1rem;
 }
 .searchWrapper input{

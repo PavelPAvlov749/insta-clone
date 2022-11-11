@@ -7,6 +7,9 @@ import { UserPostsList } from "../Posts/UsersPostsList";
 import { UserStatus } from "../UserStatus/Status";
 import styles from "../../Styles/UserPage.module.css"
 import { Avatar } from "./Avatar";
+import { chatAPI } from "../../DAL/ChatAPI";
+import { newChatType } from "../../Redux/Types";
+import { createNewChat } from "../../Redux/ChatReducer";
 
 
 
@@ -29,7 +32,18 @@ export const UserPage: React.FC = React.memo(() => {
     const currentUserID = useSelector((state: Global_state_type) => {
         return state.app.currentUserID
     })
-
+    const currentUserAvatar = useSelector((state : Global_state_type) => {
+        return state.account.avatar
+    })
+    const currentUSerFullName = useSelector((state: Global_state_type) => {
+        return state.account.fullName
+    })
+    const activeChatID = useSelector((state : Global_state_type) => {
+        return state.chat.activeChat
+    })
+    const chats = useSelector((state:Global_state_type) => {
+        return state.chat.chats
+    })
     const actualUserPage = useSelector((state: Global_state_type) => {
         return state.userPage
     })
@@ -51,8 +65,28 @@ export const UserPage: React.FC = React.memo(() => {
 
     //Send message Handler
     const sendMessage = () => {
+        const newChat : newChatType = {
+            sender : {
+                senderID : currentUserID,
+                senderFullName : currentUSerFullName as string,
+                avatar : currentUserAvatar
 
-        navigate(`/chat/id:=${actualUserPage.userID}`)
+            },
+            recepient : {
+                recepientID : actualUserPage.userID,
+                recepientFullName : actualUserPage.fullName,
+                avatar : actualUserPage.avatar
+            }
+        }
+        
+        let chat = chats.find((chat : any) => chat.userID == actualUserPage.userID)
+        if(chat){
+            navigate(`/chat/id:=${chat.chatID}`)
+        }else{
+            dispatch(createNewChat(newChat))
+            navigate(`/chat/id:=${activeChatID}`)
+        }
+      
     }
     return (
         <div className={styles.userPageContainr}>

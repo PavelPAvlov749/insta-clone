@@ -10,6 +10,7 @@ import { Avatar } from "../UserPage/Avatar";
 import { LineLoader } from "../UserSearch/LoaderLine";
 import emptyChatList from "../../Media/no-chatting.png"
 import { chatAPI } from "../../DAL/ChatAPI";
+import { getChatsByUserID } from "../../Redux/ChatReducer";
 
 export const ChatList: React.FC = React.memo((props) => {
 
@@ -36,9 +37,9 @@ export const ChatList: React.FC = React.memo((props) => {
         return state.chat.chats
     })
     useEffect(() => {
-        chatAPI.getListOfChatsByUserID(currentUserID.userID as string)
+        dispatch(getChatsByUserID(currentUserID.userID as string))
     },[])
-    const onClickHandler = (userID: string, avatar: string, fullName: string) => {
+    const onClickHandler = (userID:string) => {
         //On chatlist click handler function
         // dispatch(chat_actions.setActiveChat(userID, avatar, fullName))
         navigate("/chat/id:=" + userID)
@@ -49,14 +50,11 @@ export const ChatList: React.FC = React.memo((props) => {
         return (
             <section className={styles.chatListWrapper}>
                 {Chats?.length > 0 ? <section>
-                    {users?.map((user) => {
+                    {Chats?.map((chat) => {
                         return (
-                            <div className={styles.userMiniPage} key={user.userID} onClick={() => {
-                                onClickHandler(user.userID, user.avatar, user.fullName)
-                            }}>
-
-                                <Avatar avatarIMG={user.avatar} userID={user.userID} fullName={user.fullName} size={"small"} />
-                                <span className={styles.chatListFullName}>{user.fullName}</span>
+                            <div onClick={() => {onClickHandler(chat.chatID)}}>
+                                <img style={{"width" : "60px","height" : "60px","borderRadius" : "180px"}} src={chat.avatar} alt="#"></img>
+                                <span>{chat.fullName}</span>
                             </div>
                         )
                     })}

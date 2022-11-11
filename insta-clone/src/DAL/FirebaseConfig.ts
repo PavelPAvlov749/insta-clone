@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getDatabase } from "firebase/database";
+import { getDatabase ,} from "firebase/database";
 import { getAuth ,GoogleAuthProvider} from "firebase/auth";
+import { Firestore_instance } from "./Firestore_config";
 //                                                ::::::::::::::::::::::CONFIG THE FIREBASE::::::::::::::::::::::::::
 
 //Here is the config file of Firebase SDK to allow the functions use Firebase_instance object
