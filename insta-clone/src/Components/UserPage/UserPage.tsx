@@ -10,8 +10,6 @@ import { Avatar } from "./Avatar";
 
 
 
-
-
 export const UserPage: React.FC = React.memo(() => {
     const navigate = useNavigate()
     //Get userPageID from query string

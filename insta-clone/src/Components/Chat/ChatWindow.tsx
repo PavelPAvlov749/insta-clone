@@ -55,7 +55,7 @@ export const Dirrect: React.FC = React.memo((props) => {
                 {messages.length > 0 ? messages.map((message) => {
                     return (
                         <>
-                            <Message userName={message.fullName} userID={message.userID}
+                            <Message userName={message.fullName} userID={message.userID} key={message.messageID}
                                 messageText={message.messageData} currentUserID={currentUser as string} avatar={interlocutorAvatar} />
                         </>
                     )

@@ -87,7 +87,12 @@ class ChatAPI extends abstractAPI {
 
     async getRoom(currentUserID: string, userID: string) {
 
-        return await (await get(child(this.DatabaseRef, "Users/" + currentUserID + "/chats/" + userID))).val().chatRef
+        const chatRef = await (await get(child(this.DatabaseRef, "Users/" + currentUserID + "/chats/" + userID))).val()
+        if(chatRef){
+            return chatRef.chatRef
+        }else{
+            return null
+        }
 
 
     }

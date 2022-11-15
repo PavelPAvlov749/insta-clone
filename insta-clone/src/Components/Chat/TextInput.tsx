@@ -38,7 +38,7 @@ export const TextInput: React.FC = React.memo((props) => {
                     <img src={emojiPNG} alt="#" className={styles.emoji}></img>
                     <Formik onSubmit={setSubmit} enableReinitialize={true} initialValues={initialFormValues} >
                         <Form className={styles.formik}>
-                            <Field type="text" name="newMessage" autocomplete="off" autofocus="on" onChange={OnChangeHandler}
+                            <Field type="text" name="newMessage" autoComplete="off" autoFocus="on" onChange={OnChangeHandler}
                                 value={newMessageText} className={styles.messageInput} >
                             </Field>
                             <button type="submit" className={styles.textArea}>Send</button>
