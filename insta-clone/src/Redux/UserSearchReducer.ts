@@ -91,17 +91,17 @@ export const searchActions = {
 
 export const getAllUsersThunk = () => {
     return async function (dispatch :any) {
-        dispatch(app_actions.set_is_fetch_true())
+        
         dispatch(searchActions.setOnSearch(true))
         let users = await usersAPI.getAllUsers()
         if(users){
             dispatch(searchActions.getAllUsers(Object.values(users)))
-            dispatch(app_actions.set_is_fetch_fasle())
+           
             dispatch(searchActions.setOnSearch(false))
            
         }else{
             dispatch(searchActions.setOnSearch(false))
-            dispatch(app_actions.set_is_fetch_fasle())
+           
         }
         
     }

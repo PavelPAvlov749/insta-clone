@@ -1,5 +1,6 @@
 .userMiniPage{
-    margin-bottom: 1rem;
+
+    margin-bottom: 2rem;
 }
 .chatListFullName {
     margin-left: 1rem;
@@ -8,4 +9,7 @@
     margin-top: 35%;
     text-align: center;
     font-weight: 400;
+}
+.userMini{
+    margin-bottom: 1rem;
 }

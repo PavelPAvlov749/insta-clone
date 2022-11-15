@@ -88,14 +88,14 @@ export const userPageActions = {
 
 export const getUserPageByID = (userID : string) => {
     return async function (dispatch : any) {
-        dispatch(app_actions.set_is_fetch_true())
+       
         const user = await usersAPI.getUserPageById(userID)
 
         if(user) {
             dispatch(userPageActions.get_user(user))
-            dispatch(app_actions.set_is_fetch_fasle())
+           
         }else{
-            dispatch(app_actions.set_is_fetch_fasle())
+           
         }
         
     }

@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { Link, NavLink, Navigate, useNavigate, useLocation } from "react-router-dom";
+import React from "react";
+import { NavLink, } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Global_state_type } from "../../Redux/Store";
 
 //IMPORTING INTERFACE ICONS
 import style from "../../Styles/Navbar.module.css";
@@ -10,30 +9,24 @@ import profile from "../../Media/Profile.png";
 import home from "../../Media/Home.png"
 import upload from "../../Media/Upload.png";
 import logout_img from "../../Media/Logout.png";
-import logo from '../../Media/logo2.jpg'
+
 import search from "../../Media/search.png";
-import { postActions } from "../../Redux/PostReducer";
+
 import { logOutThunk } from "../../Redux/AuthReducer";
 
 
 
+type navbarPropsType = {
+    isAuth : boolean,
+    currentUserUrl : string
+}
 
-
-export const Navbar: React.FC = React.memo((props) => {
+export const Navbar: React.FC<navbarPropsType> = React.memo((props : navbarPropsType) => {
     const dispatch: any = useDispatch()
-
-    let isAuth = useSelector((state: Global_state_type) => {
-        return state.auth.is_auth
-    })
-    let currentUserUrl = useSelector((state: Global_state_type) => {
-        return state.account.userID
-    })
     const logOut = () => {
         dispatch(logOutThunk())
     }
-    const newPostHandler = () => {
-        dispatch(postActions.setIsOnnewPost(true))
-    }
+
     return (
         <footer className={style.navbarContainer}>
 
@@ -54,7 +47,7 @@ export const Navbar: React.FC = React.memo((props) => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to={`/profile/id=${currentUserUrl}`}>
+                        <NavLink to={`/profile/id=${props.currentUserUrl}`}>
                             <img src={profile} alt="#" />
                         </NavLink>
                     </li>
@@ -70,7 +63,7 @@ export const Navbar: React.FC = React.memo((props) => {
 
                     </li>
                     <li>
-                        {isAuth ? <img src={logout_img} alt="" onClick={logOut} /> : null}
+                        {props.isAuth ? <img src={logout_img} alt="" onClick={logOut} /> : null}
                     </li>
                 </ul>
             </section>

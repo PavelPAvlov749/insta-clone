@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { auth_actions, } from "../../Redux/AuthReducer";
 import { CreateNewUserWithEmailAndPassword } from "../../Redux/RegistrationReducer";
 import styles from "../../Styles/Registration.module.css"
 import GaleryImg from "../../Media/imageGallery.png"
-import { AccountActions, updateAvatarThunk, updateStatusThunk } from "../../Redux/ProfileReducer";
 import {getUserRegFormFromState } from "../../Selectors/Selectors";
 import { RegistrationActions } from "../../Redux/RegistrationReducer";
-import { registerVersion } from "firebase/app";
 import { CreateNewUserType } from "../../Redux/Types";
 import { Global_state_type } from "../../Redux/Store";
 
@@ -90,22 +87,22 @@ export const Registration: React.FC = React.memo((props) => {
                     {step === 1 ?
                         <div className={onError ? styles.loginFormsDIV : styles.loginFormsOnError}>
 
-                            <Field type="text" name="username" placeholder={"Username"} autocomplete="off" onChange={(e:any) => {
+                            <Field type="text" name="username" placeholder={"Username"} autoComplete="off" onChange={(e:any) => {
                                 dispatch(RegistrationActions.setUsername(e.currentTarget.value))
                             }}></Field>
                             <br />
 
-                            <Field type="text" name="email" placeholder={"Email"} autocomplete="off" onChange={(e:any) => {
+                            <Field type="text" name="email" placeholder={"Email"} autoComplete="off" onChange={(e:any) => {
                                 dispatch(RegistrationActions.setEmail(e.currentTarget.value))
                             }}></Field>
                             <br />
 
-                            <Field type="text" name="passTake1" placeholder={"Password"} autocomplete="off" onChange={(e : any) => {
+                            <Field type="text" name="passTake1" placeholder={"Password"} autoComplete="off" onChange={(e : any) => {
                                 dispatch(RegistrationActions.setPasswordField1(e.currentTarget.value))
                             }}></Field>
                             <br />
 
-                            <Field type="text" name="passTake2" placeholder={"Repeat the password"} autocomplete="off" onChange={(e:any) => {
+                            <Field type="text" name="passTake2" placeholder={"Repeat the password"} autoComplete="off" onChange={(e:any) => {
                                 if(e.currentTarget.value !== newUserRegForm.passwordField1){
                                     console.log("Pass dint match")
                                 }
@@ -125,7 +122,7 @@ export const Registration: React.FC = React.memo((props) => {
                             </label>
                             <input className={styles.login_forms} type="file" id="file_input" style={{ "display": "none" }}
                              placeholder={"avatar"} accept="image/*" onChange={inputOnChangeHandler} ></input>
-                            <Field type="text" name="status" placeholder="Set your status" onInput={statusOnChangeHandler} autocomplete="off" className={styles.regUserStatus}></Field>
+                            <Field type="text" name="status" placeholder="Set your status" onInput={statusOnChangeHandler} autoComplete="off" className={styles.regUserStatus}></Field>
                             <button type="submit" className={styles.registrationButton} >Create Acount</button>
                         </section>
                     }

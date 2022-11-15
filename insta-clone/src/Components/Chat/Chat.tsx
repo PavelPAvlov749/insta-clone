@@ -10,11 +10,8 @@ import { ChatWindow, Dirrect } from "./ChatWindow";
 import styles from "../../Styles/Chat.module.css"
 
 export const Chat : React.FC = React.memo((props) => {
-    const dispatch : any = useDispatch()
-    useEffect(()=>{
-        dispatch(getAllUsersThunk())
-    },[])
- 
+
+
     return (
         <section className={styles.chatWrapper}>
             <ChatList/>
@@ -23,10 +20,8 @@ export const Chat : React.FC = React.memo((props) => {
     )
 })
 export const ChatDirrect : React.FC = React.memo((props) => {
-    const dispatch : any = useDispatch()
-    useEffect(()=>{
-        dispatch(getAllUsersThunk())
-    },[])
+  
+
 
     return (
         <section className={styles.chatWrapper}>

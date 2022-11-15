@@ -17,6 +17,7 @@ import { AppPropsType } from './Redux/Types';
 //Firebase imports
 import { ref,getDatabase, onChildAdded, onChildChanged, serverTimestamp } from "firebase/database";
 import { chatAPI } from "./DAL/ChatAPI";
+import { prependListener } from "process";
 //Media and assets
 const sound = require("../src/Media/MessageTone.mp3")
 
@@ -38,15 +39,16 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
   useEffect( () => {
     props.init()
   }, [])
+  console.log("RENDER")
 
   //If one of them fasle return Preloader anotherwise return router
   if (props.isInit || !props.isFetch) {
     return (
       <div className={styles.app}>
           <HashRouter >
-        
+
             <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
-            <Navbar />
+            <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string}/>
 
           </HashRouter  >
 
@@ -57,7 +59,7 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
       <div>
           <HashRouter >
             <Preloader />
-            <Navbar />
+            <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string} />
           </HashRouter>
       </div>
     )

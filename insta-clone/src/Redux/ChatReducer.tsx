@@ -1,13 +1,12 @@
-import { ThunkAction } from "redux-thunk";
-import { Global_state_type, InferActionType } from "./Store";
-import {child, equalTo, get, onValue, orderByChild, query, ref} from "firebase/database"
-import { ChatType, MessageType, newChatType, UserType } from "./Types";
+
+import { InferActionType } from "./Store";
+import { onValue, ref} from "firebase/database"
+import {  MessageType, newChatType, UserType } from "./Types";
 import { app_actions } from "./AppReducer";
 import { chatAPI } from "../DAL/ChatAPI";
 import { dataBase } from "../DAL/FirebaseConfig";
 import { usersAPI } from "../DAL/UsersAPI";
-import { stringify } from "querystring";
-import { reduceEachLeadingCommentRange } from "typescript";
+
 
 
 const SEND_MESSAGE = "instaClone/chat_reducer/send_message"
@@ -166,24 +165,11 @@ export const sendMessageThunk = (sender: string, senderName : string,messageText
     }
 }
 
-export const getInterlocutorAvatar = (interlocutorID : string) => {
-    return async function (dispatch : any) {
-        dispatch(app_actions.set_is_fetch_true())
-        const avatar = await usersAPI.getAvatar(interlocutorID)
-        if(avatar){
-            dispatch(chat_actions.getAvatar(avatar))
-            dispatch(app_actions.set_is_fetch_fasle())
-        }else{
-            dispatch(chat_actions.getAvatar(null as unknown as string))
-            dispatch(app_actions.set_is_fetch_fasle())
-        }
-    }
-}
 export const createNewChat = (newChat : newChatType) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         const newChatID =  await chatAPI.createNewChat(newChat)
         dispatch(chat_actions.setActiveChat(newChatID as string))
-        dispatch(app_actions.set_is_fetch_true())
+        dispatch(app_actions.set_is_fetch_fasle())
     }
 }

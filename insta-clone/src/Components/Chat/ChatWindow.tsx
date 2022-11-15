@@ -1,16 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { getChatsByUserID, getInterlocutorAvatar, getMessagesByChatID, getRealtimeMessages, getRoomByUserID, } from "../../Redux/ChatReducer";
+import {  getRealtimeMessages, getRoomByUserID, } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
 import styles from "../../Styles/MessageWindow.module.css"
 import { Message } from "./Message";
 import { TextInput } from "./TextInput";
 import messageIMG from "../../Media/message.png"
-import { chatAPI } from "../../DAL/ChatAPI";
-import { getDatabase, onChildAdded, ref } from "firebase/database";
 import messageBoxIcon from "../../Media/mailbox.png"
-import { newMessagePropsType } from "../../Redux/Types";
+
 
 const messageTone = require("../../Media/MessageTone.mp3")
 
@@ -20,7 +18,7 @@ export const Dirrect: React.FC = React.memo((props) => {
     const chat_anchor_ref = useRef<HTMLDivElement>(null);
     const dispatch: any = useDispatch()
     let currentUser = useSelector((state: Global_state_type) => { return state.app.currentUserID })
-    let activeChat = useSelector((state: Global_state_type) => { return state.chat.activeChat })
+
     const messages = useSelector((state: Global_state_type) => { return state.chat.messages })
     let location = useLocation().pathname.split("=")[1]
 
@@ -37,9 +35,6 @@ export const Dirrect: React.FC = React.memo((props) => {
         dispatch(getRealtimeMessages(location))
         // dispatch(getMessagesByChatID(location))
     }, [location])
-    const interlocutorAvatar = useSelector((state: Global_state_type) => {
-        return state.chat.interlocutorAvatar
-    })
 
     return (
         <section className={styles.chatWindowWrapper}>
@@ -48,7 +43,7 @@ export const Dirrect: React.FC = React.memo((props) => {
                 {messages.length > 0 ? messages.map((message) => {
                     return (
                         <div key={message.messageID}>
-                              <Message messageText={message.messageText} senderID={message.userID} currentUser={currentUser} />
+                              <Message messageText={message.messageText} senderID={message.senderID} currentUser={currentUser} />
                         </div>
                           
                 

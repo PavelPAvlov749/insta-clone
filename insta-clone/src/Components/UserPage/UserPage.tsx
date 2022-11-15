@@ -7,7 +7,7 @@ import { UserPostsList } from "../Posts/UsersPostsList";
 import { UserStatus } from "../UserStatus/Status";
 import styles from "../../Styles/UserPage.module.css"
 import { Avatar } from "./Avatar";
-import { chatAPI } from "../../DAL/ChatAPI";
+
 import { newChatType } from "../../Redux/Types";
 import { createNewChat } from "../../Redux/ChatReducer";
 
@@ -25,9 +25,15 @@ export const UserPage: React.FC = React.memo(() => {
     })
     //Fetch the actual user page by ID from query string
     const dispatch: any = useDispatch()
+    const chats = useSelector((state:Global_state_type) => {
+        return state.chat.chats
+    })
+    const activeChatID = useSelector((state : Global_state_type) => {
+        return state.chat.activeChat
+    })
     useEffect(() => {
         dispatch(getUserPageByID(userPageUrl))
-    }, [userPageUrl])
+    }, [userPageUrl,activeChatID])
 
     const currentUserID = useSelector((state: Global_state_type) => {
         return state.app.currentUserID
@@ -38,12 +44,8 @@ export const UserPage: React.FC = React.memo(() => {
     const currentUSerFullName = useSelector((state: Global_state_type) => {
         return state.account.fullName
     })
-    const activeChatID = useSelector((state : Global_state_type) => {
-        return state.chat.activeChat
-    })
-    const chats = useSelector((state:Global_state_type) => {
-        return state.chat.chats
-    })
+
+
     const actualUserPage = useSelector((state: Global_state_type) => {
         return state.userPage
     })
@@ -84,7 +86,10 @@ export const UserPage: React.FC = React.memo(() => {
             navigate(`/chat/id:=${chat.chatID}`)
         }else{
             dispatch(createNewChat(newChat))
-            navigate(`/chat/id:=${activeChatID}`)
+            if(activeChatID){
+                navigate(`/chat/id:=${activeChatID}`)
+            }
+            
         }
       
     }

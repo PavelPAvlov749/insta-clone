@@ -173,14 +173,14 @@ export const postActions = {
 
 export const getPostListByUserID = (userID:string) => {
     return async function (dispatch : any) {
-        dispatch(app_actions.set_is_fetch_true())
+       
         const posts = await (await postAPI.getListOfPosts(userID))
         if(posts.val()) {
             dispatch(postActions.getPosts(Object.values(posts.val())))
-            dispatch(app_actions.set_is_fetch_fasle())
+           
         }else{
             dispatch(postActions.getPosts([] as Array<PostType>))
-            dispatch(app_actions.set_is_fetch_fasle())
+           
         }
 
     }

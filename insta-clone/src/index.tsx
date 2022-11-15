@@ -7,31 +7,18 @@ import { Provider } from 'react-redux';
 import { store } from './Redux/Store';
 
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const reg = async function () {
-  if(navigator.serviceWorker){
-    try{
-      const reg = await navigator.serviceWorker.register("/public/sw.js",)
-      console.log("sw reg succes",reg)
-    }catch(e){
-      console.log("sw reg fail",e)
-    }
-  }else{
-    console.log("Not suppoertd")
-  }
-}
-reg()
+
 try {
   root.render(
 
     <React.StrictMode>
       <Provider store={store}>
-    
         <AppContainer />
-       
       </Provider>
     </React.StrictMode>
   );

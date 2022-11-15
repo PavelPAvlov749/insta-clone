@@ -93,10 +93,8 @@ export const app_actions = {
 export const InitializeThunk = ()  => {
     let auth = getAuth()
     return async function (dispatch : any) {
-        dispatch(auth_actions.set_auth_true())
         dispatch(app_actions.set_is_fetch_true())
         onAuthStateChanged(auth,(user) => {
-            dispatch(app_actions.init(false))
             if(user !== null){
                 dispatch(app_actions.setCurrentUserID(user?.uid as string))
                 dispatch(getAccountByID(user.uid))
