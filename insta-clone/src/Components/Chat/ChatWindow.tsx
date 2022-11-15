@@ -42,11 +42,18 @@ export const Dirrect: React.FC = React.memo((props) => {
             <div className={styles.messageArea} >
                 {messages.length > 0 ? messages.map((message) => {
                     return (
+<<<<<<< HEAD
                         <div key={message.messageID}>
                               <Message messageText={message.messageText} senderID={message.senderID} currentUser={currentUser} />
                         </div>
                           
                 
+=======
+                        <>
+                            <Message userName={message.fullName} userID={message.userID} key={message.messageID}
+                                messageText={message.messageData} currentUserID={currentUser as string} avatar={interlocutorAvatar} />
+                        </>
+>>>>>>> main
                     )
                 }) :
                     <div className={styles.noMessages}>

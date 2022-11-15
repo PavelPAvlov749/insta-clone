@@ -13,8 +13,6 @@ import { createNewChat } from "../../Redux/ChatReducer";
 
 
 
-
-
 export const UserPage: React.FC = React.memo(() => {
     const navigate = useNavigate()
     //Get userPageID from query string

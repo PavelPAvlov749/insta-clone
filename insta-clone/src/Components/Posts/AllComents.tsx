@@ -32,10 +32,10 @@ export const AllComents : React.FC = React.memo((props) => {
             {postComents.length > 0 ? postComents.map((coment) => {
                 return (
 
-                    <>
+                    <div key={coment.comentID}>
                         <Avatar size="small" fullName={coment?.comentatorName as string} avatarIMG={coment.avatar}/>
                         <SilngleComent coment={coment} currentUserID={currentUserID as string}/>
-                    </>
+                    </div>
                 )
             }) : <div>
                 <img className={styles.comentIcon} src={comentIcon} alt="#">

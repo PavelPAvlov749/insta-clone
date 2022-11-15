@@ -11,11 +11,11 @@ import { ComentTextArea } from "./ComentTextArea";
 //STYLES IMPORT
 import styles from "../../Styles/OpenPost.module.css"
 //MEDIA IMPORTS
-import likeImg from "../../Media/like-96.png"
-import dislikeIMG from "../../Media/dislike-96.png"
+import likeImg from "../../Media/like_64.png"
+import dislikeIMG from "../../Media/dislike_64.png"
 import { Avatar } from "../UserPage/Avatar";
-import crossIcon from "../../Media/trash-96.png"
-import comentIcon from "../../Media/comments-96.png"
+import crossIcon from "../../Media/trash_64.png"
+import comentIcon from "../../Media/comentIcon.png"
 import { Preloader } from "../Preloader/Preloader";
 
 
