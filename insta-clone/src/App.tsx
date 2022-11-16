@@ -46,9 +46,9 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
     return (
       <div className={styles.app}>
           <HashRouter >
-
+          <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string}/>
             <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
-            <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string}/>
+           
 
           </HashRouter  >
 

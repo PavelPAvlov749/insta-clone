@@ -1,19 +1,19 @@
 .container{
-    display: block;
-    position: fixed;
+    /* display: block; */
+    position: relative;
     justify-content: center;
     text-align: center;
     border-radius: 5px;
     border-color: gray;
     border-width: 1px;
     border-style: solid;
-    height: 100%;
-    width: 100%;
+    height: calc(100% - 5rem);
+    width: calc(100% - 4px);
     
 }
 .container h3{
     text-align: left;
-    margin-left: 2rem;
+    /* margin-left: 2rem; */
 }
 .loginFormsDIV{
    font-size: larger;

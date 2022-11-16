@@ -1,10 +1,10 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getPostListByUserID, postActions } from "../../Redux/PostReducer";
 import { Global_state_type } from "../../Redux/Store";
 import { PostType } from "../../Redux/Types";
-import { NewPostModalWindow } from "./NewPostModal";
+
 import styles from "../../Styles/Posts.module.css"
 
 

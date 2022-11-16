@@ -1,15 +1,16 @@
 .navbarContainer{
-    position: fixed;
-    bottom: 0px;
+
+    
+    position: relative;
     text-align: center;
     vertical-align: middle;
-    width: 100%;
+    width: calc(100% - 8px) ;
+    /* max-width: 700px; */
     height: 7%;
     justify-content: center;
     align-items: center;
-    background-color: aliceblue;
-    border: 1px groove rgb(42, 42, 42);
-    border-radius: 5px;
+    border-bottom: 1px double grey;
+    
 }
 .navigation_list{
     padding: 0%;
@@ -30,4 +31,12 @@
     height: 100%;
     max-height: 30px;
     max-width: 30px;
+}
+
+@media (max-width : 450px) {
+    .navbarContainer{
+        position: fixed;    
+        bottom:8px;
+        border-top: 1px groove rgb(42, 42, 42);
+    }
 }

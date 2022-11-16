@@ -31,7 +31,7 @@ export const Navbar: React.FC<navbarPropsType> = React.memo((props : navbarProps
         <footer className={style.navbarContainer}>
 
 
-            <section className={style.navigation}>
+         
 
                 <ul className={style.navigation_list}>
                     <li>
@@ -66,7 +66,7 @@ export const Navbar: React.FC<navbarPropsType> = React.memo((props : navbarProps
                         {props.isAuth ? <img src={logout_img} alt="" onClick={logOut} /> : null}
                     </li>
                 </ul>
-            </section>
+          
         </footer>
 
     )

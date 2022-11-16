@@ -1,8 +1,14 @@
+//REACT IMPORTS
 import React from "react";
+//COMPONENTS
 import { ChatList } from "./ChatList";
 import { ChatWindow, Dirrect } from "./ChatWindow";
+//STYLES
 import styles from "../../Styles/Chat.module.css"
 
+
+
+//CHAT COMPONENT WILL RENDERS ONLY ON MOBILE DEVISES
 export const Chat : React.FC = React.memo((props) => {
 
 
@@ -15,6 +21,8 @@ export const Chat : React.FC = React.memo((props) => {
         </section>
     )
 })
+
+//THIS CHAT COMPONENT WILL RENDERED ONLY ON BIG SCREENS 
 export const ChatDirrect : React.FC = React.memo((props) => {
   
 

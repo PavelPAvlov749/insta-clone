@@ -10,9 +10,9 @@
 
 .lineLoader {
     position: absolute;
-    margin-left: -1rem;
+  
     padding: 0%;
-    width: 110%;
+    width: calc(100% - 45px);
     height: 5px;
     background: linear-gradient(90deg, #60086f, #f4e5ed, #05878c);
     background-size: 200% 200%;

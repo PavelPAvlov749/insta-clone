@@ -1,16 +1,22 @@
+//REACT & REACT HOOKS IMPORTS
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+//TYPES
 import { Global_state_type } from "../../Redux/Store";
-// import styles from "../../Styles/Chat.module.css"
+//STYLES
 import styles from "../../Styles/ChatList.module.css"
-
+//COMPONENTS
 import { Avatar } from "../UserPage/Avatar";
-
+//MEDIA & ASSETS
 import emptyChatList from "../../Media/no-chatting.png"
-
+//THUNK IMPORTS
 import { getChatsByUserID } from "../../Redux/ChatReducer";
 
+
+
+//THIS COMPONENT WILL RENDER USER LIST OF CHATS IF USER DOSENT HAVE ANY CHATS COMPOENTN WILL RENDER PICTURE AND MESSAGE
+//NO CHATS YET
 export const ChatList: React.FC = React.memo((props) => {
 
     const navigate = useNavigate()

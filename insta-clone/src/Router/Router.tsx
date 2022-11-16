@@ -55,7 +55,7 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
         )
     }else{
         return (
-            <div >
+            <div className={styles.router}>
                 <Routes>
                     <Route path={LOGIN} element={<Login_container/>}/>
                     <Route path={no_match_route} element={<Navigate to={LOGIN} replace/>}/>
