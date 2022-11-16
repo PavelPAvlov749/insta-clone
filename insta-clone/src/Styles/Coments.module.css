@@ -15,7 +15,9 @@
     text-align: center;
 
 }
-
+ h4{
+    display: inline;
+}
 .comentWrapper{
     text-align: left;
     overflow-y: scroll;

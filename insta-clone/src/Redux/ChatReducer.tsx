@@ -114,7 +114,7 @@ export const getChatsByUserID = (userID:string) => {
 }
 export const getRoomByUserID = (currentUserID : string,userID:string) => {
     return async function (dispatch : any) {
-        const room = await chatAPI.getRoom(currentUserID)
+        const room = await chatAPI.getRoom(currentUserID,userID)
         if(room){
             dispatch(chat_actions.setActiveChat(room))
         }else{

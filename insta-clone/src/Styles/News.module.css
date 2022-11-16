@@ -1,4 +1,4 @@
-.postNewsContainer{
+    .postNewsContainer{
     margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
@@ -8,7 +8,10 @@
 
     overflow-y: scroll;
 }
-.news{
+.singlePostWrapper{
+    padding: 2px;
+    margin-bottom: 5px;
+    border: 1px double lightgrey
 
 }
 .postIMGContainer{
@@ -24,6 +27,7 @@
 }
 .autorName{
     margin-bottom: 0%;
+    margin-left: 1rem;
     display: inline;
     font-weight: 400;
     text-decoration: none;

@@ -7,9 +7,7 @@ import { Global_state_type } from "../../Redux/Store";
 import styles from "../../Styles/Coments.module.css"
 
 export const ComentTextArea : React.FC = React.memo((props) => {
-    const currentUserID = useSelector((state:Global_state_type) => {
-        return state.auth.user_id
-    })
+
     let [isShowComent,setShowComent] = useState(false)
     const currentUser = useSelector((state:Global_state_type) => {
         return state.account
@@ -19,14 +17,6 @@ export const ComentTextArea : React.FC = React.memo((props) => {
     const dispatch : any = useDispatch()
     let initialFormValues = {coment : ""}
 
-    const newPostText = useSelector((state: Global_state_type) => {
-        return state.userPosts
-    })
-
-    
-    const setSubmit = () => {
-
-    }
     const onSubmitHandler = ( values : {coment : string}) => {
         dispatch(leaveComentThunk(currentUser.userID as string,postURL,
             {comentatorName : currentUser.fullName,

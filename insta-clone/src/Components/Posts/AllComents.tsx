@@ -1,5 +1,4 @@
 import React from "react";
-import { ComentType } from "../../Redux/Types";
 import styles from "../../Styles/Coments.module.css"
 import { SilngleComent } from "./Coments";
 import { ComentTextArea } from "./ComentTextArea";

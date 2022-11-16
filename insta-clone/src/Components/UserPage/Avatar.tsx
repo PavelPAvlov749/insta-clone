@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AccountActions, updateAvatarThunk } from "../../Redux/ProfileReducer";
+import { Global_state_type } from "../../Redux/Store";
 import { AvatarPropsType } from "../../Redux/Types";
-import styles from "../../Styles/UserPage.module.css"
+import styles from "../../Styles/Avatar.module.css"
 
 
 //the component takes into account the user name, the picture, and the size of the avatar 
 //depends on the place where it is rendered (large for the user's page and small, for example, for user lists)
 export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
     const dispatch: any = useDispatch()
-
+    const currentUserID = useSelector((state : Global_state_type) => {
+        return state.account.userID
+    })
     const onAvatarCkickHandler = (event: any) => {
         let fileReader = new FileReader()
         if (!event.target.files.length) {
@@ -36,8 +39,9 @@ export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
                     <label htmlFor="avatarInput">
                         <span>{userName}</span>
                     </label>
+                    {props.userID === currentUserID ? 
                     <input type="file" placeholder="Files" accept="image/*" onChange={onAvatarCkickHandler}
-                        id="avatarInput" style={{ "display": "none" }}></input>
+                        id="avatarInput" style={{ "display": "none" }}></input> : null}
                 </div>
             </div>
 
@@ -49,8 +53,9 @@ export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
                 <label htmlFor="avatarInputImg">
                     <img src={props.avatarIMG} alt="#"></img>
                 </label>
+                {props.userID === currentUserID ? 
                 <input type="file" placeholder="Files" accept="image/*" onChange={onAvatarCkickHandler}
-                    id="avatarInputImg" style={{ "display": "none" }}></input>
+                    id="avatarInputImg" style={{ "display": "none" }}></input> : null}
             </div>
         )
     }

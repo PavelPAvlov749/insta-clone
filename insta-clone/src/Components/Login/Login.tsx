@@ -1,8 +1,8 @@
-import React, { Dispatch } from "react";
+import React from "react";
 import { Formik, Field, Form } from "formik";
 import { Global_state_type } from "../../Redux/Store";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { Navigate, NavLink } from "react-router-dom";
+import {  NavLink } from "react-router-dom";
 import goole_pic from "../../Media/google_button.png";
 import { loginInWithEmailAndPassword, signInWithGooglePopUp } from "../../Redux/AuthReducer";
 import styles from "../../Styles/Login.module.css"

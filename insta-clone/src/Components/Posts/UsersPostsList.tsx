@@ -13,12 +13,7 @@ export const UserPostsList: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
     const userPageID = useLocation().pathname.split("=")[1]
 
-<<<<<<< HEAD
-=======
-    const postIMG = useSelector((state: Global_state_type) => {
-        return
-    })
->>>>>>> main
+
     useEffect(() => {
         dispatch(getPostListByUserID(userPageID))
     }, [userPageID])

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { postActions } from "../../Redux/PostReducer";
+
 import { Global_state_type } from "../../Redux/Store";
-import { PostType, UserType } from "../../Redux/Types";
+import {  UserType } from "../../Redux/Types";
 import { userPageActions } from "../../Redux/UserPageReducer";
 import { getAllUsersThunk, searchUserPageByName } from "../../Redux/UserSearchReducer";
 import styles from "../../Styles/Search.module.css"

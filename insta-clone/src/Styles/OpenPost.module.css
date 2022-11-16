@@ -6,12 +6,17 @@
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 0.5fr 1fr 1fr;
     gap: 0.3rem;
+    overflow: hidden;
     grid-template-areas: 
+    
     "IMG"
     "CreatorInfo"
     "INFO"
     "COM"
     "INPUT";
+}
+.postInfo{
+    
 }
 .creatorInfo{
     grid-area: CreatorInfo;
@@ -19,6 +24,7 @@
     margin: 0%;
 }
 .comentIcon{
+   
     vertical-align: middle;
     margin-left: 0.5rem;
     width: auto;
@@ -33,21 +39,14 @@
     grid-area: Name;
     text-decoration: none;
     color: black;
-    font-weight: 400;
+    font-weight: 500;
 }
 a{
     text-decoration: none;
 }
-.autorAvatar{
-    width: auto;
-    height: 100%;
-    max-width: 60px;
-    max-height: 60px;
-    border-radius: 180px;
-}
+
 .likesCount
 {
-
     margin-left: 1rem;
     vertical-align: middle;
 }
@@ -65,18 +64,19 @@ a{
     object-fit:cover;
 }
 .likeIcon{
-   
+    margin-left: 0.5rem;
     vertical-align: middle;
-    width: auto;
     height: 100%;
-    max-height: 25px;
+    max-height: 28px;
+    overflow: hidden;
+}
+.likeIcon:active{
+    overflow: hidden;
+    max-height: 33px;
+    transition: max-height 0.2s ease-in-out
 }
 
-.comentsWrapper{
-    margin-left: 1vh;
-    grid-area: COM;
 
-}
 .showAll{
     margin: 0%;
     padding: 0%;
@@ -85,7 +85,7 @@ a{
     font-size: medium;
 }
 .comentText{
-    
+    margin-left: 1rem;
     font-weight: 300;
 }
 .deleteComent{
@@ -112,37 +112,26 @@ a{
     font-weight: 400;
 }
 .comentsWrapper img{
-
-
     width: 40px;
     height: 40px;
     border-radius: 180px;
 }
 
 .postInfo h4{
+    position: static;
     font-weight: 500;
     display: inline;
 }
 .postInfo{
     margin-left: 1vh;
-    margin-top: 0%;
     grid-area: INFO;
 }
-.buttons{
-    margin-left: 1vh;
-    grid-area: BTN;
-    
-}
-.buttons span{
-    margin-top: -2vh;
-}
-.buttons img{
 
-    display: inline;
-}
+
 .deletePost{
     vertical-align: middle;
-    margin-left: 57%;
+    position: absolute;
+    left: 92%;
     width: 25px;
     height: 25px;
     display: inline;

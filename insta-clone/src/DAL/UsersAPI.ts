@@ -43,9 +43,7 @@ class UsersAPI extends abstractAPI {
             }
             
     }
-    async sendMessage(currentUserID: string, userID: string, messagetext: string) {
 
-    }
     async followUser(currentUserID: string, userToFollowID: string) {
         const followerList = await (await get(child(this.DatabaseRef, "Users/" + userToFollowID)))
 

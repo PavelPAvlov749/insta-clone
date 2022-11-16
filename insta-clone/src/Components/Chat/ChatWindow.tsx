@@ -18,13 +18,8 @@ export const Dirrect: React.FC = React.memo((props) => {
     const chat_anchor_ref = useRef<HTMLDivElement>(null);
     const dispatch: any = useDispatch()
     let currentUser = useSelector((state: Global_state_type) => { return state.app.currentUserID })
-
     const messages = useSelector((state: Global_state_type) => { return state.chat.messages })
     let location = useLocation().pathname.split("=")[1]
-
-    const chat = useSelector((state: Global_state_type) => {
-        return state.chat.activeChat
-    })
 
     useEffect(() => {
         dispatch(getRoomByUserID(currentUser as string, location))
@@ -33,27 +28,19 @@ export const Dirrect: React.FC = React.memo((props) => {
 
     useEffect(() => {
         dispatch(getRealtimeMessages(location))
-        // dispatch(getMessagesByChatID(location))
     }, [location])
 
     return (
         <section className={styles.chatWindowWrapper}>
-
+             
             <div className={styles.messageArea} >
                 {messages.length > 0 ? messages.map((message) => {
                     return (
-<<<<<<< HEAD
                         <div key={message.messageID}>
                               <Message messageText={message.messageText} senderID={message.senderID} currentUser={currentUser} />
                         </div>
                           
                 
-=======
-                        <>
-                            <Message userName={message.fullName} userID={message.userID} key={message.messageID}
-                                messageText={message.messageData} currentUserID={currentUser as string} avatar={interlocutorAvatar} />
-                        </>
->>>>>>> main
                     )
                 }) :
                     <div className={styles.noMessages}>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AccountActions, updateStatusThunk } from "../../Redux/ProfileReducer";
+import {  updateStatusThunk } from "../../Redux/ProfileReducer";
 import { Global_state_type } from "../../Redux/Store";
 import { userPageActions } from "../../Redux/UserPageReducer";
 import styles from "../../Styles/UserPage.module.css"

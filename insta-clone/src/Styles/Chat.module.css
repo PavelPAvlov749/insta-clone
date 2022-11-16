@@ -1,8 +1,7 @@
-.chatWrapper{
-    /* display: grid;
-    grid-template-columns: 1rem;
-    grid-template-rows: 100px 1rem;
-    grid-template-areas: 
-    "messages"
-    "input"; */
+
+.chatHeader{
+    text-align: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px double lightgrey;
+    font-weight: 400;
 }

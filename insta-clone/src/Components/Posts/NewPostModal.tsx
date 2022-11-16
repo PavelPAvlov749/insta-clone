@@ -19,12 +19,10 @@ type PostFormType = {
 
 
 export const NewPostModalWindow: React.FC = React.memo((props) => {
-    const isFetch = useSelector((state:Global_state_type) => {
-        return state.app.is_fetch
-    })
+
     const dispatch: any = useDispatch()
     let navigate = useNavigate()
-    const navigation = useNavigate()
+
     let [step, setStep] = useState(1)
     let isOnLoad = useSelector((state: Global_state_type) => {
         return state.app.onLoad

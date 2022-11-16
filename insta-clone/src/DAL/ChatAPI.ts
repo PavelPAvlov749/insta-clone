@@ -68,10 +68,6 @@ class ChatAPI extends abstractAPI {
 
     //GET ROOM ::::::::::::::::
 
-<<<<<<< HEAD
-    async getRoom(chatID: string) {
-        return await (await get(child(this.DatabaseRef, "Members/" + chatID))).val()
-=======
     async getRoom(currentUserID: string, userID: string) {
 
         const chatRef = await (await get(child(this.DatabaseRef, "Users/" + currentUserID + "/chats/" + userID))).val()
@@ -82,7 +78,6 @@ class ChatAPI extends abstractAPI {
         }
 
 
->>>>>>> main
     }
 
     //GET MESSAGES ::::::::::::::::
