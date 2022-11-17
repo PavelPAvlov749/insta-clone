@@ -7,7 +7,7 @@
     align-items: center;
 
     height: 100%;
-    max-height: 400px;
+    max-height: 500px;
     border-radius: 5px;
     border-color: grey;
     border-width: 1px;
@@ -69,6 +69,27 @@
     background-color: lightgray;
     color: black;
 }
+#logoPIC{
+    display: inline;
+  width: 60px;
+  height: 60px;
+  vertical-align: middle;
+}
+.logo{
+    vertical-align: middle;
+    display: inline;
+    font-size:40px;
+   
+    font-family:"Ditted";
+}
+.logoSpan{
+    font-size: 40px;
+    vertical-align: middle;
+    display: inline;
+    color: rgba(190, 37, 37, 0.822);
+    font-family:Georgia, 'Times New Roman', Times, serif;
+
+}
 .wrapper img{
     vertical-align: middle;
     width: 27px;
@@ -88,4 +109,8 @@ a{
     .wrapper img {
         display: none;
     }
+}
+@font-face {
+    font-family: "Dited";
+    src: url("../../public/fonts/Dited.otf");
 }

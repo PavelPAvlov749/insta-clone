@@ -39,7 +39,7 @@ export const TextInput: React.FC = React.memo((props) => {
                     <Formik onSubmit={setSubmit} enableReinitialize={true} initialValues={initialFormValues} >
                         <Form className={styles.formik}>
                             <Field type="text" name="newMessage" autoComplete="off" autoFocus="on" onChange={OnChangeHandler}
-                                value={newMessageText} className={styles.messageInput} >
+                                value={newMessageText} className={styles.messageInput} >    
                             </Field>
                             <button type="submit" className={styles.textArea}>Send</button>
                         </Form>

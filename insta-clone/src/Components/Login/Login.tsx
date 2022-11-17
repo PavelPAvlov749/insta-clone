@@ -6,7 +6,7 @@ import {  NavLink } from "react-router-dom";
 import goole_pic from "../../Media/google_button.png";
 import { loginInWithEmailAndPassword, signInWithGooglePopUp } from "../../Redux/AuthReducer";
 import styles from "../../Styles/Login.module.css"
-
+import logo from "../../Media/Logo.png"
 
 
 
@@ -31,7 +31,10 @@ export const Login: React.FC = React.memo((props) => {
     return (
         <div className={styles.formDivContainer}>
             <div className={styles.wrapper}>
-                <h1>Login</h1>
+                <img src={logo} alt="#" id={styles.logoPIC}></img>
+                <h1 className={styles.logo}>.Networ</h1>
+                <span className={styles.logoSpan}>K</span>
+                <h2>Login</h2>
                 {isError ? <span className={styles.spanError}>Error : Invalid username or password</span> : null}
                 <Formik
                     enableReinitialize={true} //<= If true Form will reinitialize after reciving new initial value from state 

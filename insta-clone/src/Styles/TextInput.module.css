@@ -1,14 +1,16 @@
 .inputWrapper{
-    position:absolute;
-    bottom:0;
-    width: 100%;
+    /* position:absolute; */
+    /* bottom:0; */
+    width: 69%;
+    position: relative;
     padding: 4px 0rem 4px 0.0rem;
     border-width: 1px;
-    width: 100%;
+    margin-left: 30%;
     border-style:groove;
     border-color: grey;
     border-radius: 10px;
-    margin-bottom: 3px;
+    /* margin-bottom: 3px; */
+   
     
 }
 

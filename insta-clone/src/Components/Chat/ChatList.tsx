@@ -43,8 +43,8 @@ export const ChatList: React.FC = React.memo((props) => {
 
 
     return (
-        <section className={styles.chatListWrapper}>
-            {Chats?.length > 0 ? <section>
+        < >
+            {Chats?.length > 0 ? <section className={styles.chatListWrapper}>
                 {Chats?.map((chat) => {
                     return (
                         <div className={styles.userMini} onClick={() => { onClickHandler(chat.chatID) }}>
@@ -59,7 +59,7 @@ export const ChatList: React.FC = React.memo((props) => {
                     <h1>Sorry,looks like you dont have any chats yet</h1>
                     <img src={emptyChatList} alt={"#"}></img>
                 </figure>}
-        </section>
+        </>
     )
 
 })

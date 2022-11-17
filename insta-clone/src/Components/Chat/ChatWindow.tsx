@@ -8,6 +8,7 @@ import { Message } from "./Message";
 import { TextInput } from "./TextInput";
 import messageIMG from "../../Media/message.png"
 import messageBoxIcon from "../../Media/mailbox.png"
+import { ChatList } from "./ChatList";
 
 
 const messageTone = require("../../Media/MessageTone.mp3")
@@ -32,15 +33,14 @@ export const Dirrect: React.FC = React.memo((props) => {
 
     return (
         <section className={styles.chatWindowWrapper}>
-             
+           
             <div className={styles.messageArea} >
                 {messages.length > 0 ? messages.map((message) => {
                     return (
                         <div key={message.messageID}>
                               <Message messageText={message.messageText} senderID={message.senderID} currentUser={currentUser} />
                         </div>
-                          
-                
+
                     )
                 }) :
                     <div className={styles.noMessages}>
@@ -50,17 +50,29 @@ export const Dirrect: React.FC = React.memo((props) => {
 
                 }
                 <div ref={chat_anchor_ref}></div>
+           
             </div>
-            <TextInput />
+          
         </section>
     )
 })
+export const DirrectContainer:React.FC = React.memo((props) => {
 
+
+    return (
+        <section className={styles.dirrectContainer}>
+            <ChatList/>
+            <Dirrect/>
+            <TextInput></TextInput>
+        </section>
+    )
+
+})
 
 export const ChatWindow: React.FC = React.memo((props) => {
 
     return (
-        <div className={styles.noMessage}>
+        <div className={styles.chatMain}>
 
             <img src={messageIMG} alt="#" />
             <br />
@@ -68,7 +80,6 @@ export const ChatWindow: React.FC = React.memo((props) => {
             <br />
             <span>Send personal photos and messages to a friend or group.</span>
             <br />
-            <button type="button" className={styles.startChating}>Start chating</button>
         </div>
 
     )
