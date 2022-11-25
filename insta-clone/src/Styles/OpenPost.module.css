@@ -8,7 +8,6 @@
     gap: 0.3rem;
     overflow: hidden;
     grid-template-areas: 
-    
     "IMG"
     "CreatorInfo"
     "INFO"
@@ -59,7 +58,7 @@ a{
     grid-area: IMG;
     width: 100%;
     height: auto;
-    max-width: 650px;
+    /* max-width: 650px; */
     max-height: 450px;
     object-fit:cover;
 }
@@ -69,11 +68,10 @@ a{
     height: 100%;
     max-height: 28px;
     overflow: hidden;
+    transition: 0.1s;
 }
 .likeIcon:active{
-    overflow: hidden;
-    max-height: 33px;
-    transition: max-height 0.2s ease-in-out
+    transform: scale(1.6);
 }
 
 
@@ -129,9 +127,10 @@ a{
 
 
 .deletePost{
+    text-align: right;
     vertical-align: middle;
-    position: absolute;
-    left: 92%;
+    position: relative;
+    padding-left: 92%;
     width: 25px;
     height: 25px;
     display: inline;

@@ -12,6 +12,7 @@ import { Global_state_type } from "../../Redux/Store";
 
 
 
+
 export const Registration: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
     const navigate = useNavigate()
@@ -38,7 +39,14 @@ export const Registration: React.FC = React.memo((props) => {
     const nexStepHandler = () => {
         setStep(2)
     }
- 
+    //Validation 
+    const validateEmail = (value : any) => {
+        if(!value){
+            return "required"
+        }else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)){
+            return "invalid email or password"
+        }
+    }
     //FILE INPUT HANDLER FUNCTION
     const inputOnChangeHandler = (event: any) => {
         let target = event.target
@@ -69,8 +77,10 @@ export const Registration: React.FC = React.memo((props) => {
 
             {onError ? <span>{onError.errorMessage}</span> : null}
             <Formik
+          
+
                 enableReinitialize={true} //<= If true Form will reinitialize after reciving new initial value from state 
-                className="login_forms"
+              
                 //FORM INITIAL VALUES
                 initialValues={{
                     avatar : newUserRegForm.avatar,
@@ -80,7 +90,7 @@ export const Registration: React.FC = React.memo((props) => {
                     userName : newUserRegForm.userName,
                     email : newUserRegForm.email
                 }} 
-                
+
                 onSubmit={setSubmit}>
                     
                 <Form className={styles.loginForms}>
@@ -135,3 +145,4 @@ export const Registration: React.FC = React.memo((props) => {
 
 
 })
+

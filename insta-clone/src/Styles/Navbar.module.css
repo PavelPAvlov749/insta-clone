@@ -40,3 +40,11 @@
         border-top: 1px groove rgb(42, 42, 42);
     }
 }
+@media(max-width : 314px){
+    .navigation_list img{
+        width: auto;
+        height: 100%;
+        max-height: 25px;
+        max-width: 25px;
+    }
+    }

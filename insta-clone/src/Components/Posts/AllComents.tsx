@@ -26,13 +26,14 @@ export const AllComents : React.FC = React.memo((props) => {
     return (
         <section  className={styles.comentWrapper}>
             <img className={styles.backArrow} src={backArrow} onClick={backArrowCloickHandler} alt="#"></img>
-            <span>Back to the post</span>
+            <div className={styles.commentsHeader}>
+            <span>Comments</span>
+            </div>
             <div className={styles.comentsList}>
             {postComents.length > 0 ? postComents.map((coment) => {
                 return (
 
-                    <div key={coment.comentID}>
-                        <Avatar size="small" fullName={coment?.comentatorName as string} avatarIMG={coment.avatar}/>
+                    <div key={coment.comentID} className={styles.comentsArea}>
                         <SilngleComent coment={coment} currentUserID={currentUserID as string}/>
                     </div>
                 )

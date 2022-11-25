@@ -1,7 +1,5 @@
 import { Route,Routes,Navigate } from "react-router-dom"
-import { Chat, ChatDirrect } from "../Components/Chat/Chat"
-import { ChatList } from "../Components/Chat/ChatList"
-import { Dirrect, DirrectContainer } from "../Components/Chat/ChatWindow"
+import { Chat, } from "../Components/Chat/Chat"
 import { Login_container } from "../Components/Login/Login"
 import { Registration } from "../Components/Login/Registartion"
 import { NewPostModalWindow } from "../Components/Posts/NewPostModal"
@@ -13,6 +11,7 @@ import React from "react"
 import { AllComents } from "../Components/Posts/AllComents"
 import { AllPosts } from "../Components/News/News"
 import { UsersList } from "../Components/UsersList/usersList"
+import { ChatList } from "../Components/Chat/ChatList"
 
 const LOGIN = "/login"
 const CHAT = "/chat"
@@ -43,7 +42,7 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                     <Route path={POST} element={<ShowedPost/>}/>
                     <Route path={SEARCH} element={<UserSearch/>}/>
                     <Route path={CHAT} element={<Chat/>}/>
-                    <Route path={DIRECT} element={<DirrectContainer/>}/>
+                    <Route path={DIRECT} element={<Chat/>}/>
                     <Route path={NEW_POST} element={<NewPostModalWindow/>}/>
                     <Route path={ALL_COMENTS} element={<AllComents/>}/>
                     <Route path={News} element={<AllPosts/>}/>

@@ -4,7 +4,7 @@ import { AccountActions, updateAvatarThunk } from "../../Redux/ProfileReducer";
 import { Global_state_type } from "../../Redux/Store";
 import { AvatarPropsType } from "../../Redux/Types";
 import styles from "../../Styles/Avatar.module.css"
-
+import deafultAvatar from "../../Media/avatarBackground.jpg"
 
 //the component takes into account the user name, the picture, and the size of the avatar 
 //depends on the place where it is rendered (large for the user's page and small, for example, for user lists)
@@ -36,8 +36,9 @@ export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
             //props.size sets the size of the avatar
             <div className={styles.wraperDiv}>
                 <div className={props.size === "large" ? styles.defaultAvatarLarge : styles.defaultAvatarSmall}>
+                    <img src={deafultAvatar} alt="#" />
                     <label htmlFor="avatarInput">
-                        <span>{userName}</span>
+                       {/* <h1>{userName}</h1> */}
                     </label>
                     {props.userID === currentUserID ? 
                     <input type="file" placeholder="Files" accept="image/*" onChange={onAvatarCkickHandler}

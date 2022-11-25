@@ -26,14 +26,17 @@ export const AllPosts: React.FC = React.memo((props) => {
         return (
             <div className={styles.news}>
 
-                {posts.length ? posts.map((post) => {
+        {posts.length ? posts.map((post) => {
                     return (
                         <div className={styles.singlePostWrapper}>
+                         
                            <SinglePost post={post} currentUserID={currentUserID as string}/>
                         </div >
                     )
 
                 }) : null}
+  
+
             </div>
         )
    

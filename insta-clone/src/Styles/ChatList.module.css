@@ -2,7 +2,8 @@
     display: inline-block;
     position: relative;
     width:29%;
-    height: 100%;
+    height: calc(100% - 1.5rem);
+    background-color: aqua;
     overflow-y: scroll;
     padding-top: 1rem;
     border-right: 1px double lightgrey;
@@ -11,9 +12,7 @@
 ::-webkit-scrollbar {
     display: none;
 }
-.chatWrapper{
 
-}
 .userMiniPage{
     background-color: red;
     margin:0rem 0rem 2rem 1rem;
@@ -36,5 +35,11 @@
     display: block;
 }
 .userMini:hover{
+
    transform: scale(1.2);
+}
+@media (max-width : 450px){
+    .chatListWrapper {
+        display: none;
+    }
 }

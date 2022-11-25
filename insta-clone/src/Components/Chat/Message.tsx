@@ -12,12 +12,8 @@ export const Message: React.FC<{messageText : string,currentUser : string,sender
     }
 
     return (
-        <section className={props.currentUser === props.senderID ? styles.currentUserMessage : styles.message}>
-           
-            <br />
+        <div className={props.currentUser === props.senderID ? styles.currentUserMessage : styles.message}>
             <span >{props.messageText} </span>
-            <br />
-           
-        </section>
+        </div>
     )
 })

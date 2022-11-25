@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { sendMessageThunk } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
-import styles from "../../Styles/TextInput.module.css"
+import styles from "../../Styles/Chat.module.css"
 import emojiPNG from "../../Media/emoji.png"
 
 
