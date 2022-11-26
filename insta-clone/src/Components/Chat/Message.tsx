@@ -10,7 +10,6 @@ export const Message: React.FC<{messageText : string,currentUser : string,sender
     if(props.senderID !== props.currentUser){
         chatAPI.decrementUnreadedMessagesCount(props.currentUser)
     }
-
     return (
         <div className={props.currentUser === props.senderID ? styles.currentUserMessage : styles.message}>
             <span >{props.messageText} </span>

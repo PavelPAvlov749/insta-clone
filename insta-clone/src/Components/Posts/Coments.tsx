@@ -9,6 +9,7 @@ import crossIcon from "../../Media/delete_icon.png"
 import { Avatar } from "../UserPage/Avatar";
 
 
+
 export const SilngleComent: React.FC<{ coment: ComentType, currentUserID: string }> = React.memo((props) => {
     const dispatch: any = useDispatch()
     const location = useLocation().pathname.split("=")[1]
@@ -25,12 +26,11 @@ export const SilngleComent: React.FC<{ coment: ComentType, currentUserID: string
             <div className={styles.deleteWrapper}>
             {props.coment?.comentatorID === props.currentUserID ? <img className={styles.deleteComent} src={crossIcon} alt="#" onClick={onDeleteHandler}></img> : null}
             </div>
-          
             <br />
         </div>
-
     )
 })
+
 
 export const PostComents: React.FC<{ coments: Array<ComentType> }> = React.memo((props) => {
 
