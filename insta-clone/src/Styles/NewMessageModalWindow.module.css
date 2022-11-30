@@ -1,0 +1,72 @@
+.blur {
+    align-items: center;
+
+}
+
+.modalWindowContainer img {
+    margin: 5px 1rem 0 2px;
+}
+
+.modalWindowContainer {
+
+    z-index: 3;
+    position: absolute;
+    top: 1rem;
+    left: 21%;
+    background-color: white;
+    border: 1px double lightgrey;
+    border-radius: 5px;
+    width: 400px;
+    padding: 0 2px 5px 2px;
+    height: 300px;
+
+
+
+}
+
+.modalWindowContainer span {
+    vertical-align: middle;
+    font-weight: 500;
+    font-size: large;
+    margin-right: 1rem;
+}
+
+.modalWindowContainer textarea {
+    /* margin-top: 1rem; */
+    border-radius: 5px;
+    background-color: rgb(228, 225, 225);
+    border: none;
+    position: relative;
+
+    /* height: 10rem; */
+    width: 99%;
+}
+
+.buttons {
+    position: absolute;
+    bottom: 0.4rem;
+    width: 100%;
+    /* padding: 5px; */
+}
+
+.buttons button {
+    margin-right: 1px;
+    position: relative;
+    height: 2rem;
+    background-color: rgb(77, 90, 190);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-size: medium;
+    width: calc(50% - 4px);
+}
+
+@media(max-width:628px) {
+    .modalWindowContainer {
+        left: 0;
+        top: 20%;
+        width: calc(100% - 6px);
+
+
+    }
+}

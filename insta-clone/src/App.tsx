@@ -9,7 +9,7 @@ import { Navbar } from './Components/Navbar/Navbar';
 import { Preloader } from './Components/Preloader/Preloader';
 //Redux,Actions and Thnunks imports
 import { postActions } from './Redux/PostReducer';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Global_state_type } from './Redux/Store';
 import { InitializeThunk } from './Redux/AppReducer';
 //Types imports
@@ -40,7 +40,9 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
     props.init()
   }, [])
   console.log("RENDER")
-
+  const isNewMessage = useSelector((state:Global_state_type) => {
+    return state.app.onNewMessage
+  })
   //If one of them fasle return Preloader anotherwise return router
   if (props.isInit || !props.isFetch) {
     return (

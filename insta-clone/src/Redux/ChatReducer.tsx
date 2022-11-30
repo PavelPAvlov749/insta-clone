@@ -1,7 +1,7 @@
 
 import { InferActionType } from "./Store";
 import { onValue, ref} from "firebase/database"
-import {  MessageType, newChatType, UserType } from "./Types";
+import {  ChatType, MessageType, newChatType, UserType } from "./Types";
 import { app_actions } from "./AppReducer";
 import { chatAPI } from "../DAL/ChatAPI";
 import { dataBase } from "../DAL/FirebaseConfig";
@@ -154,21 +154,34 @@ export const getRealtimeMessages = (chatID : string) => {
         }
     }
 }
+export const sendMessageFromModalWindow = (newChat : newChatType,messageText : string) => {
+    return async function (dispatch : any) {
+        dispatch(app_actions.set_is_fetch_true())
+        let chatList : Array<any> = Object.values( await chatAPI.getListOfChatsByUserID(newChat.sender.senderID))
+      
+        if(chatList.find((chat : any) => chat.userID === newChat.recepient.recepientID)){
+            await chatAPI.sendMessage(newChat.sender.senderID,newChat.sender.senderFullName,messageText,chatList[0].chatID as string)
+        }else{
+            const newChatID = await chatAPI.createNewChat({...newChat})
+            await chatAPI.sendMessage(newChat.sender.senderID,newChat.sender.senderFullName,messageText,newChatID as string)
+        }
+
+    }
+}
 export const sendMessageThunk = (sender: string, senderName : string,messageText : string,chatID : string) => {
     return async function (dispatch : any){
         console.log(chatID)
         dispatch(app_actions.set_is_fetch_true())
-        // await chatAPI.sendMessage(sender,recepient,messageText,senderName)
-        // await chatAPI.createNewChat(user_1,user_2)
         await chatAPI.sendMessage(sender,senderName,messageText,chatID)
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }
 
-export const createNewChat = (newChat : newChatType) => {
+export const createNewChat = (newChat : newChatType,messageText? : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         const newChatID =  await chatAPI.createNewChat(newChat)
+        const message = await chatAPI.sendMessage(newChat.sender.senderID,newChat.sender.senderFullName,messageText as string,newChatID as string)
         dispatch(chat_actions.setActiveChat(newChatID as string))
         dispatch(app_actions.set_is_fetch_fasle())
     }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Global_state_type } from "../../Redux/Store";
@@ -7,9 +7,14 @@ import { UserPostsList } from "../Posts/UsersPostsList";
 import { UserStatus } from "../UserStatus/Status";
 import styles from "../../Styles/UserPage.module.css"
 import { Avatar } from "./Avatar";
-
+import { ModalWindow } from "../Chat/modalWindow";
+    
 import { newChatType } from "../../Redux/Types";
 import { createNewChat } from "../../Redux/ChatReducer";
+import { MiniProfile } from "../MiniProfile/MiniProfile";
+import { Field, Form, Formik } from "formik";
+import { app_actions } from "../../Redux/AppReducer";
+import { NewPostModalWindow } from "../Posts/NewPostModal";
 
 
 
@@ -23,26 +28,26 @@ export const UserPage: React.FC = React.memo(() => {
     })
     //Fetch the actual user page by ID from query string
     const dispatch: any = useDispatch()
-    const chats = useSelector((state:Global_state_type) => {
+    const chats = useSelector((state: Global_state_type) => {
         return state.chat.chats
     })
-    const activeChatID = useSelector((state : Global_state_type) => {
+    
+    const activeChatID = useSelector((state: Global_state_type) => {
         return state.chat.activeChat
     })
     useEffect(() => {
         dispatch(getUserPageByID(userPageUrl))
-    }, [userPageUrl,activeChatID])
+    }, [userPageUrl, activeChatID])
 
     const currentUserID = useSelector((state: Global_state_type) => {
         return state.app.currentUserID
     })
-    const currentUserAvatar = useSelector((state : Global_state_type) => {
+    const currentUserAvatar = useSelector((state: Global_state_type) => {
         return state.account.avatar
     })
     const currentUSerFullName = useSelector((state: Global_state_type) => {
         return state.account.fullName
     })
-
 
     const actualUserPage = useSelector((state: Global_state_type) => {
         return state.userPage
@@ -62,37 +67,47 @@ export const UserPage: React.FC = React.memo(() => {
             dispatch(userPageActions.follow(currentUserID))
         }
     }
-
+    //Local state for sending message modale window
+    let isNewMessage = useSelector((state:Global_state_type) => {
+        return state.app.onNewMessage
+    })
+    //SendMessage button on click
+    const sendMessageHandlerButton = () => {
+       dispatch(app_actions.setOnNewMessage(true))
+    }
     //Send message Handler
     const sendMessage = () => {
-        const newChat : newChatType = {
-            sender : {
-                senderID : currentUserID,
-                senderFullName : currentUSerFullName as string,
-                avatar : currentUserAvatar
+        const newChat: newChatType = {
+            sender: {
+                senderID: currentUserID,
+                senderFullName: currentUSerFullName as string,
+                avatar: currentUserAvatar
 
             },
-            recepient : {
-                recepientID : actualUserPage.userID,
-                recepientFullName : actualUserPage.fullName,
-                avatar : actualUserPage.avatar
+            recepient: {
+                recepientID: actualUserPage.userID,
+                recepientFullName: actualUserPage.fullName,
+                avatar: actualUserPage.avatar
             }
         }
-        
-        let chat = chats.find((chat : any) => chat.userID == actualUserPage.userID)
-        if(chat){
+
+        let chat = chats.find((chat: any) => chat.userID == actualUserPage.userID)
+        if (chat) {
             navigate(`/chat/id:=${chat.chatID}`)
-        }else{
+        } else {
             dispatch(createNewChat(newChat))
-            if(activeChatID){
-                navigate(`/chat/id:=${activeChatID}`)
-            }
-            
+            navigate(`/chat/id:=${activeChatID}`)
+
+
         }
-      
+
+    }
+    const initialValues = {
+        mesageText : null
     }
     return (
         <div className={styles.userPageContainr}>
+            
             <section className={styles.userPageWrapper} >
                 <Avatar avatarIMG={actualUserPage.avatar} userID={actualUserPage.userID} fullName={actualUserPage.fullName} size={"large"} />
 
@@ -125,10 +140,12 @@ export const UserPage: React.FC = React.memo(() => {
                     </NavLink>
 
                 </div>
+                {/* MODAL WINDOW */}
+                    {!isNewMessage ? null :   <ModalWindow/>}
                 {userPageUrl !== currentUserID ?
                     <section className={styles.contrtolButtons}>
                         {userPageUrl !== currentUserID ? <button onClick={followToogle}>{Object.values(actualUserPage.followers as Array<string>).includes(currentUserID) ? "Unfollow" : "Follow"}</button> : null}
-                        {userPageUrl !== currentUserID ? <button onClick={sendMessage}>Send message</button> : null}
+                        {userPageUrl !== currentUserID ? <button onClick={sendMessageHandlerButton}>Send message</button> : null}
                     </section> : null
                 }
 
