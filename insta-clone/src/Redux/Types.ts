@@ -1,3 +1,4 @@
+import { BlockLike } from "typescript"
 
 
 //Main Compoenent PropsType (App.tsx)
@@ -8,7 +9,9 @@ export type AppPropsType = {
     currentUserID: string | null,
     isNewPost: boolean,
     setIsOnNewPost: (isPost: boolean) => void,
-    isAuth: boolean
+    isAuth: boolean,
+    isNewMessage : boolean
+
 }
 
 export type MainAccountType = {
@@ -71,11 +74,9 @@ export type AvatarPropsType = {
 }
 export type CreateNewUserType = {
     userName : string ,
-    passwordField1 : string,
-    passwordField2? : string,
+    password : string,
+    confirmPassword : string,
     email : string ,
-    avatar : any,
-    status : string 
 }
 
 export type newChatType = {

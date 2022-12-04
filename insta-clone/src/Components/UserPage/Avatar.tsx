@@ -36,9 +36,9 @@ export const Avatar: React.FC<AvatarPropsType> = React.memo((props) => {
             //props.size sets the size of the avatar
             <div className={styles.wraperDiv}>
                 <div className={props.size === "large" ? styles.defaultAvatarLarge : styles.defaultAvatarSmall}>
-                    <img src={deafultAvatar} alt="#" />
+                    
                     <label htmlFor="avatarInput">
-                       {/* <h1>{userName}</h1> */}
+                    <img src={deafultAvatar} alt="#" />
                     </label>
                     {props.userID === currentUserID ? 
                     <input type="file" placeholder="Files" accept="image/*" onChange={onAvatarCkickHandler}

@@ -23,10 +23,11 @@
 
 /* MESSAGE AREA  */
 .messageAreaContainer {
+    padding-top: 1rem;
     grid-area: Messages;
     position: relative;
     overflow-y: hidden;
-    height: 100%;
+    height: calc(100% - 1.4rem);
     max-height: 700px ;
     text-align: center;
 

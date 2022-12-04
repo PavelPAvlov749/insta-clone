@@ -13,14 +13,15 @@ export const UserPostsList: React.FC = React.memo((props) => {
     const dispatch: any = useDispatch()
     const userPageID = useLocation().pathname.split("=")[1]
 
-
-    useEffect(() => {
-        dispatch(getPostListByUserID(userPageID))
-    }, [userPageID])
-
     const posts: Array<PostType> = useSelector((state: Global_state_type) => {
         return state.userPosts.posts
     })
+
+
+    useEffect(() => {
+        dispatch(getPostListByUserID(userPageID))
+    }, [userPageID,posts])
+
 
 
     const navigateToPost = (postData: PostType) => {
@@ -28,11 +29,11 @@ export const UserPostsList: React.FC = React.memo((props) => {
         dispatch(postActions.set_showed_post(postData))
 
     }
-
+    // posts.reverse()
     return (
 
         <section className={styles.postsWrapper}>
-            {posts.length > 0 ? posts.map((post: PostType) => {
+            {posts.length > 0 ?  posts.map((post: PostType) => {
 
                 return (
                     <div key={post.id}>

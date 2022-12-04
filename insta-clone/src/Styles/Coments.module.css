@@ -5,6 +5,7 @@
 
     border-radius: 5px;
 }
+
 .commentsHeader{
     text-align: center;
     padding-bottom: 5px;
@@ -13,6 +14,9 @@
 .comentsArea{
     overflow-y: scroll;
     padding: 5px;
+}
+.comentsList{
+    height: calc( 100% - 7rem );
 }
 .ComentInput{
     width: calc(100% - 5px);
@@ -80,5 +84,22 @@
 
     width: 25px;
     height: 25px;
+
+}
+.noComentsContainer{
+    position: relative;
+    text-align: center;
+    height: 100%;
+    vertical-align: middle;
+
+}
+.noComentsContainer img{
+    position: relative;
+    width: 80px;
+    height: 80px;
+    top: calc( 50% - 80px);
+}
+.noComents{
+    font-size: x-large;
 
 }

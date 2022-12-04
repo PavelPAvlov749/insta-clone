@@ -3,7 +3,7 @@
 /*   
     height: calc(195% - 1rem); */
 
-    height: calc(100% - 2rem);
+    height: calc(100% - 3rem);
     padding: 5px;
 }
 .router::-webkit-scrollbar {

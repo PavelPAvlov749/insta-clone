@@ -27,8 +27,8 @@ export type CommonThunkType<A extends Action, R = Promise<void>> = ThunkAction<R
 
 type initialStateType = {
     userName : string,
-    passwordField1 : string,
-    passwordField2 : string,
+    password : string,
+    confirmPassword : string,
     email : string,
     avatar : any,
     status : string,
@@ -38,8 +38,8 @@ type initialStateType = {
 
 const initialState : initialStateType = {
     userName : "",
-    passwordField1 : "",
-    passwordField2 : "",
+    password : "",
+    confirmPassword: "",
     avatar : null as unknown as string,
     email : "",
     status : "",
@@ -51,7 +51,7 @@ export const RegistrationReducer = (state= initialState,action : Action_Type) =>
         case SET_NEW_USER_USERNAME : {
             return {
                 ...state,
-                userName : action.payload
+                userName : state.userName.concat(action.payload)
             }
         }
         case SET_NEW_USER_PASSWORD_1 : {
@@ -131,13 +131,8 @@ export const  CreateNewUserWithEmailAndPassword = (newUserData : CreateNewUserTy
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         dispatch(app_actions.init(false))
-        const newUser : DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(newUserData.email,newUserData.passwordField1,newUserData.userName)
+        const newUser : DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(newUserData.email,newUserData.password,newUserData.userName)
         await dispatch(app_actions.setCurrentUserID(newUser?.val().userID))
-        await dispatch(updateAvatarThunk(newUser?.val().userID,newUserData.avatar))
-        dispatch(AccountActions.set_current_user_profile(newUser?.val()))
-        if(newUserData.status !== null && newUserData.status.length > 0){
-            await dispatch(updateStatusThunk(newUser?.val().userID,newUserData.status))
-        }
         dispatch(AccountActions.set_current_user_profile(newUser?.val()))
         dispatch(auth_actions.set_auth_true())
         dispatch(app_actions.set_is_fetch_fasle())

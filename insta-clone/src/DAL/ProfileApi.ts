@@ -39,20 +39,13 @@ class ProfileAPI extends abstractAPI {
         //If _img from arguments !== null dowload the file in storage with image_name
         console.log(avatarIMG)
         if (avatarIMG !== null) {
-            //Uploading the image
-            uploadBytes(avatarRef, avatarIMG).then(() => {
-                //After upload get the dowload url of the image to put them in database
-                getDownloadURL(avatarRef).then((url) => {
-                    //Put avatar storage url into "Data"
-                    const Data = url
-                    const updates: any = {};
-                    //Update this path with new avatar from "Data"
-                    updates["Users/" + userID + "/avatar/"] = Data
-                    update(ref(this.RealtimeDataBase), updates);
-                  
-                })
-            })
-          
+            await uploadBytes(avatarRef,avatarIMG)
+            const url = await getDownloadURL(avatarRef)
+            console.log(url)
+            const updates : any = {}
+            updates["Users/" + userID + "/avatar"] = url
+            await update(ref(this.RealtimeDataBase),updates)
+            return url
         }
     }catch(ex){
         console.log(ex)

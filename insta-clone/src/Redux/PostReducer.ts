@@ -1,6 +1,4 @@
-import { disableNetwork } from "firebase/firestore"
-import { act } from "react-dom/test-utils"
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript"
+
 import { postAPI } from "../DAL/PostApi"
 import { app_actions } from "./AppReducer"
 import { InferActionType } from "./Store"
@@ -217,9 +215,10 @@ export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | A
             if(postIMG !== null && postIMG !== undefined){
                 
                 dispatch(app_actions.setOnLoad(true))
-                const newPostKey = await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorID)
-                console.log(typeof(newPostKey))
-                if(newPostKey){
+                const newPost  = await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorID)
+                console.log(newPost)
+                if(newPost){
+                    dispatch(postActions.createPost(newPost as PostType))
                     dispatch(app_actions.set_is_fetch_fasle())
                     dispatch(app_actions.setOnLoad(false))
                 }

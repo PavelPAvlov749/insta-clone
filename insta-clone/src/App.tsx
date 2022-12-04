@@ -47,6 +47,7 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
   if (props.isInit || !props.isFetch) {
     return (
       <div className={styles.app}>
+        {props.isNewMessage ? <div className={styles.blurApp}></div> : null}
           <HashRouter >
           <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string}/>
             <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
@@ -77,7 +78,8 @@ let MapStateToProps = (state: Global_state_type) => {
     currentUserID: state.app.currentUserID,
     userPage: state.userPage,
     isNewPost: state.userPosts.isOnNewPost,
-    isAuth: state.auth.is_auth
+    isAuth: state.auth.is_auth,
+    isNewMessage : state.app.onNewMessage
   }
 }
 let MapDispatchToProps = (dispatch: any) => {

@@ -134,8 +134,9 @@ export const updateAvatarThunk = (newAvatar : Blob | ArrayBuffer | Uint16Array,u
         try{
             console.log("Upadte avatar thunk")
             dispatch(app_actions.set_is_fetch_true())
-            let updatedAvatar = await profileAPI.updateAvatar(userID,newAvatar)
+            const updatedAvatar : string | undefined =  await profileAPI.updateAvatar(userID,newAvatar)
             dispatch(AccountActions.updateAvatar(updatedAvatar))
+            console.log(updatedAvatar)
             dispatch(app_actions.set_is_fetch_fasle())
         }
         catch(ex) {

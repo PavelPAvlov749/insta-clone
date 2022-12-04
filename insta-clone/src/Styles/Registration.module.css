@@ -1,5 +1,4 @@
-.container{
-    /* display: block; */
+.container {
     position: relative;
     justify-content: center;
     text-align: center;
@@ -9,20 +8,40 @@
     border-style: solid;
     height: calc(100% - 5rem);
     width: calc(100% - 4px);
-    
+
 }
-.container h3{
-    text-align: left;
-    /* margin-left: 2rem; */
+
+.inputOnError {
+    width: 80%;
+    padding-left: 20px;
+    border-radius: 5px;
+    height: 2.5rem;
+    font-size: large;
+    border-style: none;
+    background-color: lightgray;
+    border: px double rgb(199, 95, 95);
+    border-radius: 5px;
 }
-.loginFormsDIV{
-   font-size: larger;
-    /* margin: 0% 5% 0% 10%; */
+
+.regError {
+    width: 100%;
+    color: rgb(197, 71, 71);
+    font-size: large;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    vertical-align: middle;
+}
+
+.loginForms {
+    margin-top: 2rem;
+    font-size: larger;
+
     text-align: center;
 }
-.loginForms input{
+
+.regInput {
     width: 80%;
-    margin-bottom: 2rem;
+    padding-left: 20px;
     border-radius: 5px;
     border-width: 1px;
     height: 2.5rem;
@@ -31,33 +50,27 @@
     background-color: lightgray;
 }
 
-.loginFormsOnError input{
-    background-color: black;
-    border-radius: 5px; 
-    border-width: 1px;
-    --main-bg-color : rgb(215, 64, 64);
-    border-color: var(--main-bg-color);
-    height: 2.5rem;
-    border-style:solid;
-    background-color: lightgray;
-}
-.loginForms input:focus{
+
+.loginForms input:focus {
     border-style: none;
     outline: none;
     box-shadow: 0px 2px 10px 2px rgb(32, 37, 65);
 }
-.hrReg{
-    width: 100%;
-    height: 1px;
-    background-color: lightgray;
-    margin-top: 30%;
-    margin-bottom: 1rem;
+
+.container span {
+    display: block;
+    margin: 0;
+    padding: 0;
+
 }
-.registrationButton{
-    
-    width: 81%;
+
+.container button {
+    position: absolute;
+    bottom: 0.5rem;
+    right: calc(50% - 150px);
+    width: 300px;
     height: 40px;
-    font-size:small;
+    font-size: small;
     font-weight: 500;
     border-radius: 5px;
     background-color: lightgrey;
@@ -66,54 +79,10 @@
     font-size: large;
     border: none;
     background-color: rgb(0, 142, 251);
-    margin-bottom: 1rem;
-    
-}
-/* STEP 2 REGISTRATION PAGE */
-.registrationStep2 {
-    transform: translateX(-150%);
-    animation: step2 0.7s forwards;
 
 }
 
-@keyframes step2 {
-    0% {
-        transform: translateX(-150%);
-    }
+.container button:disabled {
+    background-color: rgb(187, 215, 236);
 
-    100% {
-        transform: translateY(0);
-    }
-}
-.regUserStatus{
-    width: 30%;
-}
-.registrationStep2{
-
-}
-.regUserStatus{
-
-}
-.avatarPicker{
-    margin: 0% 0 1rem 0;
-    position:relative;
-    width: 100%;
-    text-align: center;
-}
-.registrationAvatar{
-    margin-bottom: 2rem;
-    text-align: center;
-    max-width: 350px;
-    max-height: 350px;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-}
-.regAvatarIcon {
-    text-align: center;
-    max-width: 150px;
-    max-height: 150px;
-    width: 100%;
-    height: 100%;
 }

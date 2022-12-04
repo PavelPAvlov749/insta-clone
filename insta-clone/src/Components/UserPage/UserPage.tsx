@@ -109,8 +109,7 @@ export const UserPage: React.FC = React.memo(() => {
         <div className={styles.userPageContainr}>
             
             <section className={styles.userPageWrapper} >
-                <Avatar avatarIMG={actualUserPage.avatar} userID={actualUserPage.userID} fullName={actualUserPage.fullName} size={"large"} />
-
+                <Avatar avatarIMG={userPageUrl === currentUserID ? currentUserAvatar : actualUserPage.avatar} userID={actualUserPage.userID} fullName={actualUserPage.fullName} size={"large"} />
                 <br />
 
                 <h1 className={styles.fullName}>{actualUserPage.fullName}</h1>
