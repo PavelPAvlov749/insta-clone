@@ -62,6 +62,7 @@ class PostAPI extends abstractAPI {
     async getAllPost() {
         const result = await (await get(child(this.DatabaseRef, "Posts/"))).val()
         const post = Object.values(result)
+        console.log(post)
         return post
 
     }
@@ -137,7 +138,7 @@ class PostAPI extends abstractAPI {
         //And an array of comments(Array<string>)
 
         const post = await (await get(child(this.DatabaseRef, "Posts/" + postID)))
-
+       
         return post.val()
     }
 
@@ -190,7 +191,7 @@ class PostAPI extends abstractAPI {
 
     async addComentToPost(userID: string, postID: string, comentText: string, creator: string, avatar: string) {
         //create id by ID generator
-        const newComentKey = await push(child(ref(this.RealtimeDataBase), "Posts" + postID + "/coments/")).key
+        const newComentKey = await push(child(ref(this.RealtimeDataBase), "Posts/" + userID + "/" + postID + "/coments/")).key
         try {
             if (comentText.length > 0) {
                 const comentData: ComentType = {
@@ -203,7 +204,7 @@ class PostAPI extends abstractAPI {
                 };
 
                 const updates: any = {}
-                updates["Posts/" + postID + "/coments/" + newComentKey] = comentData
+                updates["Posts/" + userID + "/" +  postID + "/coments/" + newComentKey] = comentData
                 update(ref(this.RealtimeDataBase), updates)
                 return comentData
             } else {

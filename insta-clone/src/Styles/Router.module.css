@@ -1,8 +1,7 @@
 .router{
     position: relative;
-/*   
-    height: calc(195% - 1rem); */
 
+    overflow-y: scroll;
     height: calc(100% - 3rem);
     padding: 5px;
 }

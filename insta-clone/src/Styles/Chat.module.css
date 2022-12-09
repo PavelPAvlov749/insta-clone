@@ -8,7 +8,6 @@
 }
 
 .chatContent {
-
     position: relative;
     height: calc(90% - 5px);
     width: 100%;
@@ -76,13 +75,15 @@
     grid-area: ChatList;
 
     height: calc(100% - 1.5rem);
-
+    width: 100%;
+   
     overflow-y: scroll;
     padding-top: 1rem;
     border-right: 1px double lightgrey;
 }
 .chatListWrapper {
-
+    width: 100%;
+ 
     grid-area: ChatList;
     height: calc(100% - 1.5rem);
     overflow-y: scroll;
@@ -90,13 +91,15 @@
     border-right: 1px double lightgrey;
 
 }
-
+.chatWrapper section {
+    width: 100%;
+}
 ::-webkit-scrollbar {
     display: none;
 }
 
 .userMiniPage {
-
+  
     margin: 0rem 0rem 2rem 1rem;
 }
 
@@ -112,6 +115,8 @@
 }
 
 .userMini {
+   
+    width: 100%;
     position: relative;
     width: max-content;
     cursor: pointer;
@@ -218,5 +223,15 @@
 @media(max-width : 314px){
     .messageInput{
         width: 50%;
+    }
+}
+@media(max-height : 540px){
+    .inputWrapper{
+        background-color: white;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+
     }
 }

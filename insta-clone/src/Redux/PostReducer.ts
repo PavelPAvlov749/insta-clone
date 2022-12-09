@@ -202,8 +202,11 @@ export const getSinglePostByID = (postID : string) => {
     return async function (dispatch: any) {
         dispatch(app_actions.set_is_fetch_true())
         let post = await postAPI.getPostByID(postID)
-        dispatch(postActions.set_showed_post(post))
-     
+        if(post){
+            dispatch(postActions.set_showed_post(post))
+        }
+      
+
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }

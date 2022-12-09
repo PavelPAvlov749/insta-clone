@@ -1,8 +1,9 @@
+import { User } from "firebase/auth";
 import { profileAPI } from "../DAL/ProfileApi";
 import { usersAPI } from "../DAL/UsersAPI";
 import { appReducer, app_actions } from "./AppReducer";
 import { InferActionType } from "./Store";
-import { ChatType, UserType } from "./Types";
+import { ChatType, UserPagePreview, UserType } from "./Types";
 
 const GET_USER = "messenger/Users_reducer/get_users";
 const SET_STATUS = "instaClone/UsersReducer/setNewStatus"
@@ -110,10 +111,10 @@ export const updateStatusThunk = (userID : string,newStatusText : string) => {
     }
 }
 
-export const followTooglethunk = (currentUserID: string,userID : string) => {
+export const followTooglethunk = (currentUser : UserPagePreview,userToFollow : UserPagePreview) => {
     return async function (dispatch: any) {
         dispatch(app_actions.set_is_fetch_true())
-        const result = await usersAPI.followUser(currentUserID,userID)
+        const result = await usersAPI.followUser(currentUser,userToFollow)
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }

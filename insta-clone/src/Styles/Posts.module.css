@@ -1,6 +1,6 @@
 .wrapper{
     grid-area: postList;
-  
+   
 }
 .postsWrapper::-webkit-scrollbar {
     display: none;
@@ -12,6 +12,7 @@
     grid-column-start: 1;
     grid-column-end: -1;
     grid-gap: 0.8rem;
+    
 
 }
 

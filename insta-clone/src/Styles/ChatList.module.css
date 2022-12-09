@@ -18,6 +18,7 @@
     margin:0rem 0rem 2rem 1rem;
 }
 .chatListFullName {
+    display: inline;
     margin-left: 1rem;
 }
 .emptyChatList {
@@ -27,15 +28,17 @@
     font-weight: 400;
 }
 .userMini{
+    width: 100%;
+    background-color: red;
     position: relative;
     width:max-content;
+    display: inline;
     cursor: pointer;
     margin:0rem 0rem 1.5rem 1rem;
     transition: 0.3s; /* Время эффекта */
     display: block;
 }
 .userMini:hover{
-
    transform: scale(1.2);
 }
 @media (max-width : 450px){

@@ -49,12 +49,11 @@ export const ChatList: React.FC = React.memo((props) => {
             {Chats?.length > 0 ? <section >
                 {Chats?.map((chat) => {
                     return (
-
                         <div className={styles.userMini} onClick={() => { onClickHandler(chat.chatID) }}>
                             <Avatar fullName={chat.fullName} avatarIMG={chat.avatar} size="small" />
-
                             <span>{"\t" + chat.fullName}</span>
                         </div>
+                       
 
                     )
                 })}

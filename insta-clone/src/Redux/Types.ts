@@ -110,3 +110,8 @@ export type newMessagePropsType = {
     chatID : string,
 
 }
+export type UserPagePreview = {
+    userID : string,
+    avatar : string,
+    fullName : string
+}

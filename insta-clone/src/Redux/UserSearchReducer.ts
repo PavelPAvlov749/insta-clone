@@ -1,7 +1,7 @@
 import { usersAPI } from "../DAL/UsersAPI"
 import { app_actions } from "./AppReducer"
 import { InferActionType } from "./Store"
-import { UserType } from "./Types"
+import { UserPagePreview, UserType } from "./Types"
 
 const GET_ALL_USERS = "messenger/usersSearchReducer/getAllUsers"
 const GET_USER_PAGE = "messenger/usersSearchReducer/getUserPage"
@@ -15,6 +15,8 @@ type initStateType = UserType
 let initialState = {
     userToSearch : "",
     users : null as unknown as Array<UserType>,
+    followers : null as unknown as Array<UserPagePreview>,
+    followed : null as unknown as Array<UserPagePreview>,
     onSearch : false
     
 
@@ -48,13 +50,13 @@ export const usersSearchReducer = (state = initialState,action : ActionType ) =>
         case GET_FOLOOWERS : {
             return {
                 ...state,
-                users : action.payload
+                followers : action.payload
             }
         }
         case GET_FOLLOWED : {
             return {
                 ...state,
-                users : action.payload
+                followed : action.payload
             }
         }
         default : return state
@@ -78,11 +80,11 @@ export const searchActions = {
         type : "messenger/userSearchReducer/setOnSearch",
         payload : onSearch
     } as const ),
-    getFollowers : (users : Array<UserType>) => ({
+    getFollowers : (users : Array<UserPagePreview>) => ({
         type : "instaClone/userSearchReducer/getFollowers",
         payload : users
     } as const ),
-    getFollowed : (users : Array<UserType>) => ({
+    getFollowed : (users : Array<UserPagePreview>) => ({
         type : "instaClone/userSearchReducer/getFollowed",
         payload : users 
     } as const)
@@ -130,9 +132,10 @@ export const getFolloewrsThunk = (userId : string) => {
 }
 export const getFollowedthunk = (userID : string) => {
     return async function (dispatch : any) {
-        const users = await usersAPI.getFollowedUsers(userID)
+        const users : Promise<Array<UserType>> | null | unknown[] | undefined = await usersAPI.getFollowedUsers(userID)
+        console.log(users)
         if(users) {
-            dispatch(searchActions.getFollowed(users))
+            dispatch(searchActions.getFollowed(users as unknown as Array<UserPagePreview>))
         }
     }
 }

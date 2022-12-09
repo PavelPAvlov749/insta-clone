@@ -12,6 +12,7 @@ import { AllComents } from "../Components/Posts/AllComents"
 import { AllPosts } from "../Components/News/News"
 import { UsersList } from "../Components/UsersList/usersList"
 import { ChatList } from "../Components/Chat/ChatList"
+import { Followers } from "../Components/Followers/Followers"
 
 const LOGIN = "/login"
 const CHAT = "/chat"
@@ -46,8 +47,8 @@ export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props 
                     <Route path={NEW_POST} element={<NewPostModalWindow/>}/>
                     <Route path={ALL_COMENTS} element={<AllComents/>}/>
                     <Route path={News} element={<AllPosts/>}/>
-                    <Route path={FOLLOWERS} element={<UsersList/>}/>
-                    <Route path={FOLOOWED} element={<UsersList/>}/>
+                    <Route path={FOLLOWERS} element={<Followers/>}/>
+                    <Route path={FOLOOWED} element={<Followers/>}/>
 
                 </Routes>
             </div>

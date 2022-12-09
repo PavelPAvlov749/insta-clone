@@ -24,8 +24,8 @@ type initial_state_type = {
     avatar: string | null,
     status : string | null,
     chats : Array<ChatType> | null,
-    newStatus : string | null,
-    newAvatar : string | ArrayBuffer | null
+    newStatus? : string | null,
+    newAvatar? : string | ArrayBuffer | null
 }
 
 let initial_state: initial_state_type = {
