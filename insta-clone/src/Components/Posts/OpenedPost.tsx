@@ -48,6 +48,7 @@ export const SinglePost : React.FC<{post:PostType,currentUserID : string}> = Rea
         dispatch(deletePostThunk(props.currentUserID as string,props.post.id as string))
         navigate(`/profile/id=${props.currentUserID}`)
     }
+    console.log(props.post)
     if(props.post){
         return (
             <section className={styles.postWrapper}>
@@ -59,10 +60,10 @@ export const SinglePost : React.FC<{post:PostType,currentUserID : string}> = Rea
                 </NavLink>
                 <div className={styles.postIMGContainer}>
                     <img className={styles.postIMG} src={props.post.post_img} alt="" />
-                    <img src={ likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
+                    <img src={likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
                     <img src={comentIcon} alt="#" className={styles.comentIcon} onClick={onComentClickHandler}></img>
                    
-                    <span className={styles.likesCount} onClick={onComentClickHandler}>{  + "\t likes"}</span>
+                    <span className={styles.likesCount} onClick={onComentClickHandler}>{props.post.likes_count ? Object.values(props.post.likes_count).length  + "\t likes" : "0 \t likes"}</span>
                     {props.currentUserID === props.post.creatorID ?  <img src={crossIcon} alt="#" className={styles.deletePost} onClick={deletePostHandler}></img> : null }
                 </div>
     

@@ -1,5 +1,6 @@
 import { timeStamp } from "console";
 import { child, DatabaseReference, DataSnapshot, equalTo, ref, get, orderByChild, push, query, runTransaction, update, orderByValue, orderByKey, startAt, endAt } from "firebase/database";
+import { Query } from "firebase/firestore";
 import { Message } from "../Components/Chat/Message";
 import { ChatType, MessageType, newChatType, MessagePropsType, newMessagePropsType } from "../Redux/Types";
 import { abstractAPI } from "./PostApi";
@@ -48,7 +49,6 @@ class ChatAPI extends abstractAPI {
 
     async sendMessage(senderID: string, senderName: string, messageText: string, chatID: string) {
         const isChatExist = await (await get(child(this.DatabaseRef, "Chats/" + senderID + "/" + chatID))).exists()
-        await this.incrementUnreadedMessagesCount(senderID, chatID)
         if (isChatExist) {
             const newMessageKey = push(child(this.ref(this.RealtimeDataBase), "Messages/" + chatID)).key
             let newMessage: newMessagePropsType = {

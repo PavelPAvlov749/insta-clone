@@ -29,10 +29,6 @@ export const Navbar: React.FC<navbarPropsType> = React.memo((props : navbarProps
 
     return (
         <footer className={style.navbarContainer}>
-
-
-         
-
                 <ul className={style.navigation_list}>
                     <li>
                         <NavLink to={`/search`}>

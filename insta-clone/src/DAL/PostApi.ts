@@ -1,6 +1,6 @@
 import { dataBase, Firebase_auth } from "./FirebaseConfig";
 import { firebase } from "./FirebaseConfig";
-import { ref, get, child, push, update, remove, onValue, getDatabase, serverTimestamp } from "firebase/database";
+import { ref, get, child, push, update, remove, onValue, getDatabase, serverTimestamp, query, orderByChild, equalTo } from "firebase/database";
 import { getStorage, ref as storage_ref, uploadBytes, getDownloadURL, StorageReference } from "firebase/storage";
 import { makeid } from "./Randomizer";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
@@ -47,10 +47,11 @@ class PostAPI extends abstractAPI {
     //GET USER POST LIST BY ID IN REALTIME
 
     async getPostListRealtime(userID: string) {
-        const postRef = ref(this.RealtimeDataBase, "Posts/" + userID)
+        const postRef = await query( await ref(this.RealtimeDataBase,"Posts"),orderByChild("creatorID"),equalTo(userID)).ref
         let postList: Array<any> = []
         onValue(postRef, (postSnapSchot) => {
             postSnapSchot.forEach((post) => {
+                console.log(post)
                 postList.push(post.val())
             })
         })
@@ -93,7 +94,7 @@ class PostAPI extends abstractAPI {
             }
 
             const updates : any = {}
-            updates["Posts/" + userID + "/" + newPostKey] = newPostData
+            updates["Posts/" + newPostKey] = newPostData
             await update(ref(this.RealtimeDataBase),updates)
             return newPostData
        
@@ -147,7 +148,8 @@ class PostAPI extends abstractAPI {
     async getListOfPosts(userID: string) {
         //This method will return all posts userID(Array<PostType>)
 
-        const postsList = await (await (await get(child(this.DatabaseRef, "Posts/" + userID))))
+        const postsList = await get(query(ref(this.RealtimeDataBase,"Posts/"), orderByChild("creatorID"),equalTo(userID)))
+        console.log(postsList)
 
         return postsList
     }
@@ -191,7 +193,7 @@ class PostAPI extends abstractAPI {
 
     async addComentToPost(userID: string, postID: string, comentText: string, creator: string, avatar: string) {
         //create id by ID generator
-        const newComentKey = await push(child(ref(this.RealtimeDataBase), "Posts/" + userID + "/" + postID + "/coments/")).key
+        const newComentKey = await push(child(ref(this.RealtimeDataBase), "Posts/" + postID + "/coments/")).key
         try {
             if (comentText.length > 0) {
                 const comentData: ComentType = {
@@ -204,7 +206,7 @@ class PostAPI extends abstractAPI {
                 };
 
                 const updates: any = {}
-                updates["Posts/" + userID + "/" +  postID + "/coments/" + newComentKey] = comentData
+                updates["Posts/"  +  postID + "/coments/" + newComentKey] = comentData
                 update(ref(this.RealtimeDataBase), updates)
                 return comentData
             } else {

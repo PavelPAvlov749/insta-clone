@@ -19,7 +19,7 @@ export const UserPostsList: React.FC = React.memo((props) => {
 
     useEffect(() => {
         dispatch(getPostListByUserID(userPageID))
-    }, [userPageID,posts])
+    }, [userPageID,posts.length])
 
 
 

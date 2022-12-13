@@ -7,6 +7,8 @@ import { usersAPI } from "../../DAL/UsersAPI";
 import { Global_state_type } from "../../Redux/Store";
 import { UserPagePreview } from "../../Redux/Types";
 import {getFolloewrsThunk,getFollowedthunk, searchActions} from "../../Redux/UserSearchReducer"
+import styles from "../../Styles/Followers.module.css"
+import { Avatar } from "../UserPage/Avatar";
 
 export const Followers : React.FC = React.memo((props) => {
     const location = useLocation().pathname.split("/")[3]
@@ -32,14 +34,15 @@ export const Followers : React.FC = React.memo((props) => {
 
     return (
         <div>
-            <div>
-                <h1>{location === "followers" ? "followers" : "Followed"}</h1>
+            <div className={styles.usersListContainer}>
+                <h1>{location === "followers" ? "Followers" : "Followed"}</h1>
                 <ul>
                     { usersList ? usersList.map((el : UserPagePreview) => {
                         console.log(el.fullName)
                         return (
                             <li>
-                                {el.fullName}
+                                <Avatar size="small" avatarIMG={el.avatar} fullName={el.fullName}/>
+                                <span>{el.fullName}</span>
                             </li>
                         )
                     }) : null}
