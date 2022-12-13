@@ -44,16 +44,28 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
     return state.app.onNewMessage
   })
   //If one of them fasle return Preloader anotherwise return router
+  const sendMessage = () => {
+
+  }
+  const getCollection = () => {
+
+  }
   if (props.isInit || !props.isFetch) {
     return (
       <div className={styles.app}>
-        {props.isNewMessage ? <div className={styles.blurApp}></div> : null}
+        <div>
+          Result
+        </div>
+        <input placeholder="message input"></input>
+        <button onClick={sendMessage}>Send</button>
+        <button onClick={getCollection}>Get</button>
+        {/* {props.isNewMessage ? <div className={styles.blurApp}></div> : null}
           <HashRouter >
           <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string}/>
             <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
            
 
-          </HashRouter  >
+          </HashRouter  > */}
 
       </div>
     )
