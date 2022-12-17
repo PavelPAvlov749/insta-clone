@@ -9,6 +9,7 @@ import { Global_state_type } from "../../Redux/Store";
 import { ComentType, PostType } from "../../Redux/Types";
 import { app_actions } from "../../Redux/AppReducer";
 import { useNavigate } from "react-router-dom";
+import { firestorePostsAPI } from "../../DAL/Firestore";
 
 type PostFormType = {
     post_text: string,
@@ -90,8 +91,9 @@ export const NewPostModalWindow: React.FC = React.memo((props) => {
             creatorID: currendUser.userID as string,
             creatorAvatar: currendUser.avatar as string
         }
-        dispatch(createNewPostThunk(currendUser.userID as string, values.file, values.post_text,
-            values.post_tag, currendUser.fullName as string, currendUser.userID as string))
+        firestorePostsAPI.createPost(newPost)
+        // dispatch(createNewPostThunk(currendUser.userID as string, values.file, values.post_text,
+        //     values.post_tag, currendUser.fullName as string, currendUser.userID as string))
         dispatch(postActions.setIsOnnewPost(false))
         navigate(`/profile/id=${currendUser.userID}`)
     }

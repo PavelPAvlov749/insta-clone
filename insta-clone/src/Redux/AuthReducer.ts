@@ -3,11 +3,14 @@ import { InferActionType } from "./Store";
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
 import { Global_state_type } from "../Redux/Store";
-import { getAuth, GoogleAuthProvider ,signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { authAPI } from "../DAL/AuthAPI";
 import { app_actions } from "./AppReducer";
 import { AccountActions, updateAvatarThunk, updateStatusThunk } from "./ProfileReducer";
 import { DataSnapshot } from "firebase/database";
+import { fireStoreAPI } from "../DAL/Firestore";
+import { userPageActions } from "./UserPageReducer";
+import { UserType } from "./Types";
 
 
 //Creating a type for auth_reducer action creator functions
@@ -30,14 +33,14 @@ let initial_state: initial_state_type = {
     auth_token: null as unknown as string,
     is_initialize: false,
     user_id: null as unknown as string,
-    onError : false,
-    regForm : {
-        username : "",
-        email : "",
-        passTake1 : "",
-        passTake2 : "",
-        avatar : null as unknown as string,
-        status : null as unknown as string
+    onError: false,
+    regForm: {
+        username: "",
+        email: "",
+        passTake1: "",
+        passTake2: "",
+        avatar: null as unknown as string,
+        status: null as unknown as string
     }
 
 }
@@ -46,14 +49,14 @@ type initial_state_type = {
     auth_token: string | undefined,
     is_initialize: boolean,
     user_id: string,
-    onError : boolean,
-    regForm : {
-        username : string,
-        email : string, 
-        passTake1 : string,
-        passTake2 : string,
-        avatar : string | null,
-        status : string
+    onError: boolean,
+    regForm: {
+        username: string,
+        email: string,
+        passTake1: string,
+        passTake2: string,
+        avatar: string | null,
+        status: string
     }
 }
 
@@ -65,10 +68,10 @@ export const authReducer = (state = initial_state, action: Action_Type) => {
                 user_id: action.payload
             }
         }
-        case SET_ERROR : {
+        case SET_ERROR: {
             return {
                 ...state,
-                onError : action.payload
+                onError: action.payload
             }
         }
         case SET_AUTH_TRUE: {
@@ -111,53 +114,58 @@ export const auth_actions = {
         type: "messenger/auth_reducer/create_user",
         payload: _user_id
     } as const),
-    setError : (isError : boolean) => ({
-        type : "messenger/authReducer/setError",
-        payload : isError
+    setError: (isError: boolean) => ({
+        type: "messenger/authReducer/setError",
+        payload: isError
     } as const),
 
 }
 
 export const CheckAuthThunk = () => {
     const authInstance = getAuth()
-    return async function (dispatch : any) {
-        
+    return async function (dispatch: any) {
+
     }
 }
 export const logOutThunk = () => {
-    return async function (dispatch:any) {
+    return async function (dispatch: any) {
         authAPI.signOut()
         dispatch(auth_actions.set_auth_false())
     }
 }
 export const signInWithGooglePopUp = () => {
-    return async function (dispatch : any) {
-        const authResult = await authAPI.signInWithPopUp()
-        let credential = GoogleAuthProvider.credentialFromResult(authResult);
-        let auth_token = credential?.accessToken;
-        if (auth_token?.length) {
-            dispatch(auth_actions.set_auth_token(auth_token))
-            dispatch(auth_actions.set_auth_true());
-        } else {
-            dispatch(auth_actions.set_auth_token(""))
+    return async function (dispatch: any) {
+        try {
+            const authResult = await fireStoreAPI.logInWithGooglePopUp()
+            if (authResult) {
+                dispatch(userPageActions.get_user(authResult as unknown as UserType))
+                dispatch(auth_actions.set_auth_true())
+
+            } else {
+                dispatch(auth_actions.set_auth_false())
+                throw new Error("Authorization Error")
+            }
+        } catch (ex) {
+            console.log(ex)
         }
+
     }
 }
 
-export const loginInWithEmailAndPassword = (email: string,password : string) => {
-    return async function (dispatch : any) {
-        try{
+export const loginInWithEmailAndPassword = (email: string, password: string) => {
+    return async function (dispatch: any) {
+        try {
             dispatch(app_actions.set_is_fetch_true())
-            const user = await (await signInWithEmailAndPassword(authAPI.getAuthInstatnce(),email,password).catch((error) => {
+            const user = await (await signInWithEmailAndPassword(authAPI.getAuthInstatnce(), email, password).catch((error) => {
                 throw new Error(error)
-            }).then((user) => { 
+            }).then((user) => {
                 console.log(user)
                 dispatch(auth_actions.create_user(user.user.uid))
                 dispatch(auth_actions.set_auth_true())
                 dispatch(app_actions.set_is_fetch_fasle())
             }))
 
-        }catch(ex){
+        } catch (ex) {
             dispatch(auth_actions.setError(true))
             dispatch(auth_actions.set_auth_false())
             dispatch(app_actions.set_is_fetch_fasle())
@@ -167,21 +175,21 @@ export const loginInWithEmailAndPassword = (email: string,password : string) => 
     }
 }
 
-export const createUserByEmailAndPassword = (email:string,password : string,userName : string,avatar:string | ArrayBuffer | null,status:string) => {
+export const createUserByEmailAndPassword = (email: string, password: string, userName: string, avatar: string | ArrayBuffer | null, status: string) => {
     return async function (dispatch: any) {
-        try{
-            if(email.length === 0 || password.length === 0 || userName.length === 0){
+        try {
+            if (email.length === 0 || password.length === 0 || userName.length === 0) {
                 throw new Error("Please fill all fields.\nEmail,password and username cant be an empty string")
-            }else{
+            } else {
                 console.log(avatar)
-                const newUser : DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(email,password,userName)
-                await dispatch(updateStatusThunk(newUser?.val().userID,status))
+                const newUser: DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(email, password, userName)
+                await dispatch(updateStatusThunk(newUser?.val().userID, status))
                 await dispatch(app_actions.setCurrentUserID(newUser?.val().userID))
                 console.log(newUser?.val())
                 dispatch(AccountActions.set_current_user_profile(newUser?.val()))
                 dispatch(auth_actions.set_auth_true())
             }
-        }catch(ex){
+        } catch (ex) {
             console.error(ex)
         }
     }

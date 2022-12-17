@@ -7,13 +7,13 @@ import { Firestore_instance } from "./Firestore_config";
 
 //Here is the config file of Firebase SDK to allow the functions use Firebase_instance object
 export const firebaseConfig = {
-    apiKey: "AIzaSyBat-YL7LctaH5CRu3TzdWWlXSvPB41bEs",
-    authDomain: "insta-clone-30755.firebaseapp.com",
-    databaseURL: "https://insta-clone-30755-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "insta-clone-30755",
-    storageBucket: "gs://insta-clone-30755.appspot.com",
-    messagingSenderId: "281434029671",
-    appId: "1:281434029671:web:9c5edda7987815648bdec2"
+  apiKey: "AIzaSyBZoW7Tcp26aJ_7_zDEuMO9hDUzfiJxv8M",
+  authDomain: "messenger-40cc4.firebaseapp.com",
+  databaseURL: "https://messenger-40cc4-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "messenger-40cc4",
+  storageBucket: "messenger-40cc4.appspot.com",
+  messagingSenderId: "856002256521",
+  appId: "1:856002256521:web:0be5cbb812449f12b93058"
   };
 //INITIALIZE FIREBASE
 export const firebase = initializeApp(firebaseConfig);

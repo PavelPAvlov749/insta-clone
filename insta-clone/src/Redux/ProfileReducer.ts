@@ -1,8 +1,9 @@
 import { authAPI } from "../DAL/AuthAPI";
+import { firestoreUSersAPI } from "../DAL/Firestore";
 import { profileAPI } from "../DAL/ProfileApi";
 import { appReducer, app_actions } from "./AppReducer";
 import { InferActionType } from "./Store";
-import { ChatType, MainAccountType } from "./Types";
+import { ChatType, MainAccountType, UserType } from "./Types";
 
 
 
@@ -107,16 +108,16 @@ export const getAccountByID = (userID: string) => {
     return async function (dispatch: any) {
         try {
             dispatch(app_actions.init(false))
-            let response = await authAPI.getAccount(userID)
+            let response = await firestoreUSersAPI.getUserPageByID(userID)
             if (response) {
-                let user = {
-                    fullName: response?.fullName,
-                    avatar: response?.avatar,
-                    userID: response?.userID,
-                    status : response?.status,
-                    chats : response.chats
-                }
-                dispatch(AccountActions.set_current_user_profile(user))
+                // let user = {
+                //     fullName: response?.fullName,
+                //     avatar: response?.avatar,
+                //     userID: response?.userID,
+                //     status : response?.status,
+                //     chats : response.chats
+                // }
+                dispatch(AccountActions.set_current_user_profile(response as unknown as MainAccountType))
                 dispatch(app_actions.init(true))
             } else {
                 throw new Error()

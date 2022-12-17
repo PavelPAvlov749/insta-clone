@@ -16,13 +16,14 @@ import { Field, Form, Formik } from "formik";
 import { app_actions } from "../../Redux/AppReducer";
 import { NewPostModalWindow } from "../Posts/NewPostModal";
 import { string } from "yup";
+import { firestorePostsAPI } from "../../DAL/Firestore";
 
 
 
 export const UserPage: React.FC = React.memo(() => {
     const navigate = useNavigate()
     //Get userPageID from query string
-    const userPageUrl = useLocation().pathname.split("=")[1]
+    const userPageUrl = useLocation().pathname.split("=")[1]    
     //Count of user posts 
     const publicatiponsCount = useSelector((state: Global_state_type) => {
         return state.userPosts.posts.length
@@ -49,7 +50,7 @@ export const UserPage: React.FC = React.memo(() => {
         avatar : currentUser.avatar as string,
         userID : currentUser.userID as string,
     }
-
+    firestorePostsAPI.getUserPostsByUserID(currentUser.userID as string)
     //Actual userPage
     const actualUserPage = useSelector((state: Global_state_type) => {
         return state.userPage
@@ -120,10 +121,8 @@ export const UserPage: React.FC = React.memo(() => {
                 <br />
 
                 <h1 className={styles.fullName}>{actualUserPage.fullName}</h1>
-
-
                 <div className={styles.info}>
-                    {userPageUrl === currentUser.userID ? <UserStatus status={actualUserPage.status} userID={userPageUrl}
+                    {userPageUrl === currentUser.userID ? <UserStatus status={actualUserPage.status as string} userID={userPageUrl}
                         setNewStatus={setNewStatus} /> : <p className={styles.status}>{actualUserPage.status}</p>}
                     <div className={styles.publications}>
                         <span>{publicatiponsCount}</span>

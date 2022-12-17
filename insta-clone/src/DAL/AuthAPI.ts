@@ -1,6 +1,7 @@
 import { ref, get, child, push, update, query } from "firebase/database";
 import { abstractAPI } from "./PostApi";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, User, onAuthStateChanged } from "firebase/auth";
+import { fireStoreAPI } from "./Firestore";
 
 
 
@@ -11,29 +12,33 @@ class AuthAPI extends abstractAPI {
     checkAuthState = onAuthStateChanged
 
     async signInWithPopUp() {
-        const result = await signInWithPopup(this.firebaseAuth, this.googleAuthProvider).then((response) => {
-            const userRef = ref(this.RealtimeDataBase, "Users/" + this.firebaseAuth.currentUser?.uid);
-            const result = get(userRef,).then((response) => {
-                if (response.val() === null || response.val() === undefined) {
-                    console.log("ADDING NEW USER")
-                    const new_user = {
-                        fullName: this.firebaseAuth.currentUser?.displayName,
-                        posts: {},
-                        status: null,
-                        foloowers: {},
-                        subscribes: {},
-                        userID: this.firebaseAuth.currentUser?.uid,
-                        avatar: this.firebaseAuth.currentUser?.photoURL
-                    };
-                    const updates: any = {};
-                    updates["Users/" + this.firebaseAuth.currentUser?.uid] = new_user;
-                    update(ref(this.RealtimeDataBase), updates);
-                    return response
-                }
-            })
-            return response
-        })
-        return result
+        // const userAuthCredeintials = await (await signInWithPopup(this.firebaseAuth, this.googleAuthProvider)).user
+        // const isUSerExist = await fireStoreAPI.isUserEist(userAuthCredeintials.uid)
+  
+
+        //.then((response) => {
+        //     const userRef = ref(this.RealtimeDataBase, "Users/" + this.firebaseAuth.currentUser?.uid);
+        //     const result = get(userRef,).then((response) => {
+        //         if (response.val() === null || response.val() === undefined) {
+        //             console.log("ADDING NEW USER")
+        //             const new_user = {
+        //                 fullName: this.firebaseAuth.currentUser?.displayName,
+        //                 posts: {},
+        //                 status: null,
+        //                 foloowers: {},
+        //                 subscribes: {},
+        //                 userID: this.firebaseAuth.currentUser?.uid,
+        //                 avatar: this.firebaseAuth.currentUser?.photoURL
+        //             };
+        //             const updates: any = {};
+        //             updates["Users/" + this.firebaseAuth.currentUser?.uid] = new_user;
+        //             update(ref(this.RealtimeDataBase), updates);
+        //             return response
+        //         }
+        //     })
+        //     return response
+        // })
+        return true
     }
     async signInByEmailAndPassword(email: string, password: string) {
         try {

@@ -28,7 +28,7 @@ export const SinglePost : React.FC<{post:PostType,currentUserID : string}> = Rea
     useEffect(() => {
         dispatch(getSinglePostByID(location))
     }, [])
-
+    
 
     const tapLikeHandler = () => {
         if (props.post.likes_count?.includes(props.currentUserID as string)) {

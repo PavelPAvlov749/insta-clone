@@ -9,15 +9,17 @@ import { Navbar } from './Components/Navbar/Navbar';
 import { Preloader } from './Components/Preloader/Preloader';
 //Redux,Actions and Thnunks imports
 import { postActions } from './Redux/PostReducer';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Global_state_type } from './Redux/Store';
 import { InitializeThunk } from './Redux/AppReducer';
 //Types imports
 import { AppPropsType } from './Redux/Types';
 //Firebase imports
-import { ref,getDatabase, onChildAdded, onChildChanged, serverTimestamp } from "firebase/database";
+import { ref, getDatabase, onChildAdded, onChildChanged, serverTimestamp } from "firebase/database";
 import { chatAPI } from "./DAL/ChatAPI";
 import { prependListener } from "process";
+import {  fireStoreAPI} from "./DAL/Firestore"
+import { chat_actions } from "./Redux/ChatReducer";
 //Media and assets
 const sound = require("../src/Media/MessageTone.mp3")
 
@@ -36,46 +38,35 @@ const sound = require("../src/Media/MessageTone.mp3")
 
 const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
   //Intialize App
-  useEffect( () => {
+  const dipsatch = useDispatch()
+  useEffect(() => {
     props.init()
   }, [])
   console.log("RENDER")
-  const isNewMessage = useSelector((state:Global_state_type) => {
+  const isNewMessage = useSelector((state: Global_state_type) => {
     return state.app.onNewMessage
   })
   //If one of them fasle return Preloader anotherwise return router
-  const sendMessage = () => {
 
-  }
-  const getCollection = () => {
-
-  }
   if (props.isInit || !props.isFetch) {
     return (
       <div className={styles.app}>
-        <div>
-          Result
-        </div>
-        <input placeholder="message input"></input>
-        <button onClick={sendMessage}>Send</button>
-        <button onClick={getCollection}>Get</button>
-        {/* {props.isNewMessage ? <div className={styles.blurApp}></div> : null}
-          <HashRouter >
-          <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string}/>
-            <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
-           
 
-          </HashRouter  > */}
+        {props.isNewMessage ? <div className={styles.blurApp}></div> : null}
+        <HashRouter >
+          <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string} />
+          <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
+        </HashRouter  >
 
       </div>
     )
   } else {
     return (
       <div>
-          <HashRouter >
-            <Preloader />
-            <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string} />
-          </HashRouter>
+        <HashRouter >
+          <Preloader />
+          <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string} />
+        </HashRouter>
       </div>
     )
   }
@@ -91,7 +82,7 @@ let MapStateToProps = (state: Global_state_type) => {
     userPage: state.userPage,
     isNewPost: state.userPosts.isOnNewPost,
     isAuth: state.auth.is_auth,
-    isNewMessage : state.app.onNewMessage
+    isNewMessage: state.app.onNewMessage
   }
 }
 let MapDispatchToProps = (dispatch: any) => {

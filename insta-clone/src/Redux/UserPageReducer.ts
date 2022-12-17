@@ -1,4 +1,5 @@
 import { User } from "firebase/auth";
+import { firestoreUSersAPI } from "../DAL/Firestore";
 import { profileAPI } from "../DAL/ProfileApi";
 import { usersAPI } from "../DAL/UsersAPI";
 import { appReducer, app_actions } from "./AppReducer";
@@ -89,16 +90,18 @@ export const userPageActions = {
 
 export const getUserPageByID = (userID : string) => {
     return async function (dispatch : any) {
-       
-        const user = await usersAPI.getUserPageById(userID)
-
+       try{
+        const user  = await firestoreUSersAPI.getUserPageByID(userID)
+        console.log(user)
         if(user) {
-            dispatch(userPageActions.get_user(user))
-           
+            dispatch(userPageActions.get_user(user as UserType))
         }else{
-           
+            throw new Error("USer does not exist")
         }
-        
+       }catch(ex){
+        console.log(ex)
+       }
+
     }
 }
 

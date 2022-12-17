@@ -25,7 +25,7 @@ export type UserType = {
     fullName : string,
     userID : string
     avatar : string,
-    status : string,
+    status? : string,
     followers? : Array <string>,
     subscribes? : Array<string>,
     followed? : boolean,

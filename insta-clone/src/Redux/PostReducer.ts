@@ -1,4 +1,6 @@
 
+import { object } from "yup"
+import { firestorePostsAPI } from "../DAL/Firestore"
 import { postAPI } from "../DAL/PostApi"
 import { app_actions } from "./AppReducer"
 import { InferActionType } from "./Store"
@@ -172,9 +174,10 @@ export const postActions = {
 export const getPostListByUserID = (userID:string) => {
     return async function (dispatch : any) {
        
-        const posts = await (await postAPI.getListOfPosts(userID))
-        if(posts.val()) {
-            dispatch(postActions.getPosts(Object.values(posts.val())))
+        const postsSnap = await (await firestorePostsAPI.getUserPostsByUserID(userID))
+
+        if(postsSnap) {
+            dispatch(postActions.getPosts(postsSnap as Array<PostType>))
            
         }else{
             dispatch(postActions.getPosts([] as Array<PostType>))
@@ -240,7 +243,7 @@ export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | A
 export const deletePostThunk = (userID:string,postID:string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
-        await postAPI.deletePost(userID,postID)
+        await firestorePostsAPI.RemovePostByPostID(postID)
         const posts = await postAPI.getListOfPosts(userID)
         if(posts) {
             dispatch(postActions.getPosts(Object.values(posts.val())))
@@ -261,7 +264,8 @@ export const likeToogleThunk = (postID:string,currentUserID : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         try{
-            await postAPI.addLikeToPost(currentUserID,postID)
+            // await postAPI.addLikeToPost(currentUserID,postID)
+            await firestorePostsAPI.addLikeToPost(postID,currentUserID)
             dispatch(app_actions.set_is_fetch_fasle())
         }catch(ex){
             console.error(ex)
