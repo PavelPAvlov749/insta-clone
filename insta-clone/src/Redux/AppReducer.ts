@@ -1,4 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { bool, boolean } from "yup";
 import { auth_actions } from "./AuthReducer";
 import { getChatsByUserID } from "./ChatReducer";
 import { getAccountByID, AccountActions } from "./ProfileReducer";
@@ -15,12 +16,19 @@ const SET_ON_LOAD = "insta-clone/postReducer/set_on_load"
 const SET_ON_NEW_MESSAGE = "insta-clone/postReducer/set_on_new_message"
 
 
-let initial_state = {
+let initial_state : initial_state_type = {
     is_initialize: false,
     is_fetch: false,
-    currentUserID: null as unknown as string,
+    currentUserID: null,
     onLoad : false,
     onNewMessage : false
+}
+type initial_state_type = {
+    is_initialize: boolean,
+    is_fetch: boolean,
+    currentUserID: string | null,
+    onLoad : boolean,
+    onNewMessage : boolean 
 }
 
 //Acrtion types
@@ -87,7 +95,7 @@ export const app_actions = {
             type: "messenger/app_reducer/set_is_fetch_false",
 
         } as const),
-    setCurrentUserID: (userID: string) => ({
+    setCurrentUserID: (userID: string | null) => ({
         type: "messenger/app_reducer/set_current_user_id",
         payload: userID
     }as const ),

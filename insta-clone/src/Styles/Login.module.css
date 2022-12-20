@@ -21,11 +21,12 @@
 }
 .loginForms input{
     border-radius: 5px;
+    padding: 0px 15px 0px 15px;
     border-width: 1px;
-    width: 90%;
+    width: 80%;
     max-width: 300px;
-
-    height: 30px;
+    font-size: large;
+    height: 35px;
     border-style: none;
     background-color: lightgray;
     margin-bottom: 0.5rem;
@@ -35,10 +36,11 @@
     border-radius: 5px;
     width: 90%;
     max-width: 300px;
-    border-width: 1px;
+    border-width: 2px;
     --main-bg-color : rgb(176, 61, 61);
     border-color: var(--main-bg-color);
-    height: 29px;
+    font-size: large;
+    height: 35px;
     border-style:solid;
     background-color: lightgray;
 }

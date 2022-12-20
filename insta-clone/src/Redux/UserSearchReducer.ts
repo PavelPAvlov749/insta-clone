@@ -1,3 +1,5 @@
+import { Firestore } from "../DAL/FirebaseConfig"
+import { firestoreUSersAPI } from "../DAL/Firestore"
 import { usersAPI } from "../DAL/UsersAPI"
 import { app_actions } from "./AppReducer"
 import { InferActionType } from "./Store"
@@ -95,9 +97,9 @@ export const getAllUsersThunk = () => {
     return async function (dispatch :any) {
         
         dispatch(searchActions.setOnSearch(true))
-        let users = await usersAPI.getAllUsers()
+        let users = await firestoreUSersAPI.getAllUsers()
         if(users){
-            dispatch(searchActions.getAllUsers(Object.values(users)))
+            dispatch(searchActions.getAllUsers(users as Array<UserType>))
            
             dispatch(searchActions.setOnSearch(false))
            
@@ -113,7 +115,7 @@ export const searchUserPageByName = (userName : string) => {
     return async function (dispatch:any ) {
         dispatch(app_actions.set_is_fetch_true())
         dispatch(searchActions.setOnSearch(true))
-        const userPage = await usersAPI.getUserPageByName(userName)
+        const userPage = await firestoreUSersAPI.getUsersByName(userName)
         if(userPage !== null){
             dispatch(searchActions.getAllUsers(userPage as Array<UserType>))
             dispatch(app_actions.set_is_fetch_fasle())
@@ -124,16 +126,16 @@ export const searchUserPageByName = (userName : string) => {
 
 export const getFolloewrsThunk = (userId : string) => {
     return async function (dispatch : any) {
-        const users = await usersAPI.getFollowers(userId)
+        const users = await firestoreUSersAPI.getFollowers(userId)
         if(users) {
-            dispatch(searchActions.getFollowers(users))
+            dispatch(searchActions.getFollowers(users as Array<UserType>))
         }
     }
 }
 export const getFollowedthunk = (userID : string) => {
     return async function (dispatch : any) {
-        const users : Promise<Array<UserType>> | null | unknown[] | undefined = await usersAPI.getFollowedUsers(userID)
-        console.log(users)
+        const users = await firestoreUSersAPI.getFollowedUsers(userID)
+       
         if(users) {
             dispatch(searchActions.getFollowed(users as unknown as Array<UserPagePreview>))
         }

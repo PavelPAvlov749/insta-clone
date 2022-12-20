@@ -8,7 +8,7 @@ import { authAPI } from "../DAL/AuthAPI";
 import { app_actions } from "./AppReducer";
 import { AccountActions, updateAvatarThunk, updateStatusThunk } from "./ProfileReducer";
 import { DataSnapshot } from "firebase/database";
-import { fireStoreAPI } from "../DAL/Firestore";
+import { fireStoreAPI, firestoreUSersAPI } from "../DAL/Firestore";
 import { userPageActions } from "./UserPageReducer";
 import { UserType } from "./Types";
 
@@ -130,6 +130,11 @@ export const CheckAuthThunk = () => {
 export const logOutThunk = () => {
     return async function (dispatch: any) {
         authAPI.signOut()
+        dispatch(AccountActions.set_current_user_profile(null))
+        dispatch(app_actions.setCurrentUserID(null))
+        dispatch(userPageActions.get_user(null))
+        dispatch(AccountActions.updateAvatar(null))
+        dispatch(userPageActions.setStatus(null as unknown as string))
         dispatch(auth_actions.set_auth_false())
     }
 }
@@ -178,17 +183,17 @@ export const loginInWithEmailAndPassword = (email: string, password: string) => 
 export const createUserByEmailAndPassword = (email: string, password: string, userName: string, avatar: string | ArrayBuffer | null, status: string) => {
     return async function (dispatch: any) {
         try {
-            if (email.length === 0 || password.length === 0 || userName.length === 0) {
-                throw new Error("Please fill all fields.\nEmail,password and username cant be an empty string")
-            } else {
-                console.log(avatar)
-                const newUser: DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(email, password, userName)
-                await dispatch(updateStatusThunk(newUser?.val().userID, status))
-                await dispatch(app_actions.setCurrentUserID(newUser?.val().userID))
-                console.log(newUser?.val())
-                dispatch(AccountActions.set_current_user_profile(newUser?.val()))
+           
+
+                // const newUser: DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(email, password, userName)
+                const newUser : any = await firestoreUSersAPI.createNewUserWithEmailAndPassword(email,password,userName)
+                await dispatch(updateStatusThunk(newUser.userID, newUser.status))
+                await dispatch(app_actions.setCurrentUserID(newUser?.userID as string))
+                console.log(newUser)
+                debugger
+                dispatch(AccountActions.set_current_user_profile(newUser))
                 dispatch(auth_actions.set_auth_true())
-            }
+  
         } catch (ex) {
             console.error(ex)
         }

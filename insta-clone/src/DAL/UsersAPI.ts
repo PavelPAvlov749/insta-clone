@@ -40,8 +40,8 @@ class UsersAPI extends abstractAPI {
                 userID: result.userID,
                 fullName: result.fullName,
                 avatar: Object.hasOwn(result, "avatar") ? result.avatar : null as unknown as string,
-                followers: Object.hasOwn(result, "followers") ? Object.values(result.followers as Array<string>) : [] as Array<string>,
-                subscribes: Object.hasOwn(result,"subscribers" ) ? Object.values(result.subscribers as Array<string>) : [] as Array<string>,
+                followers: result.followers,
+                followed: result.followed,
                 status: result.status,
             }
             return user

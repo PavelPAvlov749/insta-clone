@@ -1,17 +1,13 @@
-import React, { useState } from "react";
-import { Formik, Field, Form, yupToFormErrors } from "formik";
+import React from "react";
+import { Formik, Field, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import { CreateNewUserWithEmailAndPassword } from "../../Redux/RegistrationReducer";
 import styles from "../../Styles/Registration.module.css"
-import GaleryImg from "../../Media/imageGallery.png"
-import { getUserRegFormFromState } from "../../Selectors/Selectors";
-import { RegistrationActions } from "../../Redux/RegistrationReducer";
-import { CreateNewUserType } from "../../Redux/Types";
+
 import { Global_state_type } from "../../Redux/Store";
 import * as yup from "yup"
-import { dir } from "console";
-import { confirmPasswordReset } from "firebase/auth";
+
 
 
 
@@ -38,6 +34,7 @@ export const Registration: React.FC = React.memo((props) => {
     const handleSubmit = (values: any, errors: any) => {
         console.log(values)
         dispatch(CreateNewUserWithEmailAndPassword(values))
+        
     }
 
     return (
@@ -71,7 +68,7 @@ export const Registration: React.FC = React.memo((props) => {
                                     <span className={styles.regError}>{touched.confirmPassword && errors.confirmPassword && errors.confirmPassword}</span>
                                 </section>
                                 <div className={styles.Regbutton}>
-                                <button type="submit" disabled={!isValid && !dirty} onClick={handleBlur}>Create Account</button>
+                                <button type="submit" disabled={!isValid && !dirty}>Create Account</button>
                                 </div>
                            
                             </Form>

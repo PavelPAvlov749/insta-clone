@@ -21,9 +21,9 @@ const initial_state : UserType = {
     avatar: null as unknown as string,
     status: null as unknown as string,
     userID: null as unknown as string,
-    subscribes: [] as unknown as Array<string>,
-    followers: [] as unknown as Array<string>,
-    followed : false,
+    followed: [] as unknown as Array<UserPagePreview>,
+    followers: [] as unknown as Array<UserPagePreview>,
+
     
 }
 
@@ -49,7 +49,7 @@ export const UsersPageReducer = (state = initial_state, action: ActionType) => {
         case UNFOLLOW : {
             return {
                 ...state,
-                followers : state.followers?.filter(el => el !== action.payload)
+                followers : state.followers?.filter(el => el.userID !== action.payload)
             }
         }
         case UPDATE_STATUS : {
@@ -65,7 +65,7 @@ export const UsersPageReducer = (state = initial_state, action: ActionType) => {
 }
 
 export const userPageActions = {
-    get_user: (user: UserType) => ({
+    get_user: (user: UserType | null) => ({
         type: "messenger/Users_reducer/get_users",
         payload: user
     } as const),
@@ -73,13 +73,13 @@ export const userPageActions = {
         type : "instaClone/UsersReducer/setNewStatus",
         payload : status
     }as const),
-    follow : (userID : string) => ({
+    follow : (user : UserPagePreview) => ({
         type : "instaClone/UsersReducer/follow",
-        payload : userID
+        payload : user
     } as const ),
-    unfollow : (userID : string) => ({
+    unfollow : (user : string) => ({
         type : "instaClone/UsersReducer/unfollow",
-        payload : userID
+        payload : user
     } as const ),
     updateStatus : (status : string) => ({
         type : "instaClone/profileReducer/updateStatus",
@@ -92,7 +92,7 @@ export const getUserPageByID = (userID : string) => {
     return async function (dispatch : any) {
        try{
         const user  = await firestoreUSersAPI.getUserPageByID(userID)
-        console.log(user)
+      
         if(user) {
             dispatch(userPageActions.get_user(user as UserType))
         }else{
@@ -105,19 +105,12 @@ export const getUserPageByID = (userID : string) => {
     }
 }
 
-export const updateStatusThunk = (userID : string,newStatusText : string) => {
-    return async function (dispatch : any) {
-        dispatch(app_actions.set_is_fetch_true())
-        const newStatus = await profileAPI.updateStatus(userID,newStatusText)
-        dispatch(userPageActions.updateStatus(newStatusText))
-        dispatch(app_actions.set_is_fetch_fasle())
-    }
-}
 
 export const followTooglethunk = (currentUser : UserPagePreview,userToFollow : UserPagePreview) => {
     return async function (dispatch: any) {
         dispatch(app_actions.set_is_fetch_true())
-        const result = await usersAPI.followUser(currentUser,userToFollow)
+        console.log(userToFollow)
+        const result = await firestoreUSersAPI.followToggle(userToFollow,currentUser)
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }

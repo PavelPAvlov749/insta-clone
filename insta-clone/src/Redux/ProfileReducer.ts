@@ -78,7 +78,7 @@ export const AccountReducer = (state = initial_state, action: ActionType) => {
 }
 
 export const AccountActions = {
-    set_current_user_profile: (_profile: MainAccountType) => ({
+    set_current_user_profile: (_profile: MainAccountType | null) => ({
         type: "instaClone/profile_reducer/set_current_user+profile",
         payload: _profile
     } as const),
@@ -110,13 +110,6 @@ export const getAccountByID = (userID: string) => {
             dispatch(app_actions.init(false))
             let response = await firestoreUSersAPI.getUserPageByID(userID)
             if (response) {
-                // let user = {
-                //     fullName: response?.fullName,
-                //     avatar: response?.avatar,
-                //     userID: response?.userID,
-                //     status : response?.status,
-                //     chats : response.chats
-                // }
                 dispatch(AccountActions.set_current_user_profile(response as unknown as MainAccountType))
                 dispatch(app_actions.init(true))
             } else {
@@ -135,7 +128,7 @@ export const updateAvatarThunk = (newAvatar : Blob | ArrayBuffer | Uint16Array,u
         try{
             console.log("Upadte avatar thunk")
             dispatch(app_actions.set_is_fetch_true())
-            const updatedAvatar : string | undefined =  await profileAPI.updateAvatar(userID,newAvatar)
+            const updatedAvatar : string | undefined =  await firestoreUSersAPI.updateAvatar(userID,newAvatar)
             dispatch(AccountActions.updateAvatar(updatedAvatar))
             console.log(updatedAvatar)
             dispatch(app_actions.set_is_fetch_fasle())
@@ -151,7 +144,7 @@ export const updateAvatarThunk = (newAvatar : Blob | ArrayBuffer | Uint16Array,u
 export const updateStatusThunk = (userID : string,newStatusText : string) => {
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
-        const newStatus = await profileAPI.updateStatus(userID,newStatusText)
+        const newStatus = await firestoreUSersAPI.updateUserStatus(userID,newStatusText)
         dispatch(AccountActions.updareStatus(newStatusText))
         dispatch(app_actions.set_is_fetch_fasle())
     }

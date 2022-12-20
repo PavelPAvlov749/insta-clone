@@ -41,13 +41,13 @@ export const Login: React.FC = React.memo((props) => {
                     className={styles.loginForms}
                     initialValues={{ login: login, password: password }} onSubmit={set_submit}>
                     <Form className={!isError ? styles.loginForms : styles.loginFormsError}>
-                        <Field type="text" name="login" ></Field>
+                        <input type="text" placeholder="Email"></input>
                         <br />
-                        <Field type="text" name="password"></Field>
+                        <input type="text" placeholder="Password" ></input>
                         <br />
                         <hr>
                         </hr>
-                        <button className={styles.loginButton} type="submit" disabled={isFetch} >Login</button>
+                        <button className={styles.loginButton} type="submit" disabled={isFetch} >Sign-in</button>
                     </Form>
 
                 </Formik>

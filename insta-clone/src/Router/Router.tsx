@@ -1,4 +1,4 @@
-import { Route,Routes,Navigate } from "react-router-dom"
+import { Route,Routes,Navigate, useLocation, useNavigate } from "react-router-dom"
 import { Chat, } from "../Components/Chat/Chat"
 import { Login_container } from "../Components/Login/Login"
 import { Registration } from "../Components/Login/Registartion"
@@ -31,8 +31,12 @@ const News = "/news"
 const FOLLOWERS = "/profile/:id/Followers"
 const FOLOOWED = "/profile/:id/Followed"
 
-export const Router :React.FC<{actualUser : string,isAuth : boolean,}> = (props : {actualUser : string,isAuth : boolean,}) => {
-
+export const Router :React.FC<{currentUserID : string | null,actualUser : string,isAuth : boolean,}> = (props : {currentUserID : string | null,actualUser : string,isAuth : boolean,}) => {
+    const location = useLocation()
+    const navigate = useNavigate()
+    if(location.pathname.split("/").includes("registration") && props.currentUserID){
+        navigate("profile/id=" + props.currentUserID)
+    }
     if(props.isAuth){
         return (
             <div className={styles.router}>

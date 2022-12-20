@@ -6,9 +6,9 @@ import styles from "../../Styles/Message.module.css"
 
 
 
-export const Message: React.FC<{messageText : string,currentUser : string,senderID : string}> = React.memo((props) => {
+export const Message: React.FC<{messageText : string,currentUser : string | null,senderID : string | null}> = React.memo((props) => {
     if(props.senderID !== props.currentUser){
-        chatAPI.decrementUnreadedMessagesCount(props.currentUser)
+        chatAPI.decrementUnreadedMessagesCount(props.currentUser as string)
     }
     return (
         <div className={props.currentUser === props.senderID ? styles.currentUserMessage : styles.message}>

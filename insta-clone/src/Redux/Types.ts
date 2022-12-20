@@ -26,9 +26,8 @@ export type UserType = {
     userID : string
     avatar : string,
     status? : string,
-    followers? : Array <string>,
-    subscribes? : Array<string>,
-    followed? : boolean,
+    followers? : Array <UserPagePreview>,
+    followed? : Array<UserPagePreview>,
     chats? : Array<ChatType>
 }
 export type ComentType = {

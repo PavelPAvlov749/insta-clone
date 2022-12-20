@@ -196,7 +196,7 @@ class ChatAPI extends abstractAPI {
         try {
             let users_ref: DatabaseReference = ref(this.RealtimeDataBase, "Members/");
             let result = await get(child(this.DatabaseRef, "Chats/" + userID))
-            console.log(result.val())
+          
             if (result) {
                 return result.val()
             } else {

@@ -55,7 +55,7 @@ const App: React.FC<AppPropsType> = React.memo((props: AppPropsType) => {
         {props.isNewMessage ? <div className={styles.blurApp}></div> : null}
         <HashRouter >
           <Navbar isAuth={props.isAuth} currentUserUrl={props.currentUserID as string} />
-          <Router actualUser={props.currentUserID as string} isAuth={props.isAuth} />
+          <Router currentUserID={props.currentUserID} actualUser={props.currentUserID as string} isAuth={props.isAuth} />
         </HashRouter  >
 
       </div>
