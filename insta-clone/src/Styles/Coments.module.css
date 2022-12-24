@@ -47,6 +47,10 @@
     background-color: rgb(31, 62, 147);
 
 }
+.ComentInput button:active{
+    width: calc(100%);
+    height: 1.6rem;
+}
 .commentsHeader span{
     font-size: large;
     font-weight: 500;

@@ -1,14 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, User } from "firebase/auth";
-import { child, DataSnapshot, get, update } from "firebase/database";
-import {
-    getFirestore, addDoc, collection, getDoc, getDocs, doc, setDoc, query,
-    orderBy, where, DocumentData, updateDoc, arrayUnion, arrayRemove, deleteDoc, FieldValue,
-} from "firebase/firestore";
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { child, get, update } from "firebase/database";
+import { getFirestore, addDoc, collection, getDoc, getDocs, doc, setDoc, query, 
+        orderBy, where, DocumentData, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, ref as storageRef, StorageReference, uploadBytes } from "firebase/storage";
 import { updateDo } from "typescript";
 import { ComentType, PostType, UserPagePreview, UserType } from "../Redux/Types";
-import { followTooglethunk } from "../Redux/UserPageReducer";
 import { firebaseConfig, Firebase_auth } from "./FirebaseConfig"
 import { makeid } from "./Randomizer";
 
@@ -61,7 +58,7 @@ class FirestoreAPI {
                 followed: [],
                 followers: [],
                 userID: newUSer.user.uid,
-                status: ""
+                status : ""
             }
             console.log(userData)
             await setDoc(userRef, userData)
@@ -90,7 +87,7 @@ class FirestoreAPI {
                     avatar: userAuthCredeintials.photoURL as string,
                     followers: [],
                     followed: [],
-                    status: ""
+                    status : ""
 
                 }
                 //Creating the document
@@ -118,21 +115,19 @@ class FirestoreAPI {
 
 }
 
-//                                 ::::::::::::::::::::::::::::::: FIRESTORE USERS API
-
 class UsersAPI extends FirestoreAPI {
     //Get All users 
-    public async getAllUsers(from?: number, to?: number) {
-        try {
-            const usersRef = await collection(this.fireStore, "Users")
+    public async getAllUsers (from? : number,to? : number) {
+        try{
+            const usersRef = await collection(this.fireStore,"Users")
             const usersSnap = await getDocs(usersRef)
-            let users: Array<UserType> = []
-
+            let users : Array<UserType> = []
+    
             usersSnap.forEach((snap) => {
                 users.push(snap.data() as UserType)
             })
             return users
-        } catch (ex) {
+        }catch(ex){
             console.log(ex)
             return ex
         }
@@ -169,86 +164,79 @@ class UsersAPI extends FirestoreAPI {
         }
     }
     //Get followed users 
-    public async getFollowedUsers(userID: string) {
-        try {
-            const followedUsersRef = await collection(this.fireStore, "Users/" + userID)
+    public async getFollowedUsers (userID : string) {
+        try{
+            const followedUsersRef = await collection(this.fireStore,"Users/" + userID,"/followed")
             const followedUsersSnap = await (await getDocs(followedUsersRef))
-            let users: Array<any> = []
-            console.log(followedUsersSnap.forEach((snap) => { return snap.data() }))
-            if (!followedUsersSnap.empty) {
-
+            let users : Array<any> = []
+            console.log(followedUsersSnap.forEach((snap) => {return snap.data()}))
+            if(!followedUsersSnap.empty){
+               
                 followedUsersSnap.forEach((snap) => {
                     users.push(snap.data())
                 })
-            } else {
+            }else{
                 console.log(null)
                 return null
             }
-        } catch (ex) {
+        }catch(ex){
             console.log(ex)
             return ex
         }
     }
     //Get all user followers 
-    public async getFollowers(userID: string) {
-        try {
-            const followersRef = await doc(this.fireStore, "Users", userID)
+    public async getFollowers (userID : string) {
+        try{
+            const followersRef = await doc(this.fireStore,"Users",userID)
             const followersSnap = await getDoc(followersRef)
-            if (followersSnap.exists()) {
+            if(followersSnap.exists()){
                 return followersSnap.data()
-            } else {
+            }else{
                 throw new Error("Cant fetch the followers")
             }
-        } catch (ex) {
+        }catch(ex){
             console.log(ex)
             return ex
         }
     }
     //Get users by Name 
-    public async getUsersByName(userName: string) {
-        try {
-            const usersRef = await query(collection(this.fireStore, "Users"), where("fullName", "==", userName))
+    public async getUsersByName (userName : string) {
+        try{
+            const usersRef = await query(collection(this.fireStore,"Users"),where("fullName","==",userName))
             const usersSnap = await getDocs(usersRef)
-            let users: Array<any> = []
-            if (!usersSnap.empty) {
+            let users : Array<any> = []
+            if(!usersSnap.empty){
                 console.log(usersSnap.docs)
                 usersSnap.forEach((snap) => {
                     console.log(snap.data())
                     users.push(snap.data())
                 })
                 return users
-            } else {
+            }else{
                 return null
             }
-
-        } catch (ex) {
+           
+        }catch(ex){
             console.log(ex)
             return ex
         }
     }
     //Follow toggle function 
     public async followToggle(userToFollow: UserPagePreview, currentUser: UserPagePreview) {
-
         try {
-
-            const followedUsersRef = await doc(this.fireStore, "Followed/" + currentUser.userID)
-            const userDoc : any = await  (await getDoc(followedUsersRef)).data()
-            console.log(userDoc)
-            if(userDoc.followedUsers.find((user : UserPagePreview) => {if(user.userID === userToFollow.userID){return true} else {return false}})){
-                console.log("contains")
-                console.log(userToFollow)
-                const UserRef = await doc(this.fireStore,"Followed",currentUser.userID)
-                await updateDoc(UserRef,{followedUsers : arrayRemove(userToFollow)})
-            }else{
-                const userref = await doc(this.fireStore,"Followed",currentUser.userID)
-                await updateDoc(userref,{followedUsers : arrayUnion(userToFollow)})
+            const userToFollowRef = await doc(this.fireStore, "Users", userToFollow.userID)
+            const currentUserRef = await doc(this.fireStore,"Users",currentUser.userID)
+            //userDocument snapshot
+            const userToFollowSnap = (await getDoc(userToFollowRef)).data()
+            //If followers already contain current user ID remove them from array if not push current userID in array
+            if (userToFollowSnap?.followers.find((user : any) => {
+                if(user.userID === currentUser.userID){ return true }})) {
+                await updateDoc(userToFollowRef, { followers: arrayRemove(currentUser) })
+                await updateDoc(currentUserRef, { followed: arrayRemove(userToFollow) })
+            } else {
+                await updateDoc(userToFollowRef, { followers: arrayUnion(currentUser) })
+                await updateDoc(currentUserRef, { followed: arrayUnion(userToFollow) })
             }
-
-            
-
-
-      
-       
         } catch (ex) {
             console.log(ex)
             return ex
@@ -272,8 +260,6 @@ class UsersAPI extends FirestoreAPI {
     }
 }
 
-//                                :::::::::::::::::::::::::::: FIRESTORE POST API
-
 class PostsAPI extends FirestoreAPI {
 
     //Get post list by user ID 
@@ -286,10 +272,10 @@ class PostsAPI extends FirestoreAPI {
             //Anotherwise push all elements into postData[] ande return them
             if (!docSnap.empty) {
                 docSnap.forEach((doc) => {
-
+                 
                     postData.push({ ...doc.data(), id: doc.id })
                 })
-
+             
                 return postData
             } else {
                 return null
@@ -349,24 +335,22 @@ class PostsAPI extends FirestoreAPI {
         }
     }
     //Add coment to post
-    public async addComentToPost(postID: string, coment: ComentType) {
+    public async addComentToPost (postID: string, coment: ComentType)  {
         try {
             const postRef = await doc(this.fireStore, "Posts", postID)
-            const comentID = await makeid(13)
-            const newComent = { ...coment, comentID: comentID }
-            const result = await updateDoc(postRef, { coments: arrayUnion(newComent) }).finally(() => true)
-            return result
+            const result = await updateDoc(postRef,{coments : arrayUnion(coment)}).finally(() => true)
+            return result   
 
         } catch (ex) {
             console.log(ex)
         }
     }
     //Remove coment 
-    public async removeComent(coment: ComentType, postID: string) {
-        try {
-            const postRef = await doc(this.fireStore, "Posts", postID)
-            await updateDoc(postRef, { coments: arrayRemove(coment) })
-        } catch (ex) {
+    public async removeComent (coment : ComentType,postID : string) {
+        try{
+            const postRef = await doc(this.fireStore,"Posts",postID)
+            await updateDoc(postRef,{coments : arrayRemove(coment)})
+        }catch(ex){
 
         }
     }

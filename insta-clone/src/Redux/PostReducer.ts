@@ -1,5 +1,5 @@
 
-import { object } from "yup"
+
 import { firestorePostsAPI } from "../DAL/Firestore"
 import { postAPI } from "../DAL/PostApi"
 import { app_actions } from "./AppReducer"
@@ -190,9 +190,9 @@ export const leaveComentThunk = (userID : string,postID:string,coment : ComentTy
     return async function (dispatch : any) {
         try{
             dispatch(app_actions.set_is_fetch_true())
-            const newComent = await postAPI.addComentToPost(userID,postID,coment.coment_text as string,coment.comentatorName as string,coment.avatar as string)
+            const newComent : any= await firestorePostsAPI.addComentToPost(postID,coment)
             if(newComent){
-                dispatch(postActions.addComent(postID,newComent))
+                dispatch(postActions.addComent(postID,coment))
                 dispatch(app_actions.set_is_fetch_fasle())
             }
 
@@ -219,7 +219,6 @@ export const createNewPostThunk = (userID:string,postIMG : Blob | Uint8Array | A
         try{
             dispatch(app_actions.set_is_fetch_true())
             if(postIMG !== null && postIMG !== undefined){
-                
                 dispatch(app_actions.setOnLoad(true))
                 const newPost  = await postAPI.createPost(userID,postIMG,postText,postTags,userFullNAme,creatorID)
                 console.log(newPost)
@@ -252,11 +251,11 @@ export const deletePostThunk = (userID:string,postID:string) => {
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }
-export const deleteComentThunk = (postID:string,comentID:string) =>{
+export const deleteComentThunk = (postID:string,coment: ComentType) =>{
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true)
-        await postAPI.deleteComent(postID,comentID)
-        dispatch(postActions.deleteComent(comentID))
+        await firestorePostsAPI.removeComent(coment,postID)
+        dispatch(postActions.deleteComent(coment.comentID as string))
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }

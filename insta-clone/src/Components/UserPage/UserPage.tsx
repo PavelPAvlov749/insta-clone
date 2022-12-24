@@ -67,12 +67,12 @@ export const UserPage: React.FC = React.memo(() => {
     //Follow button handler render only when user page is not actualUser
     const followToogle = () => {
 
-        if (actualUserPage.followers?.find((user) => user.userID === currentUser.userID as string)) {
+        if (actualUserPage.followers?.find((user) => user === currentUser.userID as string)) {
             dispatch(followTooglethunk(currentUserPage, actualUser))
             dispatch(userPageActions.unfollow(currentUser.userID as string))
         } else {
             dispatch(followTooglethunk(currentUserPage, actualUser))
-            dispatch(userPageActions.follow(actualUser))
+            dispatch(userPageActions.follow(actualUser.userID))
         }
     }
     //Local state for sending message modale window
@@ -150,7 +150,7 @@ export const UserPage: React.FC = React.memo(() => {
                 {userPageUrl !== currentUser.userID ?
                     <section className={styles.contrtolButtons}>
                         {userPageUrl !== currentUser.userID ? <button onClick={followToogle}>{actualUserPage.followers?.find((user) => {
-                            if (user.userID === currentUser.userID) {
+                            if (user === currentUser.userID) {
                                 return true
                             }
                         }) ? "Unfollow" : "Follow"}</button> : null}

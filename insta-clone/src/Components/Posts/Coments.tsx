@@ -14,7 +14,7 @@ export const SilngleComent: React.FC<{ coment: ComentType, currentUserID: string
     const dispatch: any = useDispatch()
     const location = useLocation().pathname.split("=")[1]
     const onDeleteHandler = () => {
-        dispatch(deleteComentThunk(location, props.coment?.comentID as string))
+        dispatch(deleteComentThunk(location, props.coment))
     }
 
     return (
@@ -32,7 +32,7 @@ export const SilngleComent: React.FC<{ coment: ComentType, currentUserID: string
 })
 
 
-export const PostComents: React.FC<{ coments: Array<ComentType> }> = React.memo((props) => {
+export const PostComents: React.FC<{ coments: Array<ComentType> }> = (props) => {
 
     const currentUser = useSelector((state: Global_state_type) => {
         return state.account.userID
@@ -56,4 +56,4 @@ export const PostComents: React.FC<{ coments: Array<ComentType> }> = React.memo(
         )
     }
 
-})
+}

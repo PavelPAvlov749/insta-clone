@@ -26,8 +26,8 @@ export type UserType = {
     userID : string
     avatar : string,
     status? : string,
-    followers? : Array <UserPagePreview>,
-    followed? : Array<UserPagePreview>,
+    followers? :  Array<string>,
+    followed? : Array<string>,
     chats? : Array<ChatType>
 }
 export type ComentType = {
@@ -110,7 +110,7 @@ export type newMessagePropsType = {
 
 }
 export type UserPagePreview = {
-    userID : string,
     avatar : string,
     fullName : string
+    userID : string,
 }

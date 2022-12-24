@@ -3,11 +3,10 @@ import { InferActionType } from "./Store";
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
 import { Global_state_type } from "../Redux/Store";
-import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { authAPI } from "../DAL/AuthAPI";
+import { getAuth, signInWithEmailAndPassword, } from "firebase/auth";
+
 import { app_actions } from "./AppReducer";
-import { AccountActions, updateAvatarThunk, updateStatusThunk } from "./ProfileReducer";
-import { DataSnapshot } from "firebase/database";
+import { AccountActions, updateStatusThunk } from "./ProfileReducer";
 import { fireStoreAPI, firestoreUSersAPI } from "../DAL/Firestore";
 import { userPageActions } from "./UserPageReducer";
 import { UserType } from "./Types";
@@ -129,7 +128,7 @@ export const CheckAuthThunk = () => {
 }
 export const logOutThunk = () => {
     return async function (dispatch: any) {
-        authAPI.signOut()
+        firestoreUSersAPI.logOut()
         dispatch(AccountActions.set_current_user_profile(null))
         dispatch(app_actions.setCurrentUserID(null))
         dispatch(userPageActions.get_user(null))
@@ -161,7 +160,7 @@ export const loginInWithEmailAndPassword = (email: string, password: string) => 
     return async function (dispatch: any) {
         try {
             dispatch(app_actions.set_is_fetch_true())
-            const user = await (await signInWithEmailAndPassword(authAPI.getAuthInstatnce(), email, password).catch((error) => {
+            const user = await (await signInWithEmailAndPassword(firestoreUSersAPI.getAuth, email, password).catch((error) => {
                 throw new Error(error)
             }).then((user) => {
                 console.log(user)

@@ -21,8 +21,8 @@ const initial_state : UserType = {
     avatar: null as unknown as string,
     status: null as unknown as string,
     userID: null as unknown as string,
-    followed: [] as unknown as Array<UserPagePreview>,
-    followers: [] as unknown as Array<UserPagePreview>,
+    followed: [] as Array<string>,
+    followers: [] as Array<string>,
 
     
 }
@@ -49,7 +49,7 @@ export const UsersPageReducer = (state = initial_state, action: ActionType) => {
         case UNFOLLOW : {
             return {
                 ...state,
-                followers : state.followers?.filter(el => el.userID !== action.payload)
+                followers : state.followers?.filter(el => el !== action.payload)
             }
         }
         case UPDATE_STATUS : {
@@ -73,7 +73,7 @@ export const userPageActions = {
         type : "instaClone/UsersReducer/setNewStatus",
         payload : status
     }as const),
-    follow : (user : UserPagePreview) => ({
+    follow : (user : string) => ({
         type : "instaClone/UsersReducer/follow",
         payload : user
     } as const ),
@@ -109,8 +109,9 @@ export const getUserPageByID = (userID : string) => {
 export const followTooglethunk = (currentUser : UserPagePreview,userToFollow : UserPagePreview) => {
     return async function (dispatch: any) {
         dispatch(app_actions.set_is_fetch_true())
-        console.log(userToFollow)
+        
         const result = await firestoreUSersAPI.followToggle(userToFollow,currentUser)
+        console.log(result)
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }

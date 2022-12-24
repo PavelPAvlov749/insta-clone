@@ -24,6 +24,7 @@ export const ComentTextArea : React.FC = React.memo((props) => {
             comentatorID : currentUser.userID,
             coment_text : values.coment
         }))
+        values.coment = ""
         
     }
     const showComents = () => {

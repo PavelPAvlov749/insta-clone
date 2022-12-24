@@ -1,4 +1,4 @@
-import { authAPI } from "../DAL/AuthAPI";
+import { authAPI } from "../../Temp/AuthAPI";
 import { firestoreUSersAPI } from "../DAL/Firestore";
 import { profileAPI } from "../DAL/ProfileApi";
 import { appReducer, app_actions } from "./AppReducer";
