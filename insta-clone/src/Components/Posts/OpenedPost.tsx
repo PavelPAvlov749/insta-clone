@@ -20,7 +20,7 @@ import { Preloader } from "../Preloader/Preloader";
 import { PostType } from "../../Redux/Types";
 
 
-export const SinglePost : React.FC<{post:PostType,currentUserID : string}> = React.memo((props) => {
+export const SinglePost: React.FC<{ post: PostType, currentUserID: string }> = React.memo((props) => {
     const navigate = useNavigate()
     const dispatch: any = useDispatch()
 
@@ -28,7 +28,7 @@ export const SinglePost : React.FC<{post:PostType,currentUserID : string}> = Rea
     useEffect(() => {
         dispatch(getSinglePostByID(location))
     }, [])
-    
+
 
     const tapLikeHandler = () => {
         if (props.post.likes_count?.includes(props.currentUserID as string)) {
@@ -45,28 +45,28 @@ export const SinglePost : React.FC<{post:PostType,currentUserID : string}> = Rea
         navigate("coments")
     }
     const deletePostHandler = () => {
-        dispatch(deletePostThunk(props.currentUserID as string,props.post.id as string))
+        dispatch(deletePostThunk(props.currentUserID as string, props.post.id as string))
         navigate(`/profile/id=${props.currentUserID}`)
     }
     console.log(props.post)
-    if(props.post){
+    if (props.post) {
         return (
             <section className={styles.postWrapper}>
                 <NavLink to={`/profile/id:=${props.post.creatorID}`} className={styles.creatorInfo}>
                     <Avatar avatarIMG={props.post.creatorAvatar} fullName={props.post.creator} size="small" />
-    
+
                     <h1 className={styles.autorName}>{props.post?.creator}</h1>
-                
+
                 </NavLink>
                 <div className={styles.postIMGContainer}>
                     <img className={styles.postIMG} src={props.post.post_img} alt="" />
+                </div>
+                <section className={styles.navigation}>
                     <img src={likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
                     <img src={comentIcon} alt="#" className={styles.comentIcon} onClick={onComentClickHandler}></img>
-                   
-                    <span className={styles.likesCount} onClick={onComentClickHandler}>{props.post.likes_count ? Object.values(props.post.likes_count).length  + "\t likes" : "0 \t likes"}</span>
-                    {props.currentUserID === props.post.creatorID ?  <img src={crossIcon} alt="#" className={styles.deletePost} onClick={deletePostHandler}></img> : null }
-                </div>
-    
+                    <span className={styles.likesCount} onClick={onComentClickHandler}>{props.post.likes_count ? Object.values(props.post.likes_count).length + "\t likes" : "0 \t likes"}</span>
+                    {props.currentUserID === props.post.creatorID ? <img src={crossIcon} alt="#" className={styles.deletePost} onClick={deletePostHandler}></img> : null}
+                </section>
                 <div className={styles.postInfo}>
                     <h4>{props.post.creator + "\t:\t"}</h4>
                     <span>{props.post?.post_text}</span>
@@ -74,10 +74,10 @@ export const SinglePost : React.FC<{post:PostType,currentUserID : string}> = Rea
                 <h2 onClick={onComentClickHandler} className={styles.showAll}>Show all Coments</h2>
             </section>
         )
-    }else{
+    } else {
         return (
             <>
-            <Preloader/>
+                <Preloader />
             </>
         )
     }
@@ -100,7 +100,7 @@ export const ShowedPost: React.FC = React.memo((props) => {
     const actualPost = useSelector((state: Global_state_type) => {
         return state.userPosts.currentPost
     })
-    
+
 
 
     const tapLikeHandler = () => {
@@ -118,7 +118,7 @@ export const ShowedPost: React.FC = React.memo((props) => {
         navigate("coments")
     }
     const deletePostHandler = () => {
-        dispatch(deletePostThunk(currentUserID as string,actualPost.id as string))
+        dispatch(deletePostThunk(currentUserID as string, actualPost.id as string))
         navigate(`/profile/id=${currentUserID}`)
     }
     if (actualPost) {
@@ -128,30 +128,32 @@ export const ShowedPost: React.FC = React.memo((props) => {
                     <Avatar avatarIMG={actualUserPage.avatar} fullName={actualUserPage.fullName} size="small" />
 
                     <h1 className={styles.autorName}>{actualPost?.creator}</h1>
-                
+
                 </NavLink>
                 <div className={styles.postIMGContainer}>
                     <img className={styles.postIMG} src={actualPost.post_img} alt="" />
-                    <img src={actualPost.likes_count.includes(currentUserID as string) ? dislikeIMG : likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
-                    <img src={comentIcon} alt="#" className={styles.comentIcon} onClick={onComentClickHandler}></img>
-                   
-                    <span className={styles.likesCount} onClick={onComentClickHandler}>{actualPost.likes_count?.length + "\t likes"}</span>
-                    {currentUserID === actualPost.creatorID ?  <img src={crossIcon} alt="#" className={styles.deletePost} onClick={deletePostHandler}></img> : null }
+                 
                 </div>
+                <section className={styles.navigation}>
+                <img src={actualPost.likes_count.includes(currentUserID as string) ? dislikeIMG : likeImg} alt="#" className={styles.likeIcon} onClick={tapLikeHandler} />
+                    <img src={comentIcon} alt="#" className={styles.comentIcon} onClick={onComentClickHandler}></img>
 
+                    <span className={styles.likesCount} onClick={onComentClickHandler}>{actualPost.likes_count?.length + "\t likes"}</span>
+                    {currentUserID === actualPost.creatorID ? <img src={crossIcon} alt="#" className={styles.deletePost} onClick={deletePostHandler}></img> : null}
+                </section>
                 <div className={styles.postInfo}>
                     <h4>{actualPost.creator + "\t:\t"}</h4>
                     <span>{actualPost?.post_text}</span>
                 </div>
-                {actualPost.coments.length > 0 ? <SilngleComent coment={actualPost?.coments[actualPost.coments.length - 1]} currentUserID={currentUserID as string}/> : 
-                "There is no coments"}
+                {actualPost.coments.length > 0 ? <SilngleComent coment={actualPost?.coments[actualPost.coments.length - 1]} currentUserID={currentUserID as string} /> :
+                    "There is no coments"}
                 <h2 onClick={onComentClickHandler} className={styles.showAll}>Show all Coments</h2>
             </section>
         )
     } else {
         return (
             <>
-                <Preloader/>
+                <Preloader />
             </>
 
         )

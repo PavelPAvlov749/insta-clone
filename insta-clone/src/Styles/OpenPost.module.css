@@ -43,9 +43,16 @@
 a{
     text-decoration: none;
 }
+.navigation{
+    position: relative;
 
+
+
+
+}
 .likesCount
-{
+{   display: inline;
+    
     margin-left: 1rem;
     vertical-align: middle;
 }
@@ -127,10 +134,12 @@ a{
 
 
 .deletePost{
-    text-align: right;
+    text-align: left;
     vertical-align: middle;
-    position: relative;
-    padding-left: 92%;
+    position:absolute;
+    /* top: 0; */
+    left: 92%;
+    /* padding-left: 92%; */
     width: 25px;
     height: 25px;
     display: inline;

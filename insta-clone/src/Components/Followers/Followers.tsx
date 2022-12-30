@@ -23,6 +23,7 @@ export const Followers : React.FC = React.memo((props) => {
     })
     useEffect(() => {
         if(location === "folloowers") {
+            
             // dispatch(searchActions.getFollowed(null as unknown as Array<UserPagePreview>))
             dispatch(getFolloewrsThunk(userID))
         }else{

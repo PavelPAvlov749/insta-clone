@@ -137,16 +137,13 @@
 
 .inputWrapper {
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     width:99%;
-    padding: 4px 0rem 4px 0.0rem;
+    padding: 2px 0rem 2px 0.0rem;
     border-width: 1px;
     border-style: groove;
     border-color: grey;
     border-radius: 10px;
-
-
-
 }
 
 .formik {

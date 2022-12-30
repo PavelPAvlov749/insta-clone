@@ -3,10 +3,10 @@ import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWith
 import { child, DataSnapshot, get, update } from "firebase/database";
 import {
     getFirestore, addDoc, collection, getDoc, getDocs, doc, setDoc, query,
-    orderBy, where, DocumentData, updateDoc, arrayUnion, arrayRemove, deleteDoc, FieldValue,
+    orderBy, where, DocumentData, updateDoc, arrayUnion, arrayRemove, deleteDoc, FieldValue, increment,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, ref as storageRef, StorageReference, uploadBytes } from "firebase/storage";
-import { updateDo } from "typescript";
+import { isRestTypeNode, updateDo } from "typescript";
 import { ComentType, PostType, UserPagePreview, UserType } from "../Redux/Types";
 import { followTooglethunk } from "../Redux/UserPageReducer";
 import { firebaseConfig, Firebase_auth } from "./FirebaseConfig"
@@ -91,7 +91,6 @@ class FirestoreAPI {
                     followers: [],
                     followed: [],
                     status: ""
-
                 }
                 //Creating the document
                 await setDoc(doc(newUserRef, userAuthCredeintials.uid), userData);
@@ -171,17 +170,12 @@ class UsersAPI extends FirestoreAPI {
     //Get followed users 
     public async getFollowedUsers(userID: string) {
         try {
-            const followedUsersRef = await collection(this.fireStore, "Users/" + userID)
-            const followedUsersSnap = await (await getDocs(followedUsersRef))
-            let users: Array<any> = []
-            console.log(followedUsersSnap.forEach((snap) => { return snap.data() }))
-            if (!followedUsersSnap.empty) {
-
-                followedUsersSnap.forEach((snap) => {
-                    users.push(snap.data())
-                })
-            } else {
-                console.log(null)
+            const followedUsersRef = await doc(this.fireStore, "Followed/" + userID)
+            const followedUsersSnap = await (await getDoc(followedUsersRef))
+            console.log(followedUsersSnap)
+            if(followedUsersSnap.exists()){
+                return followedUsersSnap.data().followedUsers
+            }else{
                 return null
             }
         } catch (ex) {
@@ -192,7 +186,7 @@ class UsersAPI extends FirestoreAPI {
     //Get all user followers 
     public async getFollowers(userID: string) {
         try {
-            const followersRef = await doc(this.fireStore, "Users", userID)
+            const followersRef = await doc(this.fireStore, "Followers/", userID)
             const followersSnap = await getDoc(followersRef)
             if (followersSnap.exists()) {
                 return followersSnap.data()
@@ -232,22 +226,37 @@ class UsersAPI extends FirestoreAPI {
         try {
 
             const followedUsersRef = await doc(this.fireStore, "Followed/" + currentUser.userID)
+            const followersRef = await doc(this.fireStore,"Followers/" + userToFollow.userID)
+            const followerDoc : any = await (await getDoc(followersRef)).data()
             const userDoc : any = await  (await getDoc(followedUsersRef)).data()
-            console.log(userDoc)
+            let followedCountRef = await doc(this.fireStore,"Users/",currentUser.userID)
+            let followersCountRef = await doc(this.fireStore,"Users/",userToFollow.userID)
+            
+            console.log(followerDoc)
+            //Add currentUser into Followers/userToFollow and increment or decrement followersCount and followedCount
+            if(followerDoc.followers.find((user : UserPagePreview) => {if(user.userID === currentUser.userID) {return true} else {return false}})) {
+                const UserRef = await doc(this.fireStore,"Followers/",userToFollow.userID)
+                await updateDoc(UserRef,{followers : arrayRemove(currentUser)})
+                await updateDoc(followersCountRef,{followersCount : arrayRemove(currentUser.userID)})
+            }else{
+                const UserRef = await doc(this.fireStore,"Followers/",userToFollow.userID)
+                await updateDoc(UserRef,{followers : arrayUnion(currentUser)})
+                await updateDoc(followersCountRef,{followersCount : arrayUnion(currentUser.userID)})
+            }
+            //Add followedUser page into followed users of currentUser
             if(userDoc.followedUsers.find((user : UserPagePreview) => {if(user.userID === userToFollow.userID){return true} else {return false}})){
                 console.log("contains")
                 console.log(userToFollow)
-                const UserRef = await doc(this.fireStore,"Followed",currentUser.userID)
+                const UserRef = await doc(this.fireStore,"Followed/",currentUser.userID)
                 await updateDoc(UserRef,{followedUsers : arrayRemove(userToFollow)})
+                await updateDoc(followedCountRef,{followedCount : arrayRemove(userToFollow.userID)})
             }else{
-                const userref = await doc(this.fireStore,"Followed",currentUser.userID)
+                const userref = await doc(this.fireStore,"Followed/",currentUser.userID)
                 await updateDoc(userref,{followedUsers : arrayUnion(userToFollow)})
+                await updateDoc(followedCountRef,{followedCount : arrayUnion(userToFollow.userID)})
             }
 
-            
-
-
-      
+        
        
         } catch (ex) {
             console.log(ex)
