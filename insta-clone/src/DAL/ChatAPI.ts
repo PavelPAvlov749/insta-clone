@@ -48,7 +48,9 @@ class ChatAPI extends abstractAPI {
     //SEND MESSAGE ::::::::::::::
 
     async sendMessage(senderID: string, senderName: string, messageText: string, chatID: string) {
+       
         const isChatExist = await (await get(child(this.DatabaseRef, "Chats/" + senderID + "/" + chatID))).exists()
+        console.log(isChatExist)
         if (isChatExist) {
             const newMessageKey = push(child(this.ref(this.RealtimeDataBase), "Messages/" + chatID)).key
             let newMessage: newMessagePropsType = {

@@ -19,7 +19,8 @@ const app = initializeApp(firebaseConfig)
 export const fireStore = getFirestore(app)
 
 
-class FirestoreAPI {
+export class FirestoreAPI {
+    
     //Firebase app
     protected app = initializeApp(firebaseConfig)
     //Firebase Firestore database instance
@@ -117,169 +118,7 @@ class FirestoreAPI {
 
 }
 
-//                                 ::::::::::::::::::::::::::::::: FIRESTORE USERS API
 
-class UsersAPI extends FirestoreAPI {
-    //Get All users 
-    public async getAllUsers(from?: number, to?: number) {
-        try {
-            const usersRef = await collection(this.fireStore, "Users")
-            const usersSnap = await getDocs(usersRef)
-            let users: Array<UserType> = []
-
-            usersSnap.forEach((snap) => {
-                users.push(snap.data() as UserType)
-            })
-            return users
-        } catch (ex) {
-            console.log(ex)
-            return ex
-        }
-    }
-    //Update user avatar 
-    public async updateAvatar(userID: string, avatarIMG: Blob | ArrayBuffer | Uint16Array) {
-        try {
-            //Create random image name with makeid function (exposts from Randomizer.ts)
-            const avatarID = makeid(13)
-            // const avatarID = await doc(this.fireStore,"Users",userID + "/" + "avatar").id
-            const userRef = await doc(this.fireStore, "Users", userID)
-            //Image avatar ref
-            const avatarRef: StorageReference = ref(this.storage, avatarID)
-            //If _img from arguments !== null dowload the file in storage with image_name
-            if (avatarIMG !== null) {
-                await uploadBytes(avatarRef, avatarIMG)
-                const url = await getDownloadURL(avatarRef)
-                console.log(url)
-                await updateDoc(userRef, { avatar: url })
-                return url
-            }
-        } catch (ex) {
-            console.log(ex)
-        }
-    }
-    //Update user status function 
-    public async updateUserStatus(userID: string, newStatus: string) {
-        try {
-            const userRef = await doc(this.fireStore, "Users", userID)
-            await updateDoc(userRef, { status: newStatus })
-        } catch (ex) {
-            console.log(ex)
-            return ex
-        }
-    }
-    //Get followed users 
-    public async getFollowedUsers(userID: string) {
-        try {
-            const followedUsersRef = await doc(this.fireStore, "Followed/" + userID)
-            const followedUsersSnap = await (await getDoc(followedUsersRef))
-            console.log(followedUsersSnap)
-            if(followedUsersSnap.exists()){
-                return followedUsersSnap.data().followedUsers
-            }else{
-                return null
-            }
-        } catch (ex) {
-            console.log(ex)
-            return ex
-        }
-    }
-    //Get all user followers 
-    public async getFollowers(userID: string) {
-        try {
-            const followersRef = await doc(this.fireStore, "Followers/", userID)
-            const followersSnap = await getDoc(followersRef)
-            if (followersSnap.exists()) {
-                return followersSnap.data()
-            } else {
-                throw new Error("Cant fetch the followers")
-            }
-        } catch (ex) {
-            console.log(ex)
-            return ex
-        }
-    }
-    //Get users by Name 
-    public async getUsersByName(userName: string) {
-        try {
-            const usersRef = await query(collection(this.fireStore, "Users"), where("fullName", "==", userName))
-            const usersSnap = await getDocs(usersRef)
-            let users: Array<any> = []
-            if (!usersSnap.empty) {
-                console.log(usersSnap.docs)
-                usersSnap.forEach((snap) => {
-                    console.log(snap.data())
-                    users.push(snap.data())
-                })
-                return users
-            } else {
-                return null
-            }
-
-        } catch (ex) {
-            console.log(ex)
-            return ex
-        }
-    }
-    //Follow toggle function 
-    public async followToggle(userToFollow: UserPagePreview, currentUser: UserPagePreview) {
-
-        try {
-
-            const followedUsersRef = await doc(this.fireStore, "Followed/" + currentUser.userID)
-            const followersRef = await doc(this.fireStore,"Followers/" + userToFollow.userID)
-            const followerDoc : any = await (await getDoc(followersRef)).data()
-            const userDoc : any = await  (await getDoc(followedUsersRef)).data()
-            let followedCountRef = await doc(this.fireStore,"Users/",currentUser.userID)
-            let followersCountRef = await doc(this.fireStore,"Users/",userToFollow.userID)
-            
-            console.log(followerDoc)
-            //Add currentUser into Followers/userToFollow and increment or decrement followersCount and followedCount
-            if(followerDoc.followers.find((user : UserPagePreview) => {if(user.userID === currentUser.userID) {return true} else {return false}})) {
-                const UserRef = await doc(this.fireStore,"Followers/",userToFollow.userID)
-                await updateDoc(UserRef,{followers : arrayRemove(currentUser)})
-                await updateDoc(followersCountRef,{followersCount : arrayRemove(currentUser.userID)})
-            }else{
-                const UserRef = await doc(this.fireStore,"Followers/",userToFollow.userID)
-                await updateDoc(UserRef,{followers : arrayUnion(currentUser)})
-                await updateDoc(followersCountRef,{followersCount : arrayUnion(currentUser.userID)})
-            }
-            //Add followedUser page into followed users of currentUser
-            if(userDoc.followedUsers.find((user : UserPagePreview) => {if(user.userID === userToFollow.userID){return true} else {return false}})){
-                console.log("contains")
-                console.log(userToFollow)
-                const UserRef = await doc(this.fireStore,"Followed/",currentUser.userID)
-                await updateDoc(UserRef,{followedUsers : arrayRemove(userToFollow)})
-                await updateDoc(followedCountRef,{followedCount : arrayRemove(userToFollow.userID)})
-            }else{
-                const userref = await doc(this.fireStore,"Followed/",currentUser.userID)
-                await updateDoc(userref,{followedUsers : arrayUnion(userToFollow)})
-                await updateDoc(followedCountRef,{followedCount : arrayUnion(userToFollow.userID)})
-            }
-
-        
-       
-        } catch (ex) {
-            console.log(ex)
-            return ex
-        }
-    }
-    //Get userpage by user id
-    public async getUserPageByID(userID: string) {
-        try {
-            //userPage ref
-            const userPageRef = doc(this.fireStore, "Users", userID)
-            const userDoc = await getDoc(userPageRef)
-            if (userDoc.exists()) {
-                return userDoc.data()
-            } else {
-                throw new Error("User page does not exist")
-            }
-        } catch (ex) {
-            console.log(ex)
-            return ex
-        }
-    }
-}
 
 //                                :::::::::::::::::::::::::::: FIRESTORE POST API
 
@@ -315,7 +154,7 @@ class PostsAPI extends FirestoreAPI {
             const postRef = await collection(this.fireStore, "Posts")
             const newPost = { ...post, id: postRef.id }
 
-            await setDoc(doc(postRef,), newPost)
+            await setDoc(doc(postRef),newPost)
 
             const ref = await doc(this.fireStore, "Posts", post.creatorID)
             const newPostDocument = await getDoc(ref)
@@ -383,5 +222,4 @@ class PostsAPI extends FirestoreAPI {
 
 
 export const fireStoreAPI = new FirestoreAPI()
-export const firestoreUSersAPI = new UsersAPI()
 export const firestorePostsAPI = new PostsAPI()

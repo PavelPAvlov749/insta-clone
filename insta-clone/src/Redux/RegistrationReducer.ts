@@ -9,7 +9,7 @@ import { AccountActions, updateAvatarThunk, updateStatusThunk } from "./ProfileR
 import { DataSnapshot } from "firebase/database";
 import { CreateNewUserType } from "./Types";
 import { auth_actions } from "./AuthReducer";
-import { firestoreUSersAPI } from "../DAL/Firestore";
+import { fireStoreAPI } from "../DAL/Firestore";
 
 
 const SET_NEW_USER_EMAIL = "messenger/registrationReducer/setNewUserEmail"
@@ -132,7 +132,7 @@ export const  CreateNewUserWithEmailAndPassword = (newUserData : CreateNewUserTy
     return async function (dispatch : any) {
         dispatch(app_actions.set_is_fetch_true())
         dispatch(app_actions.init(false))
-        const newUser : any = firestoreUSersAPI.createNewUserWithEmailAndPassword(newUserData.email,newUserData.password,newUserData.userName)
+        const newUser : any = fireStoreAPI.createNewUserWithEmailAndPassword(newUserData.email,newUserData.password,newUserData.userName)
         await dispatch(app_actions.setCurrentUserID(newUser?.userID))
         dispatch(AccountActions.set_current_user_profile(newUser))
         dispatch(auth_actions.set_auth_true())

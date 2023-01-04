@@ -17,6 +17,7 @@ import { app_actions } from "../../Redux/AppReducer";
 import { NewPostModalWindow } from "../Posts/NewPostModal";
 import { string } from "yup";
 import { firestorePostsAPI } from "../../DAL/Firestore";
+import { firestoreChat } from "../../DAL/FirestoreChatAPI";
 
 
 
@@ -81,7 +82,8 @@ export const UserPage: React.FC = React.memo(() => {
     })
     //SendMessage button on click
     const sendMessageHandlerButton = () => {
-        dispatch(app_actions.setOnNewMessage(true))
+        firestoreChat.sendMesage(currentUser.userID as string,currentUser.fullName as string,"wfwefwef","12345",actualUserPage.userID)
+        // dispatch(app_actions.setOnNewMessage(true))
     }
     //Send message Handler
     const sendMessage = () => {
@@ -99,7 +101,7 @@ export const UserPage: React.FC = React.memo(() => {
             }
         }
 
-        let chat = chats.find((chat: any) => chat.userID == actualUserPage.userID)
+        let chat = chats.find((chat: any) => chat.userID === actualUserPage.userID)
         if (chat) {
             navigate(`/chat/id:=${chat.chatID}`)
         } else {

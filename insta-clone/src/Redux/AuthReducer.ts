@@ -7,7 +7,8 @@ import { getAuth, signInWithEmailAndPassword, } from "firebase/auth";
 
 import { app_actions } from "./AppReducer";
 import { AccountActions, updateStatusThunk } from "./ProfileReducer";
-import { fireStoreAPI, firestoreUSersAPI } from "../DAL/Firestore";
+import { firestoreUSersAPI} from "../DAL/FirestoreUsersAPI"
+import { FirestoreAPI, fireStoreAPI, } from "../DAL/Firestore";
 import { userPageActions } from "./UserPageReducer";
 import { UserType } from "./Types";
 
@@ -128,7 +129,7 @@ export const CheckAuthThunk = () => {
 }
 export const logOutThunk = () => {
     return async function (dispatch: any) {
-        firestoreUSersAPI.logOut()
+        fireStoreAPI.logOut()
         dispatch(AccountActions.set_current_user_profile(null))
         dispatch(app_actions.setCurrentUserID(null))
         dispatch(userPageActions.get_user(null))
@@ -185,7 +186,7 @@ export const createUserByEmailAndPassword = (email: string, password: string, us
            
 
                 // const newUser: DataSnapshot | undefined = await authAPI.createUserWithEmailAndPassword(email, password, userName)
-                const newUser : any = await firestoreUSersAPI.createNewUserWithEmailAndPassword(email,password,userName)
+                const newUser : any = await fireStoreAPI.createNewUserWithEmailAndPassword(email,password,userName)
                 await dispatch(updateStatusThunk(newUser.userID, newUser.status))
                 await dispatch(app_actions.setCurrentUserID(newUser?.userID as string))
                 console.log(newUser)

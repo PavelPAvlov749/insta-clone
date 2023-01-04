@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
-import { firestoreUSersAPI } from "../DAL/Firestore";
+import { firestoreUSersAPI } from "../DAL/FirestoreUsersAPI";
 import { profileAPI } from "../DAL/ProfileApi";
-import { usersAPI } from "../DAL/UsersAPI";
+
 import { appReducer, app_actions } from "./AppReducer";
 import { InferActionType } from "./Store";
 import { ChatType, UserPagePreview, UserType } from "./Types";

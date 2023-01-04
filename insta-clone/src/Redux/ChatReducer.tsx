@@ -5,7 +5,7 @@ import { ChatType, MessageType, newChatType, UserType } from "./Types";
 import { app_actions } from "./AppReducer";
 import { chatAPI } from "../DAL/ChatAPI";
 import { dataBase } from "../DAL/FirebaseConfig";
-import { usersAPI } from "../DAL/UsersAPI";
+
 
 
 

@@ -2,8 +2,8 @@ import { UserProfile } from "firebase/auth";
 import path from "path";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { usersAPI } from "../../DAL/UsersAPI";
+import { NavLink, useLocation } from "react-router-dom";
+
 import { Global_state_type } from "../../Redux/Store";
 import { UserPagePreview } from "../../Redux/Types";
 import {getFolloewrsThunk,getFollowedthunk, searchActions} from "../../Redux/UserSearchReducer"
@@ -22,7 +22,7 @@ export const Followers : React.FC = React.memo((props) => {
         }
     })
     useEffect(() => {
-        if(location === "folloowers") {
+        if(location === "followers") {
             
             // dispatch(searchActions.getFollowed(null as unknown as Array<UserPagePreview>))
             dispatch(getFolloewrsThunk(userID))
@@ -42,8 +42,11 @@ export const Followers : React.FC = React.memo((props) => {
                         console.log(el.fullName)
                         return (
                             <li>
+                                <NavLink to={`/profile/id=${el.userID}`}>
                                 <Avatar size="small" avatarIMG={el.avatar} fullName={el.fullName}/>
                                 <span>{el.fullName}</span>
+                                </NavLink>
+                       
                             </li>
                         )
                     }) : null}

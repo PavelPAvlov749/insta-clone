@@ -1,6 +1,6 @@
 import { Firestore } from "../DAL/FirebaseConfig"
-import { firestoreUSersAPI } from "../DAL/Firestore"
-import { usersAPI } from "../DAL/UsersAPI"
+import { firestoreUSersAPI } from "../DAL/FirestoreUsersAPI"
+
 import { app_actions } from "./AppReducer"
 import { InferActionType } from "./Store"
 import { UserPagePreview, UserType } from "./Types"

@@ -3,7 +3,7 @@
 
     overflow-y: scroll;
     height: calc(100% - 3rem);
-    padding: 5px;
+    padding: 0px 5px 5px 5px;
 }
 .router::-webkit-scrollbar {
     display: none;

@@ -183,6 +183,9 @@
     outline: none;
 }
 @media(max-width : 538px){
+    .messageAreaContainer {
+        height: 100%;
+    }
     .messageArea{
         position: relative;
         overflow-y: scroll;
