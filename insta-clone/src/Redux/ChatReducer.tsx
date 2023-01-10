@@ -1,10 +1,14 @@
 
 import { InferActionType } from "./Store";
-import { onValue, ref } from "firebase/database"
-import { ChatType, MessageType, newChatType, UserType } from "./Types";
+import { getDatabase, onValue, ref } from "firebase/database"
+import { chatRoomType, ChatType, MessageType, newChatType, UserType } from "./Types";
 import { app_actions } from "./AppReducer";
-import { chatAPI } from "../DAL/ChatAPI";
-import { dataBase } from "../DAL/FirebaseConfig";
+import { dataBase, firebaseConfig } from "../DAL/FirebaseConfig";
+import { firestoreChat } from "../DAL/FirestoreChatAPI";
+import { initializeApp } from "firebase/app";
+import { collection, getFirestore, where, query, onSnapshot, orderBy, limit } from "firebase/firestore";
+
+
 
 
 
@@ -17,12 +21,13 @@ const SET_NEW_MESSAGE = "instaClone/chatReducer/setNewMessage"
 const GET_INTERLOCUTOR_AVATAR = "insta-clone/chatReducer/getAvatar"
 
 
+
 type ActionType = InferActionType<typeof chat_actions>
 
 let initialState = {
-    activeChat: null as unknown as string,
-    chats: [] as Array<UserType>,
-    messages: [] as Array<any>,
+    activeChat: null as unknown as chatRoomType,
+    chats: [] as Array<chatRoomType>,
+    messages: [] as Array<MessageType>,
     newMessage: "",
     interlocutorAvatar: null as unknown as string,
     unreadedMessages: null as unknown as number
@@ -77,9 +82,9 @@ export const chat_actions = {
         type: "instaClone/chatReducer/getChats",
         payload: chats
     } as const),
-    setActiveChat: (roomID: string) => ({
+    setActiveChat: (room: chatRoomType) => ({
         type: "instaClone/chatReducer/setActiveChat",
-        payload: roomID
+        payload: room
     } as const),
     getMessages: (messages: Array<MessageType>) => ({
         type: "instaClone/chatReducer/get_messages",
@@ -99,11 +104,12 @@ export const chat_actions = {
     } as const)
 }
 
+
+
 export const getChatsByUserID = (userID: string) => {
     return async function (dispatch: any) {
         dispatch(app_actions.set_is_fetch_true())
-        const chats = await chatAPI.getListOfChatsByUserID(userID)
-
+        const chats = await firestoreChat.getUserRoomsByUserID(userID)
         if (chats) {
             dispatch(chat_actions.getChats(Object.values(chats)))
             dispatch(app_actions.set_is_fetch_fasle())
@@ -112,78 +118,51 @@ export const getChatsByUserID = (userID: string) => {
         }
     }
 }
-export const getRoomByUserID = (currentUserID: string, userID: string) => {
-    return async function (dispatch: any) {
-        const room = await chatAPI.getRoom(currentUserID, userID)
-        if (room) {
-            dispatch(chat_actions.setActiveChat(room))
-        } else {
-            dispatch(chat_actions.setActiveChat(""))
-        }
-    }
-}
-export const getMessagesByChatID = (chatID: string) => {
-    return async function (dispatch: any) {
-        dispatch(app_actions.set_is_fetch_true())
 
-        let messages = await chatAPI.getMessages(chatID)
-        if (messages.length) {
-            dispatch(chat_actions.getMessages(messages as Array<MessageType>))
-            dispatch(app_actions.set_is_fetch_fasle())
 
-        }
-    }
-}
 
 export const getRealtimeMessages = (chatID: string) => {
     return async function (dispatch: any) {
         dispatch(app_actions.set_is_fetch_true())
         try {
-            const chatRef = await ref(dataBase, "Messages/" + chatID)
-            onValue(chatRef, (dataSnapshot) => {
-                if (dataSnapshot.exists()) {
-                    dispatch(chat_actions.getMessages(Object.values(dataSnapshot.val())))
-                    dispatch(app_actions.set_is_fetch_fasle())
-                } else {
-                    dispatch(chat_actions.getMessages([]))
-                    dispatch(app_actions.set_is_fetch_fasle())
-                }
+            let app = await initializeApp(firebaseConfig)
+            let db = await getFirestore(app)
+            let q = await query(collection(db, "Messages"), where("roomID", "==", chatID),limit(100))
+            let messages: MessageType[] = []
+            await onSnapshot(q, (snap) => {
+                snap.forEach((message) => {
+                    messages.push(message.data() as MessageType)
+                    dispatch(chat_actions.getMessages(messages))
+                })
+
             })
+            dispatch(app_actions.set_is_fetch_fasle())
         } catch (ex) {
             console.log(ex)
         }
     }
 }
+
 export const sendMessageFromModalWindow = (newChat: newChatType, messageText: string) => {
     return async function (dispatch: any) {
         dispatch(app_actions.set_is_fetch_true())
-        let result = await chatAPI.getListOfChatsByUserID(newChat.sender.senderID)
-        if (result) {
-            let chatList: Array<any> = Object.values(result)
-            await chatAPI.sendMessage(newChat.sender.senderID, newChat.sender.senderFullName, messageText, chatList[0].chatID as string)
-        }
-        else {
-            const newChatID = await chatAPI.createNewChat({ ...newChat })
-            await chatAPI.sendMessage(newChat.sender.senderID, newChat.sender.senderFullName, messageText, newChatID as string)
-        }
-
+        await firestoreChat.sendMessageToUser(newChat.sender.senderID, newChat.sender.senderFullName, messageText, newChat.recepient.recepientID,
+            newChat.recepient.recepientFullName, newChat.sender.avatar as string, newChat.recepient.avatar as string)
+        dispatch(app_actions.set_is_fetch_fasle())
     }
 }
-export const sendMessageThunk = (sender: string, senderName: string, messageText: string, chatID: string) => {
+
+export const sendMessageThunk = (senderID: string, senderName: string, messageText: string, chatID: string, recepientID: string, recepientFullName: string,
+    senderAvatar: string, recepientAvatar: string) => {
     return async function (dispatch: any) {
         console.log(chatID)
         dispatch(app_actions.set_is_fetch_true())
-        await chatAPI.sendMessage(sender, senderName, messageText, chatID)
+        const newMessage: MessageType | undefined = await firestoreChat.sendMessageToUser(senderID, senderName, messageText, recepientID, recepientFullName, senderAvatar, recepientAvatar)
+        if (newMessage) {
+            dispatch(chat_actions.sendMEssage(newMessage as MessageType))
+        }
+
         dispatch(app_actions.set_is_fetch_fasle())
     }
 }
 
-export const createNewChat = (newChat: newChatType, messageText?: string) => {
-    return async function (dispatch: any) {
-        dispatch(app_actions.set_is_fetch_true())
-        const newChatID = await chatAPI.createNewChat(newChat)
-        const message = await chatAPI.sendMessage(newChat.sender.senderID, newChat.sender.senderFullName, messageText as string, newChatID as string)
-        dispatch(chat_actions.setActiveChat(newChatID as string))
-        dispatch(app_actions.set_is_fetch_fasle())
-    }
-}

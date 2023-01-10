@@ -1,7 +1,7 @@
-import { authAPI } from "../../Temp/AuthAPI";
+
 import { firestoreUSersAPI } from "../DAL/FirestoreUsersAPI";
-import { profileAPI } from "../DAL/ProfileApi";
-import { appReducer, app_actions } from "./AppReducer";
+
+import { app_actions } from "./AppReducer";
 import { InferActionType } from "./Store";
 import { ChatType, MainAccountType, UserType } from "./Types";
 

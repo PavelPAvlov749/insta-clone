@@ -51,6 +51,8 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^8.31.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "formik": "^2.2.9",
     "gh-pages": "^4.0.0"
   }

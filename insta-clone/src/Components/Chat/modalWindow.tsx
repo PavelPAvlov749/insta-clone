@@ -1,7 +1,6 @@
 import { Form, Formik, Field } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isPropertySignature } from "typescript";
 import { app_actions } from "../../Redux/AppReducer";
 import { chat_actions, sendMessageFromModalWindow } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
@@ -10,32 +9,28 @@ import styles from "../../Styles/NewMessageModalWindow.module.css"
 import { Avatar } from "../UserPage/Avatar";
 
 
-
 export const ModalWindow: React.FC = React.memo((props) => {
-    const dispatch : any = useDispatch()
+    const dispatch: any = useDispatch()
+    //New message text pocmes from field change handler
     const newMessageText = useSelector((state: Global_state_type) => {
         return state.chat.newMessage
     })
-    const isNewMessage = useSelector((state: Global_state_type) => {
-        return state.app.onNewMessage
-    })
+    //Current (Logged in) user
     const currentUser = useSelector((state: Global_state_type) => {
         return state.account
     })
+    //Actual user Page
     const actualPage = useSelector((state: Global_state_type) => {
         return state.userPage
     })
-    const activeChat = useSelector((state: Global_state_type) => {
-        return state.chat.activeChat
-    })
 
     const sendMessageHandler = () => {
+        //If chat with cyrrent user does not exist function senMessageFromModalWindow will create it by this object
         const newChat: newChatType = {
             sender: {
                 senderID: currentUser.userID as string,
                 senderFullName: currentUser.fullName as string,
                 avatar: currentUser.avatar
-
             },
             recepient: {
                 recepientID: actualPage.userID,
@@ -43,16 +38,17 @@ export const ModalWindow: React.FC = React.memo((props) => {
                 avatar: actualPage.avatar
             }
         }
-        dispatch(sendMessageFromModalWindow(newChat,newMessageText))
+        dispatch(sendMessageFromModalWindow(newChat, newMessageText))
         dispatch(app_actions.setOnNewMessage(false))
 
     }
+    //Cose modal windiow
     const closeButtonHandler = () => {
         dispatch(app_actions.setOnNewMessage(false))
     }
+    //Set changes from input field to redux state
     const onFieldChatngeHandler = (e: any) => {
         dispatch(chat_actions.setNewMessage(e.currentTarget.value))
-        console.log(e.currentTarget.value)
     }
     return (
         <div className={styles.blur}>
@@ -68,14 +64,12 @@ export const ModalWindow: React.FC = React.memo((props) => {
                     onSubmit={sendMessageHandler}
                 >
                     <Form>
-                        <textarea title="Type your message" rows={11} name="messageText" autoFocus={true}  onChange={onFieldChatngeHandler}></textarea>
+                        <textarea title="Type your message" rows={11} name="messageText" autoFocus={true} onChange={onFieldChatngeHandler}></textarea>
                         <br />
                         <div className={styles.buttons}>
-                        <button onClick={closeButtonHandler}>Close</button>
-                        <button type="submit" disabled={newMessageText.length < 1} >Send</button>
+                            <button onClick={closeButtonHandler}>Close</button>
+                            <button type="submit" disabled={newMessageText.length < 1} >Send</button>
                         </div>
-                   
-                     
                     </Form>
                 </Formik>
 

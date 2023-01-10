@@ -37,6 +37,9 @@ export class FirestoreAPI {
     protected authInstanse = getAuth()
     public getAuth = this.authInstanse
     //Login with email and oassword
+    public getFirestore () {
+        return this.fireStore
+    }
     public async signInByEmailAndPassword(email: string, password: string) {
         try {
             const user = await (await signInWithEmailAndPassword(this.firebaseAuth, email, password)).user.uid

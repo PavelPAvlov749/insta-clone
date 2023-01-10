@@ -15,11 +15,7 @@ import { InitializeThunk } from './Redux/AppReducer';
 //Types imports
 import { AppPropsType } from './Redux/Types';
 //Firebase imports
-import { ref, getDatabase, onChildAdded, onChildChanged, serverTimestamp } from "firebase/database";
-import { chatAPI } from "./DAL/ChatAPI";
-import { prependListener } from "process";
-import {  fireStoreAPI} from "./DAL/Firestore"
-import { chat_actions } from "./Redux/ChatReducer";
+
 //Media and assets
 const sound = require("../src/Media/MessageTone.mp3")
 

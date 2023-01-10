@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef,} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { chatReducer, chat_actions, getRealtimeMessages, getRoomByUserID, } from "../../Redux/ChatReducer";
+import { getRealtimeMessages, } from "../../Redux/ChatReducer";
 import { Global_state_type } from "../../Redux/Store";
 import styles from "../../Styles/Chat.module.css"
 import { Message } from "./Message";
 import { TextInput } from "./TextInput";
 import messageIMG from "../../Media/message.png"
 import messageBoxIcon from "../../Media/mailbox.png"
-import { ChatList } from "./ChatList";
 
 
 const messageTone = require("../../Media/MessageTone.mp3")
@@ -18,30 +17,30 @@ export const Dirrect: React.FC = React.memo((props) => {
     //Chat page last message anchor 
     const chat_anchor_ref = useRef<HTMLDivElement>(null);
     const dispatch: any = useDispatch()
+    
     let currentUser = useSelector((state: Global_state_type) => { return state.app.currentUserID })
     const messages = useSelector((state: Global_state_type) => { return state.chat.messages })
+    //Get room id from query string into path
     let location = useLocation().pathname.split("=")[1]
     const path = useLocation().pathname
-    console.log(path.includes("id"))
-    useEffect(() => {
-        dispatch(getRoomByUserID(currentUser as string, location))
 
-    }, [location])
+
+
+    //Get actual dialog merssages called everytime when location or masseges.length are chanhed
     useEffect(() => {
         dispatch(getRealtimeMessages(location))
-        dispatch(chat_actions.setActiveChat(location))
-    }, [location])
+    }, [location,messages.length])
+
     if (path.includes("id")) {
         return (
             <section className={styles.messageAreaContainer}>
 
                 <div className={styles.messageArea} >
-                    {messages.length > 0 ? messages.map((message) => {
+                    {messages?.length > 0 ? messages.map((message : any) => {
                         return (
-                            <div key={message.messageID}>
-                                <Message messageText={message.messageText} senderID={message.senderID} currentUser={currentUser} />
+                            <div>
+                                <Message messageText={message?.messageText} senderID={message?.creatorID} currentUser={currentUser} roomID={location} />
                             </div>
-
                         )
                     }) :
                         <div className={styles.noMessages}>

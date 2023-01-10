@@ -9,15 +9,13 @@ import styles from "../../Styles/UserPage.module.css"
 import { Avatar } from "./Avatar";
 import { ModalWindow } from "../Chat/modalWindow";
 
-import { newChatType, UserPagePreview } from "../../Redux/Types";
-import { createNewChat } from "../../Redux/ChatReducer";
-import { MiniProfile } from "../MiniProfile/MiniProfile";
-import { Field, Form, Formik } from "formik";
+import { UserPagePreview } from "../../Redux/Types";
+
 import { app_actions } from "../../Redux/AppReducer";
-import { NewPostModalWindow } from "../Posts/NewPostModal";
-import { string } from "yup";
+
+
 import { firestorePostsAPI } from "../../DAL/Firestore";
-import { firestoreChat } from "../../DAL/FirestoreChatAPI";
+
 
 
 
@@ -81,40 +79,10 @@ export const UserPage: React.FC = React.memo(() => {
         return state.app.onNewMessage
     })
     //SendMessage button on click
-    const sendMessageHandlerButton = () => {
-        firestoreChat.sendMesage(currentUser.userID as string,currentUser.fullName as string,"wfwefwef","12345",actualUserPage.userID)
-        // dispatch(app_actions.setOnNewMessage(true))
+    const sendMessageHandlerButton = (e: any) => {
+        dispatch(app_actions.setOnNewMessage(true))
     }
-    //Send message Handler
-    const sendMessage = () => {
-        const newChat: newChatType = {
-            sender: {
-                senderID: currentUser.userID as string,
-                senderFullName: currentUser.fullName as string,
-                avatar: currentUser.avatar
 
-            },
-            recepient: {
-                recepientID: actualUserPage.userID,
-                recepientFullName: actualUserPage.fullName,
-                avatar: actualUserPage.avatar
-            }
-        }
-
-        let chat = chats.find((chat: any) => chat.userID === actualUserPage.userID)
-        if (chat) {
-            navigate(`/chat/id:=${chat.chatID}`)
-        } else {
-            dispatch(createNewChat(newChat))
-            navigate(`/chat/id:=${activeChatID}`)
-
-
-        }
-
-    }
-    const initialValues = {
-        mesageText: null
-    }
     return (
         <div className={styles.userPageContainr}>
 

@@ -21,6 +21,9 @@
     display: inline;
 
 }
+.wraperDiv input,label{
+    display: inline;
+}
 .defaultAvatarSmall img{
   
     object-fit: cover;

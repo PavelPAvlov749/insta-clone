@@ -5,10 +5,8 @@ import { ChatList } from "./ChatList";
 import { Dirrect } from "./ChatWindow";
 //STYLES
 import styles from "../../Styles/Chat.module.css"
-import { TextInput } from "./TextInput";
 
-
-
+//Chat window wrapper component
 export const Chat : React.FC = React.memo((props) => {
 
     return (

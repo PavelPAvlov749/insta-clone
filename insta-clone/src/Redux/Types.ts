@@ -1,4 +1,6 @@
+import { strict } from "assert"
 import { BlockLike } from "typescript"
+import { string } from "yup"
 
 
 //Main Compoenent PropsType (App.tsx)
@@ -57,13 +59,14 @@ export type ChatType = {
     userID : string
 }
 export type MessageType = {
-    fullName : string,
-    userID : string,
-    avatar? : string,
-    messageData : string,
-    createdAt : any,
-    messageStatus : "unreaded" | "readed",
-    messageID? : string | null
+    creator : string,
+    creatorID : string,
+    recepientFullName : string,
+    recepientID : string,
+    messageText : string,
+    timeStamp : any,
+    status : string,
+    roomID : string
 }
 export type AvatarPropsType = {
     fullName? : string,
@@ -113,4 +116,17 @@ export type UserPagePreview = {
     avatar : string,
     fullName : string
     userID : string,
+}
+
+export type chatRoomType = {
+    senderFullName : string,
+    senderID : string,
+    recepientID : string,
+    recepientFullNAme :string ,
+    avatars : Array<{userID : string,avatar : string}>,
+    messagesCount : number,
+    unreadedMessages : number,
+    roomID : string,
+    lastMessage : string,
+    users : string[]
 }

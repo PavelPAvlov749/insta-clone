@@ -136,6 +136,7 @@ class UsersAPI  {
     //Follow toggle function 
     public async followToggle (userToFollow : UserPagePreview,currentUser : UserPagePreview) {
         try {
+            debugger
             const followedUserRef = await doc(this.fireStore,"Followed/",currentUser.userID)
             const followedUserDoc = await getDoc(followedUserRef)
             console.log(followedUserDoc.data())

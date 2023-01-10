@@ -100,20 +100,45 @@
 
 .userMiniPage {
   
-    margin: 0rem 0rem 2rem 1rem;
+    /* margin: 0rem 0rem 0rem 1rem; */
 }
 
 .chatListFullName {
     margin-left: 1rem;
 }
-
+.userMini ul {
+    margin: 0;
+    padding: 0px 0.5rem 0px 1rem;
+    display: inline-block;
+    list-style: none;
+    vertical-align: middle;
+}
+.userMini li {
+    position: relative;
+    width: 100%;
+    padding: 0px 10px 0px 0px;
+    overflow-x: hidden;
+    
+}
 .emptyChatList {
     margin-top: 35%;
 
     text-align: center;
     font-weight: 400;
 }
+.userMini span {
+    margin: 0;
+    display: inline-block;
+    line-height: 30px;
+    font-weight: 400;
+}
+.lastMessage {
 
+    text-align: left;
+    font-size: smaller;
+    color: grey;
+
+}
 .userMini {
    
     width: 100%;
@@ -172,11 +197,30 @@
     border-style: none;
     display: inline;
     width: 65%;
-
     vertical-align: middle;
 
 }
+.countWrapper{
+    margin-left: 1%;
+    vertical-align: middle;
+    display: inline;
+    position: fixed;
+    background-color: rgb(170, 15, 15);
+    border-radius: 180px;
+    width: 17px;
+    height: 17px;
+    padding: 3px;
+}   
+.count {
+    color: white;
+    font-size: small;
+    position: absolute;
+    top: -3px;
+    right: 9px;
+    vertical-align: middle;
 
+
+}
 .messageInput:active {
     border: none;
     border-style: none;

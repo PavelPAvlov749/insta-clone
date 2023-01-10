@@ -1,14 +1,14 @@
 import React  from "react";
-
-import { chatAPI } from "../../DAL/ChatAPI";
+import { firestoreChat } from "../../DAL/FirestoreChatAPI";
 
 import styles from "../../Styles/Message.module.css"
 
 
-
-export const Message: React.FC<{messageText : string,currentUser : string | null,senderID : string | null}> = React.memo((props) => {
+//SINGLE MESSAGE COMPONENT
+export const Message: React.FC<{messageText : string,currentUser : string | null,senderID : string | null,roomID : string}> = React.memo((props) => {
     if(props.senderID !== props.currentUser){
-        chatAPI.decrementUnreadedMessagesCount(props.currentUser as string)
+        //Decrement undreaded message
+        firestoreChat.decrementUnreadedMessagesCount(props.roomID)
     }
     return (
         <div className={props.currentUser === props.senderID ? styles.currentUserMessage : styles.message}>

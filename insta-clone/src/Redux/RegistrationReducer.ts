@@ -3,10 +3,9 @@ import { InferActionType } from "./Store";
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
 import { Global_state_type } from "../Redux/Store";
-import { authAPI } from "../../Temp/AuthAPI";
 import { app_actions } from "./AppReducer";
-import { AccountActions, updateAvatarThunk, updateStatusThunk } from "./ProfileReducer";
-import { DataSnapshot } from "firebase/database";
+import { AccountActions } from "./ProfileReducer";
+
 import { CreateNewUserType } from "./Types";
 import { auth_actions } from "./AuthReducer";
 import { fireStoreAPI } from "../DAL/Firestore";
